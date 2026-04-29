@@ -65,51 +65,51 @@ function standard(
 
 function makeMaterials(THREE: typeof Three): Materials {
   return {
-    terrain: standard(THREE, 0x0d2b25, { roughness: 0.92 }),
-    terrainEdge: standard(THREE, 0x06110e, { roughness: 0.86 }),
-    soil: standard(THREE, 0x182b23, { roughness: 0.94 }),
-    path: standard(THREE, 0x254139, { roughness: 0.9 }),
+    terrain: standard(THREE, 0x123a31, { roughness: 0.9 }),
+    terrainEdge: standard(THREE, 0x0a1d18, { roughness: 0.86 }),
+    soil: standard(THREE, 0x263b31, { roughness: 0.92 }),
+    path: standard(THREE, 0x31514a, { roughness: 0.88 }),
     pathGlow: new THREE.MeshBasicMaterial({
       color: 0x77d8f7,
       transparent: true,
       opacity: 0.16,
       depthWrite: false,
     }),
-    stone: standard(THREE, 0x52645d, { roughness: 0.88 }),
-    trunk: standard(THREE, 0x5e6b55, { roughness: 0.9 }),
-    needles: standard(THREE, 0x2f745f, { roughness: 0.85 }),
-    needlesDark: standard(THREE, 0x1f5144, { roughness: 0.9 }),
-    needlesBlue: standard(THREE, 0x275f5d, { roughness: 0.85 }),
+    stone: standard(THREE, 0x65776f, { roughness: 0.86 }),
+    trunk: standard(THREE, 0x71805f, { roughness: 0.88 }),
+    needles: standard(THREE, 0x3a876f, { roughness: 0.84 }),
+    needlesDark: standard(THREE, 0x296556, { roughness: 0.88 }),
+    needlesBlue: standard(THREE, 0x32716e, { roughness: 0.84 }),
     moss: standard(THREE, 0x7f9f73, { roughness: 0.82 }),
-    dark: standard(THREE, 0x081511, { roughness: 0.7 }),
-    roof: standard(THREE, 0x15302b, { roughness: 0.76 }),
-    glass: standard(THREE, 0x183a36, { roughness: 0.38, metalness: 0.12 }),
+    dark: standard(THREE, 0x10251f, { roughness: 0.68 }),
+    roof: standard(THREE, 0x1d433b, { roughness: 0.74 }),
+    glass: standard(THREE, 0x224d48, { roughness: 0.36, metalness: 0.12 }),
     window: standard(THREE, 0x7fdcf3, {
       roughness: 0.34,
       metalness: 0.08,
       emissive: 0x3aa9bd,
-      emissiveIntensity: 0.38,
+      emissiveIntensity: 0.52,
     }),
     cyan: standard(THREE, 0x77d8f7, {
       roughness: 0.42,
       metalness: 0.18,
       emissive: 0x226d83,
-      emissiveIntensity: 0.48,
+      emissiveIntensity: 0.58,
     }),
     aurora: standard(THREE, 0x72f2a3, {
       roughness: 0.45,
       emissive: 0x2ca767,
-      emissiveIntensity: 0.42,
+      emissiveIntensity: 0.52,
     }),
     warm: standard(THREE, 0xf1d48d, {
       roughness: 0.48,
       emissive: 0x8d6424,
-      emissiveIntensity: 0.36,
+      emissiveIntensity: 0.46,
     }),
     violet: standard(THREE, 0xbda5ff, {
       roughness: 0.5,
       emissive: 0x4c3488,
-      emissiveIntensity: 0.28,
+      emissiveIntensity: 0.38,
     }),
     metal: standard(THREE, 0x5d716d, { roughness: 0.46, metalness: 0.38 }),
     line: new THREE.LineBasicMaterial({ color: 0x77d8f7, transparent: true, opacity: 0.24 }),
@@ -124,8 +124,8 @@ function makeMaterials(THREE: typeof Three): Materials {
       opacity: 0.58,
       side: THREE.DoubleSide,
     }),
-    forestBack: new THREE.MeshBasicMaterial({ color: 0x14352f, transparent: true, opacity: 0.22, depthWrite: false }),
-    forestMid: new THREE.MeshBasicMaterial({ color: 0x1f4c42, transparent: true, opacity: 0.34, depthWrite: false }),
+    forestBack: new THREE.MeshBasicMaterial({ color: 0x1b4a40, transparent: true, opacity: 0.26, depthWrite: false }),
+    forestMid: new THREE.MeshBasicMaterial({ color: 0x2c6759, transparent: true, opacity: 0.38, depthWrite: false }),
   };
 }
 
@@ -187,7 +187,7 @@ function createIsland(THREE: typeof Three, materials: Materials) {
     const terrace = new THREE.Mesh(new THREE.CylinderGeometry(width, width * 1.04, 0.055, 14), materials.soil);
     terrace.position.set(x, y, z);
     terrace.scale.z = depth;
-    terrace.rotation.set(Math.PI / 2, 0, rotation);
+    terrace.rotation.y = rotation;
     group.add(terrace);
   });
 

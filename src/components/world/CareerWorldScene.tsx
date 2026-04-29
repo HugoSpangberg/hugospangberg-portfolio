@@ -22,6 +22,36 @@ type PointerState = {
   y: number;
 };
 
+function getCameraConfig(width: number) {
+  if (width < 720) {
+    return {
+      fov: 62,
+      position: [-0.08, 4.15, 10.4] as const,
+      target: [-0.22, -0.12, -0.06] as const,
+      worldScale: 0.68,
+      pixelRatio: 1.15,
+    };
+  }
+
+  if (width < 1120) {
+    return {
+      fov: 50,
+      position: [0.3, 3.0, 7.65] as const,
+      target: [0.02, -0.08, -0.06] as const,
+      worldScale: 1.08,
+      pixelRatio: 1.35,
+    };
+  }
+
+  return {
+    fov: 42,
+    position: [0.34, 2.35, 6.35] as const,
+    target: [0.02, -0.02, -0.05] as const,
+    worldScale: 1.22,
+    pixelRatio: 1.5,
+  };
+}
+
 function supportsWebGL() {
   try {
     const canvas = document.createElement('canvas');
@@ -116,6 +146,7 @@ function CareerWorldScene({
         }
 
         const compact = window.innerWidth < 720;
+        const initialCamera = getCameraConfig(window.innerWidth);
         let frameId = 0;
         let isSceneVisible = true;
         let isDocumentVisible = document.visibilityState === 'visible';
@@ -124,23 +155,32 @@ function CareerWorldScene({
         const pointer = new THREE.Vector2(8, 8);
         const raycaster = new THREE.Raycaster();
         const scene = new THREE.Scene();
-        scene.fog = new THREE.FogExp2(0x06110e, compact ? 0.14 : 0.105);
+        scene.fog = new THREE.FogExp2(0x071713, compact ? 0.072 : 0.085);
 
-        const ambient = new THREE.HemisphereLight(0xb9d6d0, 0x06110e, 1.08);
-        const moonLight = new THREE.DirectionalLight(0xd6eee8, 1.55);
-        moonLight.position.set(-3.2, 5.1, 3.4);
-        const rimLight = new THREE.DirectionalLight(0x77d8f7, 0.86);
-        rimLight.position.set(3.8, 2.8, -4.2);
-        const forestGlow = new THREE.PointLight(0x72f2a3, 1.35, 4.4);
-        forestGlow.position.set(-1.3, 0.4, -1.1);
-        const warmGlow = new THREE.PointLight(0xf1d48d, 1.08, 3.2);
+        const ambientFill = new THREE.AmbientLight(0xc8eee4, compact ? 0.56 : 0.46);
+        const skyFill = new THREE.HemisphereLight(0xd5f4ee, 0x10271f, compact ? 1.02 : 0.88);
+        const moonLight = new THREE.DirectionalLight(0xe2fff8, compact ? 1.55 : 1.38);
+        moonLight.position.set(-3.6, 5.8, 4.2);
+        const rimLight = new THREE.DirectionalLight(0x82e2ff, compact ? 1.0 : 0.84);
+        rimLight.position.set(4.2, 3.25, -4.8);
+        const forestGlow = new THREE.PointLight(0x72f2a3, compact ? 1.62 : 1.35, 4.8);
+        forestGlow.position.set(-1.35, 0.48, -1.08);
+        const warmGlow = new THREE.PointLight(0xf1d48d, compact ? 1.34 : 1.12, 3.6);
         warmGlow.position.set(0.25, 0.35, 1.35);
-        const techGlow = new THREE.PointLight(0x77d8f7, 1.25, 3.8);
+        const techGlow = new THREE.PointLight(0x77d8f7, compact ? 1.55 : 1.28, 4.2);
         techGlow.position.set(1.55, 0.55, -0.82);
-        scene.add(ambient, moonLight, rimLight, forestGlow, warmGlow, techGlow);
+        const officeGlow = new THREE.PointLight(0xb7f4d6, compact ? 0.72 : 0.56, 2.6);
+        officeGlow.position.set(-2.12, 0.2, 0.24);
+        const learningGlow = new THREE.PointLight(0xc4a5ff, compact ? 0.74 : 0.58, 2.6);
+        learningGlow.position.set(1.75, 0.24, 1.02);
+        scene.add(ambientFill, skyFill, moonLight, rimLight, forestGlow, warmGlow, techGlow, officeGlow, learningGlow);
 
-        const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 42);
-        camera.position.set(compact ? 0.25 : 0.34, compact ? 2.55 : 2.35, compact ? 7.2 : 6.35);
+        const camera = new THREE.PerspectiveCamera(initialCamera.fov, 1, 0.1, 48);
+        camera.position.set(
+          initialCamera.position[0],
+          initialCamera.position[1],
+          initialCamera.position[2],
+        );
 
         const renderer = new THREE.WebGLRenderer({
           antialias: false,
@@ -149,7 +189,10 @@ function CareerWorldScene({
         });
 
         renderer.setClearColor(0x000000, 0);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, compact ? 1.15 : 1.5));
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, initialCamera.pixelRatio));
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.toneMappingExposure = compact ? 1.24 : 1.12;
+        renderer.outputColorSpace = THREE.SRGBColorSpace;
         renderer.domElement.style.touchAction = 'pan-y';
         mount.appendChild(renderer.domElement);
 
@@ -161,16 +204,20 @@ function CareerWorldScene({
         controls.minDistance = 5.15;
         controls.maxDistance = 7.3;
         controls.minPolarAngle = Math.PI * 0.23;
-        controls.maxPolarAngle = Math.PI * 0.45;
+        controls.maxPolarAngle = Math.PI * (compact ? 0.5 : 0.45);
         controls.minAzimuthAngle = -Math.PI * 0.24;
         controls.maxAzimuthAngle = Math.PI * 0.24;
-        controls.target.set(0.02, -0.02, -0.05);
+        controls.target.set(
+          initialCamera.target[0],
+          initialCamera.target[1],
+          initialCamera.target[2],
+        );
         renderer.domElement.style.touchAction = 'pan-y';
 
         const world = createCareerWorld(THREE, compact);
         const backdrop = createSpaceBackdrop(THREE, compact);
         const aurora = createAurora(THREE);
-        world.group.scale.setScalar(compact ? 0.98 : 1.22);
+        world.group.scale.setScalar(initialCamera.worldScale);
         world.group.rotation.x = -0.05;
         scene.add(backdrop, aurora, world.group);
         activeHotspot = world.hotspots[0];
@@ -178,9 +225,25 @@ function CareerWorldScene({
 
         const resize = () => {
           const { width, height } = mount.getBoundingClientRect();
+          const cameraConfig = getCameraConfig(width);
           renderer.setSize(width, height, false);
+          renderer.setPixelRatio(Math.min(window.devicePixelRatio, cameraConfig.pixelRatio));
+          renderer.toneMappingExposure = width < 720 ? 1.24 : 1.12;
           camera.aspect = width / Math.max(height, 1);
+          camera.fov = cameraConfig.fov;
+          camera.position.set(
+            cameraConfig.position[0],
+            cameraConfig.position[1],
+            cameraConfig.position[2],
+          );
           camera.updateProjectionMatrix();
+          controls.target.set(
+            cameraConfig.target[0],
+            cameraConfig.target[1],
+            cameraConfig.target[2],
+          );
+          controls.maxPolarAngle = Math.PI * (width < 720 ? 0.5 : 0.45);
+          world.group.scale.setScalar(cameraConfig.worldScale);
         };
 
         const findHotspot = (object?: Three.Object3D) => {
