@@ -11,7 +11,8 @@ import ProfileHeroSection from './components/ProfileHeroSection';
 import Skills from './components/Skills';
 import SystemThinking from './components/SystemThinking';
 import WorldIntroSection from './components/world/WorldIntroSection';
-import { content, type Locale } from './data/content';
+import { PortfolioContentProvider, usePortfolioContent } from './cms';
+import type { Locale } from './data/content';
 import { SayHiSection } from './features/say-hi';
 
 const defaultLocale: Locale = 'sv';
@@ -29,7 +30,21 @@ function getInitialLocale(): Locale {
 
 function App() {
   const [locale, setLocale] = useState<Locale>(getInitialLocale);
-  const page = content[locale];
+
+  return (
+    <PortfolioContentProvider locale={locale}>
+      <PortfolioPage locale={locale} onLocaleChange={setLocale} />
+    </PortfolioContentProvider>
+  );
+}
+
+type PortfolioPageProps = {
+  locale: Locale;
+  onLocaleChange: (locale: Locale) => void;
+};
+
+function PortfolioPage({ locale, onLocaleChange }: PortfolioPageProps) {
+  const { content: page } = usePortfolioContent();
 
   useEffect(() => {
     document.documentElement.lang = locale;
@@ -76,7 +91,7 @@ function App() {
       <Navbar
         locale={locale}
         navItems={page.nav}
-        onLocaleChange={setLocale}
+        onLocaleChange={onLocaleChange}
       />
       <main>
         <WorldIntroSection content={page.hero} locale={locale} />

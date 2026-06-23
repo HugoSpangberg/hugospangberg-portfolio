@@ -760,3 +760,6 @@ export const content = {
     },
   },
 };
+
+export type PortfolioContentByLocale = typeof content;
+export type PortfolioContent = PortfolioContentByLocale[Locale];
