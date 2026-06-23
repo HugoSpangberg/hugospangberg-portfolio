@@ -1,0 +1,49 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "hugospangberg-portfolio",
+  "main": "worker/src/index.ts",
+  "compatibility_date": "2026-06-23",
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application"
+  },
+  "vars": {
+    "ALLOWED_ORIGIN": "http://localhost:4173",
+    "SAY_HI_ENABLED": "true",
+    "SAY_HI_COOLDOWN_SECONDS": "120",
+    "SAY_HI_USE_MOCK_GATEWAY": "true"
+  },
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "SAY_HI_COOLDOWN",
+        "class_name": "SayHiCooldown"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": ["SayHiCooldown"]
+    }
+  ],
+  "env": {
+    "preview": {
+      "vars": {
+        "ALLOWED_ORIGIN": "https://preview.example.com",
+        "SAY_HI_ENABLED": "true",
+        "SAY_HI_COOLDOWN_SECONDS": "120",
+        "SAY_HI_USE_MOCK_GATEWAY": "true"
+      }
+    },
+    "production": {
+      "vars": {
+        "ALLOWED_ORIGIN": "https://www.example.com",
+        "SAY_HI_ENABLED": "true",
+        "SAY_HI_COOLDOWN_SECONDS": "120",
+        "SAY_HI_USE_MOCK_GATEWAY": "false"
+      }
+    }
+  }
+}
