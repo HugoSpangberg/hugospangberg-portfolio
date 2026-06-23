@@ -8,7 +8,7 @@ on:
       - feature/**
 
 jobs:
-  quality:
+  frontend:
     runs-on: ubuntu-latest
 
     steps:
@@ -35,3 +35,27 @@ jobs:
 
       - name: Build
         run: npm run build
+
+  cms:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restore
+        run: dotnet restore cms/HugoPortfolio.Cms.slnx
+
+      - name: Build
+        run: dotnet build cms/HugoPortfolio.Cms.slnx --configuration Release --no-restore
+
+      - name: Test
+        run: dotnet test cms/HugoPortfolio.Cms.slnx --configuration Release --no-build
+
+      - name: Publish
+        run: dotnet publish cms/HugoPortfolio.Cms/HugoPortfolio.Cms.csproj --configuration Release --no-build --output cms/publish

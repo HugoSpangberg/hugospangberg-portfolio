@@ -14,3 +14,13 @@ updates:
           - vitest
           - '@testing-library/*'
           - '@playwright/*'
+  - package-ecosystem: nuget
+    directory: /cms
+    schedule:
+      interval: weekly
+    groups:
+      cms:
+        patterns:
+          - Umbraco.*
+          - uSync
+          - Microsoft.*
