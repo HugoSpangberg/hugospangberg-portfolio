@@ -45,18 +45,25 @@ function SayHiSection({ locale, copy }: SayHiSectionProps) {
 
   return (
     <section className="say-hi-section section" id="say-hi" data-reveal>
-      <div className="container say-hi-section__inner">
-        <div className="say-hi-section__scene">
-          <Suspense fallback={<div className="say-hi-lamp say-hi-lamp--fallback">{copy.fallback}</div>}>
-            <SayHiLampScene
-              copy={copy}
-              state={lampVisualState}
-              disabled={!enabled}
-              onLampClick={sayHi.arm}
-            />
-          </Suspense>
-        </div>
+      <Suspense
+        fallback={
+          <div className="say-hi-scene say-hi-scene--fallback" aria-hidden="true">
+            <span>{copy.fallback}</span>
+          </div>
+        }
+      >
+        <SayHiLampScene
+          copy={copy}
+          state={lampVisualState}
+          disabled={!enabled}
+          onLampClick={sayHi.arm}
+        />
+      </Suspense>
 
+      <div className="say-hi-overlay" aria-hidden="true" />
+
+      <div className="container say-hi-content">
+        <div className="say-hi-copy">
         <SayHiPanel
           copy={copy}
           state={sayHi.state}
@@ -67,6 +74,7 @@ function SayHiSection({ locale, copy }: SayHiSectionProps) {
           onSend={sayHi.send}
           onReset={sayHi.reset}
         />
+        </div>
 
         <div ref={sayHi.turnstileRef} className="say-hi-section__turnstile" aria-hidden="true" />
       </div>
