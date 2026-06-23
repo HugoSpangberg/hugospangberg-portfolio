@@ -1,5 +1,5 @@
+import { useEffect, useId, useRef, useState } from 'react';
 import type { SayHiCopy, SayHiState } from '../model/sayHiTypes';
-import SayHiStatus from './SayHiStatus';
 
 type SayHiPanelProps = {
   copy: SayHiCopy;
@@ -7,9 +7,7 @@ type SayHiPanelProps = {
   canSend: boolean;
   isBusy: boolean;
   enabled: boolean;
-  onArm: () => void;
   onSend: () => void;
-  onReset: () => void;
 };
 
 function SayHiPanel({
@@ -18,53 +16,119 @@ function SayHiPanel({
   canSend,
   isBusy,
   enabled,
-  onArm,
   onSend,
-  onReset,
 }: SayHiPanelProps) {
-  const sendDisabled = !enabled || !canSend || isBusy;
-  const showReset = state.status === 'error' || state.status === 'unavailable';
+  const [dialogType, setDialogType] = useState<'success' | 'error' | null>(null);
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
+  const dialogRef = useRef<HTMLDialogElement | null>(null);
+  const dialogTitleId = useId();
+  const isCooldown = state.status === 'cooldown';
+  const buttonDisabled = !enabled || !canSend || isBusy || isCooldown;
+  const buttonLabel = isBusy
+    ? copy.loadingLabel
+    : isCooldown
+      ? copy.cooldownLabel
+      : copy.buttonLabel;
+  const statusText = enabled
+    ? state.status === 'cooldown'
+      ? copy.cooldownHint
+      : state.status === 'error' || state.status === 'unavailable'
+        ? copy.statuses.error
+        : state.status === 'sending'
+          ? copy.statuses.sending
+          : ''
+    : copy.comingSoon;
+
+  useEffect(() => {
+    if (state.status === 'success') {
+      setDialogType('success');
+      return;
+    }
+
+    if (state.status === 'error' || state.status === 'unavailable') {
+      setDialogType('error');
+    }
+  }, [state.status]);
+
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog || !dialogType) {
+      return undefined;
+    }
+
+    if (!dialog.open) {
+      dialog.showModal();
+    }
+
+    const handleClose = () => {
+      setDialogType(null);
+      buttonRef.current?.focus();
+    };
+
+    dialog.addEventListener('close', handleClose);
+
+    return () => dialog.removeEventListener('close', handleClose);
+  }, [dialogType]);
+
+  const dialogCopy = dialogType === 'success' ? copy.successDialog : copy.errorDialog;
+
+  const closeDialog = () => {
+    dialogRef.current?.close();
+  };
 
   return (
     <div className="say-hi-panel">
       <div>
         <p className="section-kicker">{copy.kicker}</p>
         <h2>{copy.title}</h2>
-        <p>{copy.description}</p>
+        <p className="say-hi-panel__curiosity">{copy.curiosity}</p>
       </div>
 
       <div className="say-hi-panel__actions" aria-label={copy.panelTitle}>
         <button
-          className="say-hi-switch"
+          ref={buttonRef}
+          className="say-hi-primary-button"
           type="button"
-          aria-pressed={state.status !== 'idle'}
-          disabled={!enabled || isBusy}
-          onClick={onArm}
+          disabled={buttonDisabled}
+          onClick={onSend}
         >
           <span aria-hidden="true" />
-          {copy.activateLabel}
+          <span>{buttonLabel}</span>
         </button>
+      </div>
 
-        <button className="button button--primary" type="button" disabled={sendDisabled} onClick={onSend}>
-          {copy.sendLabel}
-        </button>
+      <p className="say-hi-inline-status" role="status" aria-live="polite">
+        {statusText}
+      </p>
 
-        {showReset ? (
-          <button className="button button--ghost" type="button" onClick={onReset}>
-            {copy.resetLabel}
-          </button>
+      <dialog
+        ref={dialogRef}
+        className="say-hi-dialog"
+        aria-labelledby={dialogTitleId}
+        aria-modal="true"
+        onClick={(event) => {
+          if (event.target === dialogRef.current) {
+            closeDialog();
+          }
+        }}
+      >
+        {dialogCopy ? (
+          <div className="say-hi-dialog__inner">
+            <h3 id={dialogTitleId}>{dialogCopy.title}</h3>
+            <p>{dialogCopy.body}</p>
+            {dialogType === 'success' ? (
+              <>
+                <p>{copy.successDialog.privacy}</p>
+                <p>{copy.successDialog.technicalPrivacy}</p>
+              </>
+            ) : null}
+
+            <button className="button button--primary" type="button" onClick={closeDialog}>
+              {dialogCopy.closeLabel}
+            </button>
+          </div>
         ) : null}
-      </div>
-
-      <SayHiStatus state={enabled ? state : { status: 'unavailable' }} copy={copy} />
-
-      {!enabled ? <p className="say-hi-panel__soon">{copy.comingSoon}</p> : null}
-
-      <div className="say-hi-panel__system">
-        <h3>{copy.systemTitle}</h3>
-        <p>{copy.systemDescription}</p>
-        <p>{copy.privacy}</p>
-      </div>
+      </dialog>
     </div>
   );
 }

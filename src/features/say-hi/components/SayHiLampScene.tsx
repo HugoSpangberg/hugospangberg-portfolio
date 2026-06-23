@@ -38,10 +38,9 @@ type SayHiLampSceneProps = {
   copy: SayHiCopy;
   state: LampVisualState;
   disabled?: boolean;
-  onLampClick: () => void;
 };
 
-export type LampVisualState = 'idle' | 'localOn' | 'sending' | 'success' | 'cooldown' | 'error';
+export type LampVisualState = 'idle' | 'sending' | 'success' | 'cooldown' | 'error';
 
 type SceneVisualState = LampVisualState | 'hover' | 'disabled';
 
@@ -78,24 +77,14 @@ const lightStates: Record<
     floorGlow: 0.04,
     signalPulse: 0,
   },
-  localOn: {
-    color: '#ff9c86',
-    emissive: '#ff4634',
-    shadeGlow: 0.72,
-    bulbGlow: 0.78,
-    pointLight: 3.15,
-    spotLight: 1.55,
-    floorGlow: 0.78,
-    signalPulse: 0.58,
-  },
   sending: {
-    color: '#ff927c',
-    emissive: '#ff3d30',
-    shadeGlow: 0.8,
-    bulbGlow: 0.88,
-    pointLight: 3.35,
-    spotLight: 1.7,
-    floorGlow: 0.86,
+    color: '#fff0c8',
+    emissive: '#ffd47f',
+    shadeGlow: 0.42,
+    bulbGlow: 0.52,
+    pointLight: 1.95,
+    spotLight: 0.98,
+    floorGlow: 0.08,
     signalPulse: 0.95,
   },
   success: {
@@ -411,8 +400,8 @@ function visualStatus(state: LampVisualState, disabled: boolean | undefined, hov
   return state;
 }
 
-function SayHiLampScene({ copy, state, disabled, onLampClick }: SayHiLampSceneProps) {
-  const hostRef = useRef<HTMLButtonElement | null>(null);
+function SayHiLampScene({ copy, state, disabled }: SayHiLampSceneProps) {
+  const hostRef = useRef<HTMLDivElement | null>(null);
   const statusRef = useRef<LampVisualState>(state);
   const disabledRef = useRef(disabled);
   const hoverRef = useRef(false);
@@ -589,7 +578,7 @@ function SayHiLampScene({ copy, state, disabled, onLampClick }: SayHiLampScenePr
       techWorld.nodeMaterial.opacity = 0.48 + currentSignalPulse * 0.35;
       techWorld.pulseMaterial.opacity = currentSignalPulse;
       switchMaterial.emissive.set(
-        currentStatus === 'hover' || currentStatus === 'localOn' ? '#5b4325' : '#000000',
+        currentStatus === 'hover' || currentStatus === 'sending' ? '#5b4325' : '#000000',
       );
 
       if (!reducedMotion) {
@@ -648,16 +637,13 @@ function SayHiLampScene({ copy, state, disabled, onLampClick }: SayHiLampScenePr
   }, []);
 
   return (
-    <button
+    <div
       ref={hostRef}
       className="say-hi-scene"
-      type="button"
-      aria-label={copy.canvasLabel}
-      disabled={disabled}
+      aria-hidden="true"
       onBlur={() => {
         hoverRef.current = false;
       }}
-      onClick={onLampClick}
       onFocus={() => {
         hoverRef.current = true;
       }}
@@ -669,7 +655,7 @@ function SayHiLampScene({ copy, state, disabled, onLampClick }: SayHiLampScenePr
       }}
     >
       <span>{copy.fallback}</span>
-    </button>
+    </div>
   );
 }
 

@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test('visitor can arm the lamp and send a mocked hello', async ({ page }) => {
+test('visitor can send a mocked hello with one click', async ({ page }) => {
   let accepted = false;
 
   await page.route('**/api/say-hi', async (route) => {
@@ -33,10 +33,10 @@ test('visitor can arm the lamp and send a mocked hello', async ({ page }) => {
   });
 
   await page.goto('/#say-hi');
-  await page.getByRole('button', { name: /turn on digital lamp|tänd digital lampa/i }).click();
-  await page.getByRole('button', { name: /send a hello|skicka ett hej/i }).click();
-  await expect(page.getByRole('status')).toContainText(/hello received|hej mottaget/i);
-  await expect(page.getByRole('status')).toContainText(/recently said hello|nyligen sagt hej/i, {
+  await page.getByRole('button', { name: /click me|klicka på mig/i }).click();
+  await expect(page.getByRole('dialog')).toContainText(/one of my lights|en av mina lampor/i);
+  await page.getByRole('button', { name: /close|stäng/i }).click();
+  await expect(page.getByRole('button', { name: /someone just said hi|någon har precis sagt hej/i })).toBeDisabled({
     timeout: 4000,
   });
 });

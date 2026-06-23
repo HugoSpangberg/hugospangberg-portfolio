@@ -21,9 +21,6 @@ function getLampVisualState(state: SayHiState): LampVisualState {
   switch (state.status) {
     case 'idle':
       return 'idle';
-    case 'armed':
-      return 'localOn';
-    case 'verifying':
     case 'sending':
       return 'sending';
     case 'success':
@@ -56,7 +53,6 @@ function SayHiSection({ locale, copy }: SayHiSectionProps) {
           copy={copy}
           state={lampVisualState}
           disabled={!enabled}
-          onLampClick={sayHi.arm}
         />
       </Suspense>
 
@@ -64,16 +60,14 @@ function SayHiSection({ locale, copy }: SayHiSectionProps) {
 
       <div className="container say-hi-content">
         <div className="say-hi-copy">
-        <SayHiPanel
-          copy={copy}
-          state={sayHi.state}
-          canSend={sayHi.canSend}
-          isBusy={sayHi.isBusy}
-          enabled={enabled}
-          onArm={sayHi.arm}
-          onSend={sayHi.send}
-          onReset={sayHi.reset}
-        />
+          <SayHiPanel
+            copy={copy}
+            state={sayHi.state}
+            canSend={sayHi.canSend}
+            isBusy={sayHi.isBusy}
+            enabled={enabled}
+            onSend={sayHi.send}
+          />
         </div>
 
         <div ref={sayHi.turnstileRef} className="say-hi-section__turnstile" aria-hidden="true" />

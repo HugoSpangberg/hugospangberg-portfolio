@@ -3,8 +3,6 @@ import type { Locale } from '../../../data/content';
 export type SayHiVisualStatus =
   | 'idle'
   | 'hover'
-  | 'armed'
-  | 'verifying'
   | 'sending'
   | 'success'
   | 'cooldown'
@@ -13,8 +11,6 @@ export type SayHiVisualStatus =
 
 export type SayHiState =
   | { status: 'idle' }
-  | { status: 'armed' }
-  | { status: 'verifying' }
   | { status: 'sending'; requestId: string }
   | { status: 'success'; requestId: string; cooldownUntil: string }
   | { status: 'cooldown'; retryAfterSeconds: number }
@@ -53,17 +49,27 @@ export type SayHiCopy = {
   kicker: string;
   title: string;
   description: string;
-  activateLabel: string;
-  sendLabel: string;
+  curiosity: string;
+  buttonLabel: string;
+  loadingLabel: string;
+  cooldownLabel: string;
+  cooldownHint: string;
   resetLabel: string;
   panelTitle: string;
-  systemTitle: string;
-  systemDescription: string;
-  privacy: string;
   comingSoon: string;
   canvasLabel: string;
   fallback: string;
-  statuses: Record<Exclude<SayHiState['status'], 'armed'>, string> & {
-    armed: string;
+  successDialog: {
+    title: string;
+    body: string;
+    privacy: string;
+    technicalPrivacy: string;
+    closeLabel: string;
   };
+  errorDialog: {
+    title: string;
+    body: string;
+    closeLabel: string;
+  };
+  statuses: Record<SayHiState['status'], string>;
 };

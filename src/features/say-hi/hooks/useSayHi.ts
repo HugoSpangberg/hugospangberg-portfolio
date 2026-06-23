@@ -15,8 +15,8 @@ const initialState: SayHiState = { status: 'idle' };
 export function useSayHi({ locale, endpoint }: UseSayHiOptions) {
   const [state, dispatch] = useReducer(transitionSayHiState, initialState);
   const turnstileRef = useRef<HTMLDivElement | null>(null);
-  const isBusy = state.status === 'verifying' || state.status === 'sending';
-  const canSend = state.status === 'armed';
+  const isBusy = state.status === 'sending';
+  const canSend = state.status === 'idle' || state.status === 'error' || state.status === 'unavailable';
 
   useEffect(() => {
     if (state.status !== 'success') {
@@ -43,15 +43,12 @@ export function useSayHi({ locale, endpoint }: UseSayHiOptions) {
     return () => window.clearTimeout(timer);
   }, [state]);
 
-  const arm = () => dispatch({ type: 'ARM' });
   const reset = () => dispatch({ type: 'RESET' });
 
   const send = async () => {
-    if (!turnstileRef.current || state.status !== 'armed') {
+    if (!turnstileRef.current || !canSend) {
       return;
     }
-
-    dispatch({ type: 'VERIFY' });
 
     try {
       const turnstileToken = await getTurnstileToken(turnstileRef.current);
@@ -88,7 +85,6 @@ export function useSayHi({ locale, endpoint }: UseSayHiOptions) {
     turnstileRef,
     canSend,
     isBusy,
-    arm,
     reset,
     send,
   };
