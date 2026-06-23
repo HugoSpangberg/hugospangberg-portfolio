@@ -1,14 +1,21 @@
 import { useEffect, useRef } from 'react';
 import {
   AmbientLight,
+  BufferGeometry,
   CanvasTexture,
   Color,
   CylinderGeometry,
   DirectionalLight,
   DoubleSide,
+  Float32BufferAttribute,
+  Fog,
   Group,
+  HemisphereLight,
   LinearSRGBColorSpace,
+  Line,
+  LineBasicMaterial,
   Mesh,
+  MeshBasicMaterial,
   MeshPhysicalMaterial,
   MeshStandardMaterial,
   PerspectiveCamera,
@@ -23,17 +30,21 @@ import {
   TorusGeometry,
   WebGLRenderer,
 } from 'three';
-import type { SayHiCopy, SayHiState, SayHiVisualStatus } from '../model/sayHiTypes';
+import type { SayHiCopy } from '../model/sayHiTypes';
 
 type SayHiLampSceneProps = {
   copy: SayHiCopy;
-  state: SayHiState;
-  enabled: boolean;
-  onArm: () => void;
+  state: LampVisualState;
+  disabled?: boolean;
+  onLampClick: () => void;
 };
 
+export type LampVisualState = 'idle' | 'localOn' | 'sending' | 'success' | 'cooldown' | 'error';
+
+type SceneVisualState = LampVisualState | 'hover' | 'disabled';
+
 const lightStates: Record<
-  SayHiVisualStatus,
+  SceneVisualState,
   {
     color: string;
     emissive: string;
@@ -41,6 +52,8 @@ const lightStates: Record<
     bulbGlow: number;
     pointLight: number;
     spotLight: number;
+    floorGlow: number;
+    signalPulse: number;
   }
 > = {
   idle: {
@@ -50,54 +63,58 @@ const lightStates: Record<
     bulbGlow: 0.24,
     pointLight: 0.82,
     spotLight: 0.36,
+    floorGlow: 0.02,
+    signalPulse: 0,
   },
   hover: {
     color: '#fff2c8',
     emissive: '#8a6737',
-    shadeGlow: 0.1,
-    bulbGlow: 0.14,
-    pointLight: 0.3,
-    spotLight: 0.15,
+    shadeGlow: 0.3,
+    bulbGlow: 0.32,
+    pointLight: 1.0,
+    spotLight: 0.46,
+    floorGlow: 0.04,
+    signalPulse: 0,
   },
-  armed: {
-    color: '#fff1c5',
-    emissive: '#ffd68a',
-    shadeGlow: 0.36,
-    bulbGlow: 0.42,
-    pointLight: 1.8,
-    spotLight: 0.95,
-  },
-  verifying: {
-    color: '#e9f7ff',
-    emissive: '#a7ddff',
-    shadeGlow: 0.28,
-    bulbGlow: 0.38,
-    pointLight: 1.55,
-    spotLight: 0.82,
+  localOn: {
+    color: '#ffd3c6',
+    emissive: '#ff5e49',
+    shadeGlow: 0.56,
+    bulbGlow: 0.62,
+    pointLight: 2.55,
+    spotLight: 1.25,
+    floorGlow: 0.28,
+    signalPulse: 0.58,
   },
   sending: {
-    color: '#e4fff6',
-    emissive: '#94f0d8',
-    shadeGlow: 0.3,
-    bulbGlow: 0.4,
-    pointLight: 1.65,
-    spotLight: 0.9,
+    color: '#ffd2c4',
+    emissive: '#ff6a51',
+    shadeGlow: 0.62,
+    bulbGlow: 0.7,
+    pointLight: 2.75,
+    spotLight: 1.35,
+    floorGlow: 0.34,
+    signalPulse: 0.95,
   },
   success: {
     color: '#ffd6ca',
     emissive: '#ff6b55',
-    shadeGlow: 0.5,
-    bulbGlow: 0.58,
-    pointLight: 2.35,
-    spotLight: 1.25,
+    shadeGlow: 0.72,
+    bulbGlow: 0.76,
+    pointLight: 3.05,
+    spotLight: 1.48,
+    floorGlow: 0.38,
+    signalPulse: 0.46,
   },
   cooldown: {
-    color: '#efe5ce',
-    emissive: '#c09b63',
-    shadeGlow: 0.16,
-    bulbGlow: 0.22,
-    pointLight: 0.75,
-    spotLight: 0.42,
+    color: '#f0d7c8',
+    emissive: '#c97962',
+    shadeGlow: 0.24,
+    bulbGlow: 0.28,
+    pointLight: 1.05,
+    spotLight: 0.52,
+    floorGlow: 0.12,
+    signalPulse: 0.12,
   },
   error: {
     color: '#d7cfc2',
@@ -106,14 +123,18 @@ const lightStates: Record<
     bulbGlow: 0.04,
     pointLight: 0.12,
     spotLight: 0.05,
+    floorGlow: 0,
+    signalPulse: 0,
   },
-  unavailable: {
+  disabled: {
     color: '#c9c8c0',
     emissive: '#303a3f',
     shadeGlow: 0.02,
     bulbGlow: 0.02,
     pointLight: 0.08,
     spotLight: 0.03,
+    floorGlow: 0,
+    signalPulse: 0,
   },
 };
 
@@ -291,22 +312,80 @@ function createScandinavianLamp(texture: Texture) {
   return { group, shadeMaterial, innerShadeMaterial, bulb, bulbMaterial, switchMaterial };
 }
 
-function visualStatus(state: SayHiState, enabled: boolean, hovered: boolean): SayHiVisualStatus {
-  if (!enabled) {
-    return 'unavailable';
+function createLine(points: number[], material: LineBasicMaterial) {
+  const geometry = new BufferGeometry();
+  geometry.setAttribute('position', new Float32BufferAttribute(points, 3));
+  return new Line(geometry, material);
+}
+
+function createTechWorldDetails() {
+  const group = new Group();
+  const lineMaterial = new LineBasicMaterial({
+    color: '#7ad7c5',
+    transparent: true,
+    opacity: 0.16,
+  });
+  const gridMaterial = new LineBasicMaterial({
+    color: '#6fcfb5',
+    transparent: true,
+    opacity: 0.1,
+  });
+  const nodeMaterial = new MeshBasicMaterial({
+    color: '#8ef1cf',
+    transparent: true,
+    opacity: 0.7,
+  });
+  const pulseMaterial = new MeshBasicMaterial({
+    color: '#ff6b55',
+    transparent: true,
+    opacity: 0,
+  });
+
+  group.add(createLine([-2.15, 0.68, -1.05, -1.18, 1.02, -0.85, 1.72, 0.56, -1.12], lineMaterial));
+  group.add(createLine([-1.72, -0.18, -1.0, -0.36, 0.22, -0.92, 1.62, -0.08, -1.03], lineMaterial));
+  group.add(createLine([-2.3, -1.22, -0.35, 2.3, -1.22, -0.35], gridMaterial));
+  group.add(createLine([-1.9, -1.22, 0.3, 1.9, -1.22, 0.3], gridMaterial));
+  group.add(createLine([-1.3, -1.22, -0.9, -1.3, -1.22, 1.0], gridMaterial));
+  group.add(createLine([1.3, -1.22, -0.9, 1.3, -1.22, 1.0], gridMaterial));
+
+  const nodeGeometry = new SphereGeometry(0.035, 14, 10);
+  const nodePositions = [
+    [-2.15, 0.68, -1.05],
+    [-1.18, 1.02, -0.85],
+    [1.72, 0.56, -1.12],
+    [-0.36, 0.22, -0.92],
+    [1.62, -0.08, -1.03],
+  ] as const;
+
+  nodePositions.forEach(([x, y, z]) => {
+    const node = new Mesh(nodeGeometry, nodeMaterial);
+    node.position.set(x, y, z);
+    group.add(node);
+  });
+
+  const pulse = new Mesh(new SphereGeometry(0.055, 18, 12), pulseMaterial);
+  pulse.position.set(-1.35, 0.38, -0.72);
+  group.add(pulse);
+
+  return { group, lineMaterial, gridMaterial, nodeMaterial, pulse, pulseMaterial };
+}
+
+function visualStatus(state: LampVisualState, disabled: boolean | undefined, hovered: boolean): SceneVisualState {
+  if (disabled) {
+    return 'disabled';
   }
 
-  if (hovered && state.status === 'idle') {
+  if (hovered && state === 'idle') {
     return 'hover';
   }
 
-  return state.status;
+  return state;
 }
 
-function SayHiLampScene({ copy, state, enabled, onArm }: SayHiLampSceneProps) {
+function SayHiLampScene({ copy, state, disabled, onLampClick }: SayHiLampSceneProps) {
   const hostRef = useRef<HTMLButtonElement | null>(null);
-  const statusRef = useRef<SayHiState>(state);
-  const enabledRef = useRef(enabled);
+  const statusRef = useRef<LampVisualState>(state);
+  const disabledRef = useRef(disabled);
   const hoverRef = useRef(false);
 
   useEffect(() => {
@@ -314,8 +393,8 @@ function SayHiLampScene({ copy, state, enabled, onArm }: SayHiLampSceneProps) {
   }, [state]);
 
   useEffect(() => {
-    enabledRef.current = enabled;
-  }, [enabled]);
+    disabledRef.current = disabled;
+  }, [disabled]);
 
   useEffect(() => {
     const host = hostRef.current;
@@ -326,6 +405,7 @@ function SayHiLampScene({ copy, state, enabled, onArm }: SayHiLampSceneProps) {
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const scene = new Scene();
     scene.background = new Color('#31484a');
+    scene.fog = new Fog('#31484a', 4.8, 9.2);
     const camera = new PerspectiveCamera(34, 1, 0.1, 100);
     camera.position.set(0.2, 0.28, 6.15);
 
@@ -339,6 +419,8 @@ function SayHiLampScene({ copy, state, enabled, onArm }: SayHiLampSceneProps) {
     const { group, shadeMaterial, innerShadeMaterial, bulb, bulbMaterial, switchMaterial } =
       createScandinavianLamp(texture);
     scene.add(group);
+    const techWorld = createTechWorldDetails();
+    scene.add(techWorld.group);
 
     const floor = new Mesh(
       new PlaneGeometry(8, 8),
@@ -362,17 +444,33 @@ function SayHiLampScene({ copy, state, enabled, onArm }: SayHiLampSceneProps) {
     contactShadow.position.set(0, -1.275, 0.12);
     scene.add(contactShadow);
 
-    const ambient = new AmbientLight('#eef1e7', 2.05);
-    const key = new DirectionalLight('#fff5df', 3.35);
+    const redFloorGlow = new Mesh(
+      new PlaneGeometry(2.8, 2.2),
+      new MeshBasicMaterial({
+        color: '#ff5f4b',
+        transparent: true,
+        opacity: 0,
+        depthWrite: false,
+      }),
+    );
+    redFloorGlow.rotation.x = -Math.PI / 2;
+    redFloorGlow.position.set(0, -1.268, 0.08);
+    scene.add(redFloorGlow);
+
+    const ambient = new AmbientLight('#dce8db', 0.42);
+    const hemisphere = new HemisphereLight('#d9fff1', '#17251f', 0.75);
+    const key = new DirectionalLight('#fff5df', 1.25);
     key.position.set(2.4, 3.4, 4.4);
-    const rim = new DirectionalLight('#9fd0d7', 1.2);
+    const rim = new DirectionalLight('#86d7df', 1.15);
     rim.position.set(-3.4, 1.6, -2.2);
     const glow = new PointLight(lightStates.idle.color, lightStates.idle.pointLight, 4.2, 1.8);
     glow.position.set(0, 0.66, 0.18);
     const downLight = new SpotLight(lightStates.idle.color, lightStates.idle.spotLight, 4, 0.72, 0.72, 1.4);
     downLight.position.set(0, 0.67, 0.08);
     downLight.target.position.set(0, -1.05, 0.18);
-    scene.add(ambient, key, rim, glow, downLight, downLight.target);
+    const redWash = new PointLight('#ff5f4b', 0, 3.6, 2);
+    redWash.position.set(0.05, -0.55, 0.45);
+    scene.add(ambient, hemisphere, key, rim, glow, downLight, downLight.target, redWash);
 
     const resize = () => {
       const rect = host.getBoundingClientRect();
@@ -391,12 +489,14 @@ function SayHiLampScene({ copy, state, enabled, onArm }: SayHiLampSceneProps) {
     let animationId = 0;
     let currentPointLight = lightStates.idle.pointLight;
     let currentSpotLight = lightStates.idle.spotLight;
+    let currentFloorGlow = lightStates.idle.floorGlow;
+    let currentSignalPulse = 0;
 
     const render = () => {
-      const currentStatus = visualStatus(statusRef.current, enabledRef.current, hoverRef.current);
+      const currentStatus = visualStatus(statusRef.current, disabledRef.current, hoverRef.current);
       const target = lightStates[currentStatus];
       const pulse =
-        !reducedMotion && (currentStatus === 'sending' || currentStatus === 'verifying')
+        !reducedMotion && currentStatus === 'sending'
           ? 1 + Math.sin(frame * 2.1) * 0.08
           : 1;
       const targetLight = new Color(target.color);
@@ -420,16 +520,30 @@ function SayHiLampScene({ copy, state, enabled, onArm }: SayHiLampSceneProps) {
       downLight.color.lerp(targetLight, 0.09);
       currentPointLight += (target.pointLight * pulse - currentPointLight) * 0.08;
       currentSpotLight += (target.spotLight * pulse - currentSpotLight) * 0.08;
+      currentFloorGlow += (target.floorGlow * pulse - currentFloorGlow) * 0.08;
+      currentSignalPulse += (target.signalPulse - currentSignalPulse) * 0.08;
       glow.intensity = currentPointLight;
       downLight.intensity = currentSpotLight;
+      redWash.intensity = currentFloorGlow * 2.5;
+      if (redFloorGlow.material instanceof MeshBasicMaterial) {
+        redFloorGlow.material.opacity = currentFloorGlow;
+      }
+      techWorld.lineMaterial.opacity = 0.13 + currentSignalPulse * 0.16;
+      techWorld.gridMaterial.opacity = 0.08 + currentSignalPulse * 0.05;
+      techWorld.nodeMaterial.opacity = 0.48 + currentSignalPulse * 0.35;
+      techWorld.pulseMaterial.opacity = currentSignalPulse;
       switchMaterial.emissive.set(
-        currentStatus === 'hover' || currentStatus === 'armed' ? '#5b4325' : '#000000',
+        currentStatus === 'hover' || currentStatus === 'localOn' ? '#5b4325' : '#000000',
       );
 
       if (!reducedMotion) {
         frame += 0.01;
-        group.rotation.y = -0.24 + Math.sin(frame * 0.85) * 0.025;
+        const hoverScale = hoverRef.current && !disabledRef.current ? 1.012 : 1;
+        group.scale.setScalar(group.scale.x + (hoverScale - group.scale.x) * 0.08);
+        group.rotation.y = -0.24 + Math.sin(frame * 0.85) * 0.018;
         bulb.scale.setScalar(1 + Math.sin(frame * 2.2) * (currentStatus === 'sending' ? 0.025 : 0.008));
+        const pulseProgress = (frame * (currentStatus === 'sending' ? 0.52 : 0.24)) % 1;
+        techWorld.pulse.position.set(-1.35 + pulseProgress * 2.55, 0.38 + Math.sin(pulseProgress * Math.PI) * 0.36, -0.72);
       }
 
       renderer.render(scene, camera);
@@ -445,6 +559,7 @@ function SayHiLampScene({ copy, state, enabled, onArm }: SayHiLampSceneProps) {
       delete host.dataset.sceneReady;
       renderer.dispose();
       disposeGroup(group);
+      disposeGroup(techWorld.group);
       floor.geometry.dispose();
       if (Array.isArray(floor.material)) {
         floor.material.forEach((material) => {
@@ -461,6 +576,14 @@ function SayHiLampScene({ copy, state, enabled, onArm }: SayHiLampSceneProps) {
       } else {
         contactShadow.material.dispose();
       }
+      redFloorGlow.geometry.dispose();
+      if (Array.isArray(redFloorGlow.material)) {
+        redFloorGlow.material.forEach((material) => {
+          material.dispose();
+        });
+      } else {
+        redFloorGlow.material.dispose();
+      }
       texture.dispose();
       contactShadowTexture.dispose();
       host.querySelector('canvas')?.remove();
@@ -473,11 +596,11 @@ function SayHiLampScene({ copy, state, enabled, onArm }: SayHiLampSceneProps) {
       className="say-hi-lamp"
       type="button"
       aria-label={copy.canvasLabel}
-      disabled={!enabled}
+      disabled={disabled}
       onBlur={() => {
         hoverRef.current = false;
       }}
-      onClick={onArm}
+      onClick={onLampClick}
       onFocus={() => {
         hoverRef.current = true;
       }}
