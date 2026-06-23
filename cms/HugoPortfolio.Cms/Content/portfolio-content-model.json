@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "documentTypes": [
+    {
+      "alias": "portfolioHome",
+      "name": "Portfolio Home",
+      "cultureVariant": true,
+      "description": "Single-page portfolio root used by the React frontend.",
+      "compositions": [
+        "seoComposition",
+        "heroComposition",
+        "aboutComposition",
+        "contactComposition",
+        "sayHiComposition",
+        "footerComposition"
+      ]
+    }
+  ],
+  "cultures": [
+    { "isoCode": "sv-SE", "name": "Swedish", "default": true },
+    { "isoCode": "en-US", "name": "English", "default": false }
+  ],
+  "elementTypes": [
+    "heroAction",
+    "systemThinkingCard",
+    "skillGroup",
+    "experienceItem",
+    "educationItem",
+    "labItem",
+    "builtWithGroup",
+    "contactLink"
+  ],
+  "invariantConstraints": {
+    "heroAction.variant": ["primary", "ghost"],
+    "experienceItem.sceneKey": ["dasa", "sodra", "visma", "filmstaden", "education"],
+    "educationItem.sceneKey": ["education"],
+    "anchorIdPattern": "^[a-z0-9-]+$"
+  },
+  "forbiddenCmsFields": [
+    "homeAssistantUrl",
+    "homeAssistantEntityId",
+    "homeAutomationWebhookId",
+    "turnstileSecret",
+    "accessClientSecret",
+    "rateLimit",
+    "cooldownSeconds"
+  ]
+}

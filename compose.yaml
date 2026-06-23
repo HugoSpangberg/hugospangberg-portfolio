@@ -1,0 +1,27 @@
+services:
+  cms:
+    build:
+      context: .
+      dockerfile: cms/Dockerfile
+    ports:
+      - "5174:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      Umbraco__CMS__Global__UseHttps: "false"
+      Umbraco__CMS__Runtime__Mode: Development
+      ConnectionStrings__umbracoDbDSN: "Data Source=/app/umbraco/Data/Umbraco.sqlite.db;Cache=Shared;Foreign Keys=True;Pooling=True"
+      ConnectionStrings__umbracoDbDSN_ProviderName: Microsoft.Data.Sqlite
+      Portfolio__FrontendOrigins__0: http://localhost:5173
+      Portfolio__FrontendOrigins__1: http://127.0.0.1:5173
+    volumes:
+      - cms-data:/app/umbraco/Data
+      - cms-media:/app/wwwroot/media
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8080/health/live"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  cms-data:
+  cms-media:

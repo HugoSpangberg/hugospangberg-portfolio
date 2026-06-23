@@ -1,0 +1,15 @@
+node_modules
+dist
+coverage
+test-results
+playwright-report
+.git
+.env
+.env.local
+cms/HugoPortfolio.Cms/umbraco/Data
+cms/HugoPortfolio.Cms/umbraco/Logs
+cms/HugoPortfolio.Cms/wwwroot/media
+cms/HugoPortfolio.Cms/bin
+cms/HugoPortfolio.Cms/obj
+cms/HugoPortfolio.Cms.Tests/bin
+cms/HugoPortfolio.Cms.Tests/obj

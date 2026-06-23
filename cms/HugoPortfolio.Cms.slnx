@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="HugoPortfolio.Cms.Tests/HugoPortfolio.Cms.Tests.csproj" />
+  <Project Path="HugoPortfolio.Cms/HugoPortfolio.Cms.csproj" />
+</Solution>

@@ -5,6 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:frontend": "vite",
+    "dev:cms": "dotnet run --project cms/HugoPortfolio.Cms/HugoPortfolio.Cms.csproj",
+    "cms:restore": "dotnet restore cms/HugoPortfolio.Cms.slnx",
+    "cms:build": "dotnet build cms/HugoPortfolio.Cms.slnx",
+    "cms:test": "dotnet test cms/HugoPortfolio.Cms.slnx",
+    "cms:clean": "dotnet clean cms/HugoPortfolio.Cms.slnx",
     "lint": "eslint .",
     "format": "prettier --check .",
     "format:write": "prettier --write .",
@@ -13,6 +19,7 @@
     "test:coverage": "vitest run --coverage",
     "e2e": "playwright test",
     "build": "tsc -b && vite build",
+    "build:all": "npm run build && dotnet publish cms/HugoPortfolio.Cms/HugoPortfolio.Cms.csproj --configuration Release",
     "preview": "vite preview"
   },
   "dependencies": {
