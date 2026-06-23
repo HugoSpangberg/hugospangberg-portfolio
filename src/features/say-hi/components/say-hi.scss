@@ -30,6 +30,25 @@
   cursor: pointer;
 }
 
+.say-hi-lamp::before {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: 2.3rem;
+  height: 2.3rem;
+  border: 2px solid rgba(255, 211, 106, 0.22);
+  border-top-color: rgba(255, 211, 106, 0.84);
+  border-radius: 50%;
+  content: '';
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  animation: say-hi-loader 900ms linear infinite;
+}
+
+.say-hi-lamp[data-scene-ready='true']::before {
+  opacity: 0;
+  animation: none;
+}
+
 .say-hi-lamp:focus-visible {
   outline: 3px solid #ffd36a;
   outline-offset: 4px;
@@ -47,10 +66,22 @@
 
 .say-hi-lamp > span {
   position: absolute;
-  inset: auto 1rem 1rem;
+  inset: 50% auto auto 50%;
   color: rgba(248, 244, 232, 0.72);
   font-size: 0.9rem;
   pointer-events: none;
+  transform: translate(-50%, 2rem);
+  transition: opacity 180ms ease;
+}
+
+.say-hi-lamp[data-scene-ready='true'] > span {
+  opacity: 0;
+}
+
+@keyframes say-hi-loader {
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
 }
 
 .say-hi-panel {
