@@ -62,6 +62,7 @@ export function useSayHi({ locale, endpoint }: UseSayHiOptions) {
           requestId: response.requestId,
           cooldownSeconds: response.cooldownSeconds,
           now: new Date(),
+          localOnly: response.localOnly,
         });
         return;
       }

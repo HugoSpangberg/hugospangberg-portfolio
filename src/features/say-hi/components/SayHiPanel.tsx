@@ -115,7 +115,11 @@ function SayHiPanel({
         {dialogCopy ? (
           <div className="say-hi-dialog__inner">
             <h3 id={dialogTitleId}>{dialogCopy.title}</h3>
-            <p>{dialogCopy.body}</p>
+            <p>
+              {dialogType === 'success' && state.status === 'success' && state.localOnly
+                ? copy.successDialog.localBody
+                : dialogCopy.body}
+            </p>
             {dialogType === 'success' ? (
               <>
                 <p>{copy.successDialog.privacy}</p>

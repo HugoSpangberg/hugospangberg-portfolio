@@ -2,7 +2,7 @@ import type { SayHiState } from './sayHiTypes';
 
 export type SayHiEvent =
   | { type: 'SEND'; requestId: string }
-  | { type: 'ACCEPT'; requestId: string; cooldownSeconds: number; now: Date }
+  | { type: 'ACCEPT'; requestId: string; cooldownSeconds: number; now: Date; localOnly?: boolean }
   | { type: 'COOLDOWN'; retryAfterSeconds: number }
   | { type: 'UNAVAILABLE' }
   | { type: 'FAIL'; message: string }
@@ -24,7 +24,7 @@ export function transitionSayHiState(state: SayHiState, event: SayHiEvent): SayH
         event.now.getTime() + event.cooldownSeconds * 1000,
       ).toISOString();
 
-      return { status: 'success', requestId: event.requestId, cooldownUntil };
+      return { status: 'success', requestId: event.requestId, cooldownUntil, localOnly: event.localOnly };
     }
     case 'COOLDOWN':
       return { status: 'cooldown', retryAfterSeconds: event.retryAfterSeconds };

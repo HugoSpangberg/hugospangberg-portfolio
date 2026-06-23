@@ -337,6 +337,8 @@ export const content = {
       successDialog: {
         title: 'Du har sagt hej till mig 👋',
         body: 'En av mina lampor hemma har precis ändrat färg till rött.',
+        localBody:
+          'Lokalt testläge: signalen simulerades eftersom Cloudflare Worker inte körs i den här Vite-sessionen.',
         privacy:
           'Jag vet inte vem du är. Jag får inte ditt namn, din e-postadress eller någon profilinformation. Jag ser bara att någon har skickat ett hej.',
         technicalPrivacy:
@@ -686,6 +688,8 @@ export const content = {
       successDialog: {
         title: 'You just said hi to me 👋',
         body: 'One of my lights at home just changed color to red.',
+        localBody:
+          'Local test mode: the signal was simulated because the Cloudflare Worker is not running in this Vite session.',
         privacy:
           'I do not know who you are. I do not receive your name, email address, or profile information. I only know that someone sent a hello.',
         technicalPrivacy:

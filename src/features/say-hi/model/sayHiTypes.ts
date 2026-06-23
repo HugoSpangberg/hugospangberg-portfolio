@@ -12,7 +12,7 @@ export type SayHiVisualStatus =
 export type SayHiState =
   | { status: 'idle' }
   | { status: 'sending'; requestId: string }
-  | { status: 'success'; requestId: string; cooldownUntil: string }
+  | { status: 'success'; requestId: string; cooldownUntil: string; localOnly?: boolean }
   | { status: 'cooldown'; retryAfterSeconds: number }
   | { status: 'unavailable' }
   | { status: 'error'; message: string };
@@ -27,6 +27,7 @@ export type SayHiAcceptedResponse = {
   status: 'accepted';
   requestId: string;
   cooldownSeconds: number;
+  localOnly?: boolean;
 };
 
 export type SayHiCooldownResponse = {
@@ -62,6 +63,7 @@ export type SayHiCopy = {
   successDialog: {
     title: string;
     body: string;
+    localBody: string;
     privacy: string;
     technicalPrivacy: string;
     closeLabel: string;

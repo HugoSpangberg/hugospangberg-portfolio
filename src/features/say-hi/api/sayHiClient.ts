@@ -18,6 +18,14 @@ export class SayHiClientError extends Error {
   }
 }
 
+function isLocalMissingApi(endpoint: string | undefined, response: Response) {
+  const isDefaultEndpoint = !endpoint || endpoint === defaultEndpoint;
+  const isLocalHost =
+    window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+
+  return isDefaultEndpoint && isLocalHost && response.status === 404;
+}
+
 export async function sendSayHi(
   input: SayHiApiRequest,
   options: SayHiClientOptions = {},
@@ -27,6 +35,15 @@ export async function sendSayHi(
     headers: { 'content-type': 'application/json' },
     body: JSON.stringify(input),
   });
+
+  if (isLocalMissingApi(options.endpoint, response)) {
+    return {
+      status: 'accepted',
+      requestId: input.requestId,
+      cooldownSeconds: 12,
+      localOnly: true,
+    };
+  }
 
   const body = (await response.json().catch(() => null)) as SayHiApiResponse | null;
 

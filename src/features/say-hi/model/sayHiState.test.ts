@@ -19,6 +19,7 @@ describe('transitionSayHiState', () => {
       status: 'success',
       requestId: 'request-1',
       cooldownUntil: '2026-06-23T10:02:00.000Z',
+      localOnly: undefined,
     });
   });
 
