@@ -12,6 +12,7 @@ import Skills from './components/Skills';
 import SystemThinking from './components/SystemThinking';
 import WorldIntroSection from './components/world/WorldIntroSection';
 import { content, type Locale } from './data/content';
+import { SayHiSection } from './features/say-hi';
 
 const defaultLocale: Locale = 'sv';
 const storageKey = 'hugo-portfolio-locale';
@@ -86,6 +87,7 @@ function App() {
         <Experience content={page.experience} />
         <Education content={page.education} />
         <Labs content={page.labs} />
+        <SayHiSection locale={locale} copy={page.sayHi} />
         <BuiltWith content={page.builtWith} />
         <Contact content={page.contact} />
       </main>

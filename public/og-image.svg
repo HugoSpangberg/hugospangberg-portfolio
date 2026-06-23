@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#101820"/>
+  <circle cx="930" cy="170" r="210" fill="#ffd36a" opacity="0.16"/>
+  <circle cx="250" cy="480" r="180" fill="#76d7c4" opacity="0.12"/>
+  <text x="88" y="230" fill="#fff9e8" font-family="Arial, sans-serif" font-size="76" font-weight="700">Hugo Spångberg</text>
+  <text x="88" y="320" fill="#cbd6dc" font-family="Arial, sans-serif" font-size="38">Webbutvecklare &amp; systemutvecklare</text>
+  <text x="88" y="395" fill="#ffd36a" font-family="Arial, sans-serif" font-size="34">.NET / React / Automation / IoT</text>
+</svg>

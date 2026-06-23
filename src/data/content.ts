@@ -69,6 +69,7 @@ export const content = {
       { label: 'Kompetenser', href: '#skills' },
       { label: 'Erfarenhet', href: '#erfarenhet' },
       { label: 'Projekt', href: '#projekt' },
+      { label: 'Säg hej', href: '#say-hi' },
       { label: 'Kontakt', href: '#contact' },
     ] satisfies NavItem[],
     hero: {
@@ -318,6 +319,35 @@ export const content = {
         },
       ] satisfies Lab[],
     },
+    sayHi: {
+      kicker: 'IoT-demo',
+      title: 'Säg hej till mig',
+      description:
+        'Tänd den digitala lampan och skicka en signal från den här sidan till mitt smarta hem. Om systemet är tillgängligt lyser en av mina lampor rött en kort stund.',
+      activateLabel: 'Tänd digital lampa',
+      sendLabel: 'Skicka ett hej',
+      resetLabel: 'Försök igen',
+      panelTitle: 'Kontroller för Say hi',
+      systemTitle: 'Så fungerar signalen',
+      systemDescription:
+        'Webbläsaren skickar aldrig något direkt till Home Assistant. Signalen går via en Cloudflare Worker som kontrollerar origin, Turnstile, rate limit och cooldown innan en skyddad gateway anropas.',
+      privacy:
+        'Förfrågan innehåller språkval, ett slumpat request-id och Turnstile-token. Inga Home Assistant-adresser eller hemligheter skickas till klienten.',
+      comingSoon:
+        'Funktionen är avstängd i den här miljön och kan aktiveras med VITE_SAY_HI_ENABLED.',
+      canvasLabel: 'Interaktiv 3D-lampa. Aktivera för att förbereda ett hej.',
+      fallback: '3D-lampan laddas.',
+      statuses: {
+        idle: 'Lampan väntar på ett hej.',
+        armed: 'Lampan är tänd lokalt. Skicka ett hej när du vill.',
+        verifying: 'Kontrollerar signalen...',
+        sending: 'Skickar signal till Hugos smarta hem...',
+        success: 'Hej mottaget - lampan lyser rött hemma hos Hugo.',
+        cooldown: 'Någon har nyligen sagt hej. Försök igen om en liten stund.',
+        unavailable: 'Systemet är tillfälligt offline, men ditt hej uppskattas ändå.',
+        error: 'Signalen kunde inte skickas just nu.',
+      },
+    },
     builtWith: {
       kicker: 'Byggd med',
       title: 'Byggd som en liten systemdemo',
@@ -379,6 +409,7 @@ export const content = {
       { label: 'Skills', href: '#skills' },
       { label: 'Experience', href: '#erfarenhet' },
       { label: 'Projects', href: '#projekt' },
+      { label: 'Say hi', href: '#say-hi' },
       { label: 'Contact', href: '#contact' },
     ] satisfies NavItem[],
     hero: {
@@ -627,6 +658,35 @@ export const content = {
           technologies: ['React', 'TypeScript', 'API integration', 'CSS/SCSS'],
         },
       ] satisfies Lab[],
+    },
+    sayHi: {
+      kicker: 'IoT demo',
+      title: 'Say hi to me',
+      description:
+        'Turn on the digital lamp and send a signal from this site to my smart home. If the system is available, one of my lights will glow red for a short moment.',
+      activateLabel: 'Turn on digital lamp',
+      sendLabel: 'Send a hello',
+      resetLabel: 'Try again',
+      panelTitle: 'Say hi controls',
+      systemTitle: 'How the signal works',
+      systemDescription:
+        'The browser never talks directly to Home Assistant. The signal goes through a Cloudflare Worker that checks origin, Turnstile, rate limiting and cooldown before calling a protected gateway.',
+      privacy:
+        'The request contains locale, a random request id and a Turnstile token. No Home Assistant URLs or secrets are sent to the client.',
+      comingSoon:
+        'This feature is disabled in this environment and can be enabled with VITE_SAY_HI_ENABLED.',
+      canvasLabel: 'Interactive 3D lamp. Activate it to prepare a hello.',
+      fallback: 'The 3D lamp is loading.',
+      statuses: {
+        idle: 'The lamp is waiting for a hello.',
+        armed: 'The lamp is on locally. Send a hello when you are ready.',
+        verifying: 'Checking the signal...',
+        sending: "Sending a signal to Hugo's smart home...",
+        success: "Hello received - the lamp is glowing red at Hugo's home.",
+        cooldown: 'Someone recently said hello. Try again in a little while.',
+        unavailable: 'The system is temporarily offline, but your hello is still appreciated.',
+        error: 'The signal could not be sent right now.',
+      },
     },
     builtWith: {
       kicker: 'Built with',
