@@ -1,1 +1,9 @@
 node_modules/
+dist/
+coverage/
+test-results/
+playwright-report/
+.wrangler/
+.dev.vars
+*.tsbuildinfo
+.DS_Store

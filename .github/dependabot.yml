@@ -1,0 +1,16 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      frontend-tooling:
+        patterns:
+          - eslint
+          - '@eslint/*'
+          - typescript-eslint
+          - prettier
+          - vitest
+          - '@testing-library/*'
+          - '@playwright/*'
