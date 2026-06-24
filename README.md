@@ -1,144 +1,105 @@
-# Hugo Spångberg Portfolio
+# Hugo Spangberg Portfolio
 
-Professional portfolio for Hugo Spångberg, built with React, TypeScript, Vite, Three.js and a headless Umbraco CMS.
+Professional fullstack portfolio for Hugo Spangberg, focused on .NET, React, Umbraco, Three.js and pragmatic system design.
+
+## Architecture
 
 ```mermaid
 flowchart LR
-  A[Umbraco Backoffice] --> B[Published bilingual content]
-  B --> C[Umbraco Content Delivery API]
-  C --> D[React CMS adapter]
-  E[Bundled fallback content] --> D
-  F[Last-known-good cache] --> D
-  D --> G[React portfolio]
-  G --> H[Three.js career world]
-  G --> I[Say Hi IoT experience]
+  Browser --> HSClient[HSClient React portfolio]
+  HSClient -->|JSON API| HSApi[HSApi .NET backend]
+  HSApi -->|Delivery API| HSCms[HSCms Umbraco CMS]
+  HSApi -->|secure command| HomeAssistant[Home Assistant]
+  HSApi --> ApiDb[(HSPortfolioApi)]
+  HSCms --> CmsDb[(HSPortfolioCms)]
 ```
 
-## Stack
+- `HSClient`: public React/Vite portfolio, Three.js career world, Say Hi UI and static fallback content.
+- `HSApi`: ASP.NET Core API, portfolio aggregation, Say Hi orchestration, EF Core operational data and health checks.
+- `HSCms`: Umbraco 17 headless CMS for editorial content and media.
 
-- React 19, Vite 7, TypeScript strict
-- Three.js for interactive 3D scenes
-- Umbraco CMS 17.4.2 as a headless CMS
-- .NET 10 for the CMS
-- uSync 17.3.5 for CMS schema synchronization
-- Vitest, React Testing Library and Playwright
-- Cloudflare Workers/Pages for the Say hi API
-- Zod for request validation
+HSClient does not call HSCms directly. HSApi is the application boundary.
 
-## Frontend and CMS separation
+## Local Setup
 
-The public website remains the React/Vite frontend. Umbraco runs separately as a
-headless CMS and exposes only published portfolio content through the Content
-Delivery API. React validates and maps that JSON before rendering it.
-
-If the CMS is unavailable, the site renders bundled fallback content. If a
-previous CMS response was valid, the frontend can use it as a last-known-good
-cache per locale.
-
-## Say hi flow
-
-```mermaid
-sequenceDiagram
-  participant Browser
-  participant Worker
-  participant Turnstile
-  participant Cooldown as Durable Object
-  participant HA as Home Assistant
-
-  Browser->>Browser: Visitor arms digital lamp
-  Browser->>Turnstile: Get token
-  Browser->>Worker: POST /api/say-hi
-  Worker->>Worker: Validate origin and JSON
-  Worker->>Turnstile: Verify token server-side
-  Worker->>Cooldown: Reserve global cooldown
-  Worker->>HA: Send protected webhook
-  HA-->>Worker: Accepted
-  Worker-->>Browser: accepted + cooldown
+```bash
+npm install
+dotnet restore HugoSpangberg.Portfolio.sln
 ```
 
-## Development
+Run services:
 
-```sh
-npm ci
-npm run dev
-```
-
-Run frontend and CMS separately:
-
-```sh
-npm run dev:frontend
+```bash
+npm run dev:client
+npm run dev:api
 npm run dev:cms
 ```
 
-CMS commands:
+Common checks:
 
-```sh
-npm run cms:restore
-npm run cms:build
-npm run cms:test
-```
-
-Quality gates:
-
-```sh
+```bash
 npm run lint
 npm run typecheck
-npm run test
-npm run test:coverage
-npm run build
-npm run e2e
+npm run test:client
+npm run build:client
+dotnet build HugoSpangberg.Portfolio.sln --configuration Release
+dotnet test HugoSpangberg.Portfolio.sln --configuration Release
 ```
 
 ## Environment
 
-Use `.dev.vars.example` as a template. Real secrets must be configured as Cloudflare Worker secrets, never committed.
+Copy `.env.example` to `.env` for local values. Do not commit real secrets.
 
-Use `.env.example` for public frontend CMS values and local Umbraco setup placeholders.
+Public client values:
 
-Key variables:
-
-- `VITE_SAY_HI_ENABLED`
-- `VITE_CMS_ENABLED`
-- `VITE_UMBRACO_BASE_URL`
-- `VITE_UMBRACO_CONTENT_ROUTE`
-- `VITE_CMS_REQUEST_TIMEOUT_MS`
+- `VITE_API_BASE_URL`
 - `VITE_TURNSTILE_SITE_KEY`
-- `ALLOWED_ORIGIN`
-- `TURNSTILE_SECRET_KEY`
-- `HOME_AUTOMATION_WEBHOOK_URL`
-- `HOME_AUTOMATION_ACCESS_CLIENT_ID`
-- `HOME_AUTOMATION_ACCESS_CLIENT_SECRET`
-- `SAY_HI_ENABLED`
-- `SAY_HI_COOLDOWN_SECONDS`
-- `SAY_HI_USE_MOCK_GATEWAY`
+- `VITE_SAY_HI_ENABLED`
 
-CMS local setup placeholders:
+Server-side values:
 
-- `UMBRACO_ADMIN_EMAIL`
-- `UMBRACO_ADMIN_PASSWORD`
-- `UMBRACO_ADMIN_NAME`
-- `UMBRACO_DATABASE_DSN`
-- `UMBRACO_DATABASE_PROVIDER`
+- `ConnectionStrings__HSPortfolioApi`
+- `Cms__BaseUrl`
+- `Turnstile__SecretKey`
+- `HomeAssistant__WebhookUrl`
+- `HomeAssistant__AccessClientId`
+- `HomeAssistant__AccessClientSecret`
 
-## Architecture and security
+## CMS
 
-See `docs/architecture.md`, `docs/security.md`, `docs/cms-architecture.md`,
-`docs/cms-security.md` and the ADRs in `docs/adr`.
+HSCms is Umbraco 17 with Delivery API enabled. Content is edited in Umbraco, fetched by HSApi, validated, cached as snapshots and returned to HSClient as a stable contract.
 
-CMS-specific documentation:
+See `Docs/CMS/publishing-flow.md`.
 
-- `cms/README.md`
-- `docs/cms-content-model.md`
-- `docs/cms-development.md`
-- `docs/cms-deployment.md`
-- `docs/cms-editor-guide.md`
+## Say Hi
 
-## Home Assistant
+Say Hi is handled by HSApi:
 
-See `home-assistant/README.md` and `home-assistant/say-hi-automation.example.yaml`.
+1. HSClient sends one greeting request.
+2. HSApi validates request input.
+3. HSApi verifies Turnstile when enabled.
+4. HSApi enforces idempotency and cooldown.
+5. HSApi calls Home Assistant only from the backend.
+6. HSClient shows success only after HSApi confirms success.
 
-## Known limitations
+Automated tests do not call real Home Assistant.
 
-- Canonical URL, sitemap and Open Graph metadata currently use `https://www.example.com` placeholders.
-- Preview deployments use mock home automation by design.
-- A real production light requires Cloudflare secrets and Home Assistant setup.
+## Career World Assets
+
+The runtime still has procedural Three.js landmark fallback. Blender scripts under `Assets/Blender/Scripts` define the planned GLB pipeline.
+
+```bash
+bash Scripts/export-models.sh
+npm run models:validate
+```
+
+Blender output is not committed until generated and verified. Reference photos with unclear rights live under ignored private assets.
+
+## Documentation
+
+- `Docs/Architecture/system-overview.md`
+- `Docs/Architecture/request-flow.md`
+- `Docs/Architecture/data-ownership.md`
+- `Docs/security.md`
+- `Docs/testing-strategy.md`
+- `Docs/ADR/`
