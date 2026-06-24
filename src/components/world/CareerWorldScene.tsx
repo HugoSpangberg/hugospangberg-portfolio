@@ -1,18 +1,25 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import type * as Three from 'three';
 import { createAurora } from '../hero/Aurora';
-import { createCareerWorld, type CareerWorldHotspot } from '../hero/CareerWorld';
+import {
+  createCareerWorld,
+  type CareerWorldHotspot,
+  type CareerWorldLabels,
+} from '../hero/CareerWorld';
 import { updateDataPulses } from '../hero/DataPulse';
 import { createSpaceBackdrop } from '../hero/SpaceBackdrop';
 import { careerMapItems } from '../hero/careerMap';
 import WorldFallback from './WorldFallback';
+import type { Locale } from '../../data/content';
 import type { CareerWorldLocation } from './careerLocations';
 
 type CareerWorldSceneProps = {
   label: string;
   fallbackLabel: string;
+  locale: Locale;
   locations: CareerWorldLocation[];
   onSelectLocation: (location: CareerWorldLocation) => void;
+  isExpanded: boolean;
 };
 
 type PointerState = {
@@ -22,7 +29,17 @@ type PointerState = {
   y: number;
 };
 
-function getCameraConfig(width: number) {
+function getCameraConfig(width: number, isExpanded = false) {
+  if (isExpanded && width < 720) {
+    return {
+      fov: 56,
+      position: [0.1, 3.25, 8.4] as const,
+      target: [-0.08, -0.08, -0.05] as const,
+      worldScale: 0.82,
+      pixelRatio: 1.2,
+    };
+  }
+
   if (width < 720) {
     return {
       fov: 62,
@@ -97,8 +114,10 @@ function disposeScene(THREE: typeof Three, scene: Three.Scene, renderer: Three.W
 function CareerWorldScene({
   label,
   fallbackLabel,
+  locale,
   locations,
   onSelectLocation,
+  isExpanded,
 }: CareerWorldSceneProps) {
   const mountRef = useRef<HTMLDivElement>(null);
   const [sceneStatus, setSceneStatus] = useState<
@@ -108,11 +127,29 @@ function CareerWorldScene({
   const [hoverLabel, setHoverLabel] = useState<PointerState | null>(null);
   const locationsRef = useRef(locations);
   const onSelectLocationRef = useRef(onSelectLocation);
+  const isExpandedRef = useRef(isExpanded);
+  const worldLabels = useMemo<CareerWorldLabels>(
+    () => ({
+      hub: locale === 'sv' ? 'Karriärhubb' : 'Career Hub',
+      locations: Object.fromEntries(
+        locations.map((location) => [location.id, location.sceneLabel]),
+      ),
+    }),
+    [locale, locations],
+  );
+  const worldLabelsRef = useRef(worldLabels);
+  const isSwedish = locale === 'sv';
 
   useEffect(() => {
     locationsRef.current = locations;
     onSelectLocationRef.current = onSelectLocation;
-  }, [locations, onSelectLocation]);
+    worldLabelsRef.current = worldLabels;
+  }, [locations, onSelectLocation, worldLabels]);
+
+  useEffect(() => {
+    isExpandedRef.current = isExpanded;
+    window.dispatchEvent(new Event('resize'));
+  }, [isExpanded]);
 
   useEffect(() => {
     const mount = mountRef.current;
@@ -146,7 +183,7 @@ function CareerWorldScene({
         }
 
         const compact = window.innerWidth < 720;
-        const initialCamera = getCameraConfig(window.innerWidth);
+        const initialCamera = getCameraConfig(window.innerWidth, isExpandedRef.current);
         let frameId = 0;
         let isSceneVisible = true;
         let isDocumentVisible = document.visibilityState === 'visible';
@@ -193,20 +230,22 @@ function CareerWorldScene({
         renderer.toneMapping = THREE.ACESFilmicToneMapping;
         renderer.toneMappingExposure = compact ? 1.24 : 1.12;
         renderer.outputColorSpace = THREE.SRGBColorSpace;
-        renderer.domElement.style.touchAction = 'pan-y';
+        renderer.domElement.style.touchAction = isExpandedRef.current ? 'none' : 'pan-y';
         mount.appendChild(renderer.domElement);
 
         const controls = new controlsModule.OrbitControls(camera, renderer.domElement);
         controls.enableDamping = true;
         controls.enablePan = false;
-        controls.enableZoom = false;
+        controls.enableZoom = isExpandedRef.current && compact;
+        controls.enableRotate = true;
         controls.rotateSpeed = 0.45;
-        controls.minDistance = 5.15;
-        controls.maxDistance = 7.3;
+        controls.zoomSpeed = 0.55;
+        controls.minDistance = compact ? 5.4 : 5.15;
+        controls.maxDistance = compact ? 8.8 : 7.3;
         controls.minPolarAngle = Math.PI * 0.23;
         controls.maxPolarAngle = Math.PI * (compact ? 0.5 : 0.45);
-        controls.minAzimuthAngle = -Math.PI * 0.24;
-        controls.maxAzimuthAngle = Math.PI * 0.24;
+        controls.minAzimuthAngle = -Math.PI * (isExpandedRef.current && compact ? 0.38 : 0.24);
+        controls.maxAzimuthAngle = Math.PI * (isExpandedRef.current && compact ? 0.38 : 0.24);
         controls.target.set(
           initialCamera.target[0],
           initialCamera.target[1],
@@ -214,9 +253,9 @@ function CareerWorldScene({
         );
         renderer.domElement.style.touchAction = 'pan-y';
 
-        const world = createCareerWorld(THREE, compact);
+        const world = createCareerWorld(THREE, compact, worldLabelsRef.current);
         const backdrop = createSpaceBackdrop(THREE, compact);
-        const aurora = createAurora(THREE);
+        const aurora = compact ? new THREE.Group() : createAurora(THREE);
         world.group.scale.setScalar(initialCamera.worldScale);
         world.group.rotation.x = -0.05;
         scene.add(backdrop, aurora, world.group);
@@ -225,10 +264,12 @@ function CareerWorldScene({
 
         const resize = () => {
           const { width, height } = mount.getBoundingClientRect();
-          const cameraConfig = getCameraConfig(width);
+          const expanded = isExpandedRef.current;
+          const cameraConfig = getCameraConfig(width, expanded);
           renderer.setSize(width, height, false);
           renderer.setPixelRatio(Math.min(window.devicePixelRatio, cameraConfig.pixelRatio));
           renderer.toneMappingExposure = width < 720 ? 1.24 : 1.12;
+          renderer.domElement.style.touchAction = expanded && width < 720 ? 'none' : 'pan-y';
           camera.aspect = width / Math.max(height, 1);
           camera.fov = cameraConfig.fov;
           camera.position.set(
@@ -242,7 +283,12 @@ function CareerWorldScene({
             cameraConfig.target[1],
             cameraConfig.target[2],
           );
+          controls.enableZoom = expanded && width < 720;
+          controls.minDistance = width < 720 ? 5.4 : 5.15;
+          controls.maxDistance = width < 720 ? 8.8 : 7.3;
           controls.maxPolarAngle = Math.PI * (width < 720 ? 0.5 : 0.45);
+          controls.minAzimuthAngle = -Math.PI * (expanded && width < 720 ? 0.38 : 0.24);
+          controls.maxAzimuthAngle = Math.PI * (expanded && width < 720 ? 0.38 : 0.24);
           world.group.scale.setScalar(cameraConfig.worldScale);
         };
 
@@ -435,12 +481,12 @@ function CareerWorldScene({
   }
 
   return (
-    <div className="world-scene" aria-label="Interactive career world">
+    <div className={isExpanded ? 'world-scene is-expanded' : 'world-scene'} aria-label={label}>
       <div className="world-scene__canvas" ref={mountRef} aria-label={label} role="img" />
       <div className="world-scene__shade" aria-hidden="true" />
       {sceneStatus !== 'ready' && (
         <div className="world-loading" aria-live="polite">
-          Loading career world
+          {isSwedish ? 'Laddar karriärvärld' : 'Loading career world'}
         </div>
       )}
       {hoverLabel && (
@@ -454,7 +500,7 @@ function CareerWorldScene({
           <span>{hoverLabel.role}</span>
         </div>
       )}
-      <nav className="world-nav" aria-label="Career world navigation">
+      <nav className="world-nav" aria-label={isSwedish ? 'Karriärvärldsnavigering' : 'Career world navigation'}>
         {careerMapItems.map((item) => (
           <button
             key={item.id}

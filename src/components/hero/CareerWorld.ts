@@ -21,6 +21,11 @@ export type CareerWorldHandle = {
   animatedNodes: Three.Mesh[];
 };
 
+export type CareerWorldLabels = {
+  hub: string;
+  locations: Record<string, string>;
+};
+
 type Materials = {
   terrain: Three.MeshStandardMaterial;
   terrainEdge: Three.MeshStandardMaterial;
@@ -48,6 +53,22 @@ type Materials = {
   marker: Three.MeshBasicMaterial;
   forestBack: Three.MeshBasicMaterial;
   forestMid: Three.MeshBasicMaterial;
+  brick: Three.MeshStandardMaterial;
+  brickDark: Three.MeshStandardMaterial;
+  stoneLight: Three.MeshStandardMaterial;
+  stoneDark: Three.MeshStandardMaterial;
+  whiteFacade: Three.MeshStandardMaterial;
+  orangeFacade: Three.MeshStandardMaterial;
+  redMarquee: Three.MeshStandardMaterial;
+  darkGlass: Three.MeshStandardMaterial;
+  coolGlass: Three.MeshStandardMaterial;
+  warmWindow: Three.MeshStandardMaterial;
+  forestMachineGreen: Three.MeshStandardMaterial;
+  forestMachineDark: Three.MeshStandardMaterial;
+  hydraulicMetal: Three.MeshStandardMaterial;
+  hydraulicYellow: Three.MeshStandardMaterial;
+  sodraGreen: Three.MeshStandardMaterial;
+  educationAccent: Three.MeshStandardMaterial;
 };
 
 function standard(
@@ -126,6 +147,48 @@ function makeMaterials(THREE: typeof Three): Materials {
     }),
     forestBack: new THREE.MeshBasicMaterial({ color: 0x1b4a40, transparent: true, opacity: 0.26, depthWrite: false }),
     forestMid: new THREE.MeshBasicMaterial({ color: 0x2c6759, transparent: true, opacity: 0.38, depthWrite: false }),
+    brick: standard(THREE, 0x7b3f34, { roughness: 0.88 }),
+    brickDark: standard(THREE, 0x65372f, { roughness: 0.9 }),
+    stoneLight: standard(THREE, 0xd7d2c8, { roughness: 0.86 }),
+    stoneDark: standard(THREE, 0x8b8d88, { roughness: 0.88 }),
+    whiteFacade: standard(THREE, 0xd8ddd9, { roughness: 0.78 }),
+    orangeFacade: standard(THREE, 0xc66d3e, { roughness: 0.82 }),
+    redMarquee: standard(THREE, 0xb8322a, {
+      roughness: 0.58,
+      emissive: 0x4c0c0a,
+      emissiveIntensity: 0.2,
+    }),
+    darkGlass: standard(THREE, 0x102c2b, {
+      roughness: 0.28,
+      metalness: 0.16,
+      emissive: 0x092a2b,
+      emissiveIntensity: 0.16,
+    }),
+    coolGlass: standard(THREE, 0x244a4c, {
+      roughness: 0.32,
+      metalness: 0.12,
+      emissive: 0x123d46,
+      emissiveIntensity: 0.2,
+    }),
+    warmWindow: standard(THREE, 0xe6c885, {
+      roughness: 0.36,
+      emissive: 0x8b6427,
+      emissiveIntensity: 0.5,
+    }),
+    forestMachineGreen: standard(THREE, 0x2e6a57, { roughness: 0.62, metalness: 0.08 }),
+    forestMachineDark: standard(THREE, 0x121a18, { roughness: 0.54, metalness: 0.24 }),
+    hydraulicMetal: standard(THREE, 0x2f3634, { roughness: 0.44, metalness: 0.48 }),
+    hydraulicYellow: standard(THREE, 0xd5aa3d, { roughness: 0.52, metalness: 0.16 }),
+    sodraGreen: standard(THREE, 0x4ea66f, {
+      roughness: 0.5,
+      emissive: 0x1c5c38,
+      emissiveIntensity: 0.28,
+    }),
+    educationAccent: standard(THREE, 0xbda5ff, {
+      roughness: 0.5,
+      emissive: 0x46307f,
+      emissiveIntensity: 0.2,
+    }),
   };
 }
 
@@ -173,23 +236,6 @@ function createIsland(THREE: typeof Three, materials: Materials) {
   terrain.position.y = -0.86;
   terrain.position.z = 0.08;
   group.add(terrain);
-
-  const terraces = [
-    [-1.2, -0.58, -1.28, 0.92, 0.52, -0.2],
-    [1.44, -0.57, -0.92, 0.82, 0.5, 0.18],
-    [-2.08, -0.57, 0.1, 0.78, 0.48, 0.1],
-    [0.1, -0.56, 1.42, 0.9, 0.48, -0.04],
-    [1.74, -0.57, 0.86, 0.72, 0.42, 0.22],
-    [0.02, -0.56, -0.18, 0.62, 0.42, 0],
-  ];
-
-  terraces.forEach(([x, y, z, width, depth, rotation]) => {
-    const terrace = new THREE.Mesh(new THREE.CylinderGeometry(width, width * 1.04, 0.055, 14), materials.soil);
-    terrace.position.set(x, y, z);
-    terrace.scale.z = depth;
-    terrace.rotation.y = rotation;
-    group.add(terrace);
-  });
 
   const mist = new THREE.Mesh(
     new THREE.RingGeometry(2.95, 3.65, 80),
@@ -327,21 +373,116 @@ function createGroundDetails(THREE: typeof Three, materials: Materials) {
   return group;
 }
 
-function createLabelSign(
+function addWindowGrid(
   THREE: typeof Three,
-  label: 'Visma' | 'Cinema' | 'Dasa' | 'Learning',
-  material: Three.Material,
+  target: Three.Group,
+  {
+    columns,
+    rows,
+    startX,
+    startY,
+    z,
+    spacingX,
+    spacingY,
+    width,
+    height,
+    material,
+    frameMaterial,
+  }: {
+    columns: number;
+    rows: number;
+    startX: number;
+    startY: number;
+    z: number;
+    spacingX: number;
+    spacingY: number;
+    width: number;
+    height: number;
+    material: Three.Material;
+    frameMaterial?: Three.Material;
+  },
 ) {
-  const group = new THREE.Group();
-  const widths = { Visma: 0.42, Cinema: 0.56, Dasa: 0.42, Learning: 0.62 };
-  const plate = new THREE.Mesh(new THREE.BoxGeometry(widths[label], 0.09, 0.025), material);
-  plate.position.y = 0.03;
-  const leftPost = new THREE.Mesh(new THREE.CylinderGeometry(0.01, 0.012, 0.18, 6), material);
-  const rightPost = leftPost.clone();
-  leftPost.position.set(-widths[label] * 0.38, -0.1, 0);
-  rightPost.position.set(widths[label] * 0.38, -0.1, 0);
-  group.add(plate, leftPost, rightPost);
-  return group;
+  const paneGeometry = new THREE.BoxGeometry(width, height, 0.014);
+  const frameGeometry = frameMaterial
+    ? new THREE.BoxGeometry(width + 0.03, height + 0.03, 0.01)
+    : undefined;
+
+  for (let row = 0; row < rows; row += 1) {
+    for (let column = 0; column < columns; column += 1) {
+      const x = startX + column * spacingX;
+      const y = startY + row * spacingY;
+
+      if (frameMaterial && frameGeometry) {
+        const frame = new THREE.Mesh(frameGeometry, frameMaterial);
+        frame.position.set(x, y, z - 0.006);
+        target.add(frame);
+      }
+
+      const pane = new THREE.Mesh(paneGeometry, material);
+      pane.position.set(x, y, z);
+      target.add(pane);
+    }
+  }
+}
+
+function createBuildingSign(
+  THREE: typeof Three,
+  text: string,
+  color: string,
+  width: number,
+) {
+  const canvas = document.createElement('canvas');
+  canvas.width = 512;
+  canvas.height = 128;
+  const context = canvas.getContext('2d');
+
+  if (context) {
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    context.fillStyle = color;
+    context.font = '800 52px Inter, Arial, sans-serif';
+    context.textAlign = 'center';
+    context.textBaseline = 'middle';
+    context.fillText(text, canvas.width / 2, canvas.height / 2 + 4);
+  }
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  return new THREE.Mesh(
+    new THREE.PlaneGeometry(width, width * 0.25),
+    new THREE.MeshBasicMaterial({
+      map: texture,
+      transparent: true,
+      depthWrite: false,
+      side: THREE.DoubleSide,
+    }),
+  );
+}
+
+function createBirchTree(
+  THREE: typeof Three,
+  materials: Materials,
+  x: number,
+  z: number,
+  scale: number,
+) {
+  const tree = new THREE.Group();
+  const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.028, 0.04, 0.72, 7), materials.stoneLight);
+  trunk.position.y = -0.18;
+  tree.add(trunk);
+
+  for (let index = 0; index < 3; index += 1) {
+    const mark = new THREE.Mesh(new THREE.BoxGeometry(0.045, 0.012, 0.01), materials.forestMachineDark);
+    mark.position.set(index % 2 === 0 ? 0.02 : -0.02, -0.36 + index * 0.18, 0.03);
+    mark.rotation.z = index % 2 === 0 ? 0.3 : -0.25;
+    tree.add(mark);
+  }
+
+  const crown = new THREE.Mesh(new THREE.DodecahedronGeometry(0.19, 0), materials.moss);
+  crown.position.y = 0.28;
+  tree.add(crown);
+  tree.position.set(x, -0.42, z);
+  tree.scale.setScalar(scale);
+  return tree;
 }
 
 function createTextLabel(
@@ -406,217 +547,432 @@ function roundRect(
   context.closePath();
 }
 
-function createForestMachine(THREE: typeof Three, materials: Materials) {
-  const machine = new THREE.Group();
-  const base = new THREE.Mesh(new THREE.BoxGeometry(0.6, 0.18, 0.28), materials.moss);
-  const cabin = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.22, 0.22), materials.glass);
-  cabin.position.set(0.14, 0.2, -0.02);
-  machine.add(base, cabin);
+function createDasaForestryLandmark(THREE: typeof Three, materials: Materials, labelText: string) {
+  const group = new THREE.Group();
 
-  [-0.2, 0.2].forEach((x) => {
-    [-0.16, 0.16].forEach((z) => {
-      const wheel = new THREE.Mesh(new THREE.CylinderGeometry(0.085, 0.085, 0.055, 12), materials.dark);
+  const forestPositions = [
+    [-0.78, -0.48, 0.86, 0],
+    [-1.02, 0.02, 1.0, 2],
+    [-0.52, 0.38, 0.82, 1],
+    [0.04, -0.54, 0.8, 3],
+    [0.52, 0.22, 0.72, 2],
+    [0.9, -0.18, 0.62, 0],
+  ];
+
+  forestPositions.forEach(([x, z, scale, variant], index) => {
+    group.add(createTree(THREE, materials, x, z, scale, variant, index === 2));
+  });
+  group.add(
+    createBirchTree(THREE, materials, -0.16, 0.62, 0.78),
+    createBirchTree(THREE, materials, 0.76, 0.62, 0.62),
+  );
+
+  const machine = new THREE.Group();
+  const rearBody = new THREE.Mesh(new THREE.BoxGeometry(0.48, 0.24, 0.32), materials.forestMachineGreen);
+  rearBody.position.set(0.18, 0.02, 0);
+  const cabin = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.28, 0.28), materials.darkGlass);
+  cabin.position.set(-0.14, 0.15, -0.02);
+  const cabinRoof = new THREE.Mesh(new THREE.BoxGeometry(0.34, 0.045, 0.32), materials.forestMachineDark);
+  cabinRoof.position.set(-0.14, 0.32, -0.02);
+  const engineVent = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.12, 0.016), materials.hydraulicMetal);
+  engineVent.position.set(0.4, 0.08, 0.168);
+  machine.add(rearBody, cabin, cabinRoof, engineVent);
+
+  const wheelGeometry = new THREE.CylinderGeometry(0.102, 0.102, 0.07, 14);
+  const hubGeometry = new THREE.CylinderGeometry(0.052, 0.052, 0.075, 12);
+  [-0.32, -0.08, 0.2, 0.44].forEach((x) => {
+    [-0.2, 0.2].forEach((z) => {
+      const wheel = new THREE.Mesh(wheelGeometry, materials.forestMachineDark);
       wheel.rotation.z = Math.PI / 2;
-      wheel.position.set(x, -0.12, z);
-      machine.add(wheel);
+      wheel.position.set(x, -0.16, z);
+      const hub = new THREE.Mesh(hubGeometry, materials.hydraulicYellow);
+      hub.rotation.z = Math.PI / 2;
+      hub.position.copy(wheel.position);
+      machine.add(wheel, hub);
     });
   });
 
-  const armA = new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.045, 0.045), materials.metal);
-  armA.position.set(-0.28, 0.2, 0);
-  armA.rotation.z = -0.34;
-  const armB = new THREE.Mesh(new THREE.BoxGeometry(0.34, 0.04, 0.04), materials.metal);
-  armB.position.set(-0.58, 0.03, 0);
-  armB.rotation.z = 0.46;
-  const claw = new THREE.Mesh(new THREE.TorusGeometry(0.075, 0.009, 6, 18, Math.PI * 1.25), materials.cyan);
-  claw.position.set(-0.72, -0.04, 0);
-  claw.rotation.set(Math.PI / 2, 0, -0.4);
-  const sensor = new THREE.Mesh(new THREE.SphereGeometry(0.032, 10, 8), materials.aurora);
-  sensor.position.set(0.31, 0.18, 0.13);
-  machine.add(armA, armB, claw, sensor);
-  machine.position.set(0.34, -0.35, 0.44);
-  machine.rotation.y = -0.34;
-  return machine;
-}
+  const boomBase = new THREE.Mesh(new THREE.CylinderGeometry(0.042, 0.05, 0.18, 8), materials.hydraulicMetal);
+  boomBase.position.set(-0.32, 0.3, 0);
+  const boomA = new THREE.Mesh(new THREE.BoxGeometry(0.72, 0.06, 0.065), materials.forestMachineDark);
+  boomA.position.set(-0.62, 0.55, 0);
+  boomA.rotation.z = -0.62;
+  const boomB = new THREE.Mesh(new THREE.BoxGeometry(0.62, 0.052, 0.055), materials.forestMachineDark);
+  boomB.position.set(-1.04, 0.18, 0);
+  boomB.rotation.z = 0.46;
+  const hydraulic = new THREE.Mesh(new THREE.BoxGeometry(0.54, 0.022, 0.022), materials.hydraulicYellow);
+  hydraulic.position.set(-0.73, 0.38, 0.06);
+  hydraulic.rotation.z = -0.62;
+  const hose = new THREE.Mesh(new THREE.TorusGeometry(0.16, 0.007, 6, 28, Math.PI), materials.hydraulicMetal);
+  hose.position.set(-0.82, 0.28, 0.02);
+  hose.rotation.set(0.3, 0, -0.8);
+  machine.add(boomBase, boomA, boomB, hydraulic, hose);
 
-function createForestArea(THREE: typeof Three, materials: Materials) {
-  const group = new THREE.Group();
-  const positions = [
-    [-0.72, -0.48, 0.92, 0],
-    [-0.98, -0.08, 1.14, 1],
-    [-0.42, 0.08, 0.86, 2],
-    [0.05, -0.38, 0.84, 3],
-    [0.42, 0.02, 0.74, 1],
-    [-0.62, 0.38, 0.82, 2],
-    [0.0, 0.46, 0.96, 0],
-    [0.58, 0.36, 0.68, 3],
-  ];
+  const head = new THREE.Group();
+  const headBody = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.16, 0.12), materials.hydraulicMetal);
+  const rollerA = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 0.16, 10), materials.forestMachineDark);
+  const rollerB = rollerA.clone();
+  rollerA.rotation.x = Math.PI / 2;
+  rollerB.rotation.x = Math.PI / 2;
+  rollerA.position.set(-0.055, -0.08, 0);
+  rollerB.position.set(0.055, -0.08, 0);
+  const clawA = new THREE.Mesh(new THREE.TorusGeometry(0.08, 0.01, 6, 20, Math.PI * 0.85), materials.hydraulicYellow);
+  const clawB = clawA.clone();
+  clawA.rotation.set(Math.PI / 2, 0, -0.42);
+  clawB.rotation.set(Math.PI / 2, 0, Math.PI + 0.42);
+  head.add(headBody, rollerA, rollerB, clawA, clawB);
+  head.position.set(-1.28, -0.18, 0.02);
+  head.rotation.z = -0.18;
+  machine.add(head);
 
-  positions.forEach(([x, z, scale, variant], index) =>
-    group.add(createTree(THREE, materials, x, z, scale, variant, index % 3 === 1)),
-  );
-  const label = createTextLabel(THREE, 'Södra', '#72f2a3', 0.66);
-  label.position.set(-0.24, 0.92, 0.18);
-  const forestLight = new THREE.PointLight(0x72f2a3, 0.34, 1.8);
-  forestLight.position.set(0.1, 0.3, 0.2);
-  const stump = new THREE.Mesh(new THREE.CylinderGeometry(0.075, 0.095, 0.12, 8), materials.trunk);
-  stump.position.set(-0.24, -0.45, 0.58);
-  const stumpTop = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.075, 0.012, 8), materials.soil);
-  stumpTop.position.set(-0.24, -0.38, 0.58);
-  group.add(createForestMachine(THREE, materials), stump, stumpTop, label, forestLight);
-  return group;
-}
+  const sensor = new THREE.Mesh(new THREE.SphereGeometry(0.038, 12, 8), materials.cyan);
+  sensor.position.set(-0.28, 0.42, 0.16);
+  const signalA = new THREE.Mesh(new THREE.TorusGeometry(0.13, 0.006, 6, 30, Math.PI), materials.marker);
+  const signalB = new THREE.Mesh(new THREE.TorusGeometry(0.21, 0.006, 6, 34, Math.PI), materials.marker);
+  signalA.position.copy(sensor.position);
+  signalB.position.copy(sensor.position);
+  signalA.rotation.set(0.4, 0.15, -0.4);
+  signalB.rotation.copy(signalA.rotation);
+  machine.add(sensor, signalA, signalB);
 
-function createTechHub(THREE: typeof Three, materials: Materials) {
-  const group = new THREE.Group();
-  const base = new THREE.Mesh(new THREE.CylinderGeometry(0.48, 0.56, 0.18, 8), materials.dark);
-  const body = new THREE.Mesh(new THREE.BoxGeometry(0.58, 0.42, 0.5), materials.glass);
-  const roof = new THREE.Mesh(new THREE.CylinderGeometry(0.36, 0.42, 0.12, 6), materials.roof);
-  body.position.y = 0.2;
-  roof.position.y = 0.48;
-  roof.rotation.y = Math.PI / 6;
-  group.add(base, body, roof);
+  machine.position.set(0.42, -0.36, 0.22);
+  machine.rotation.y = -0.28;
+  machine.scale.setScalar(0.9);
 
-  const mast = new THREE.Mesh(new THREE.CylinderGeometry(0.014, 0.018, 0.72, 8), materials.metal);
-  mast.position.set(0.25, 0.88, -0.05);
-  const dish = new THREE.Mesh(new THREE.TorusGeometry(0.12, 0.01, 6, 24), materials.cyan);
-  dish.position.set(0.25, 1.2, -0.05);
-  dish.rotation.set(0.7, 0.2, 0);
-  const signalA = new THREE.Mesh(new THREE.TorusGeometry(0.2, 0.006, 6, 36), materials.marker);
-  const signalB = new THREE.Mesh(new THREE.TorusGeometry(0.31, 0.006, 6, 42), materials.marker);
-  signalA.position.copy(dish.position);
-  signalB.position.copy(dish.position);
-  signalA.rotation.set(0.7, 0.2, 0);
-  signalB.rotation.set(0.7, 0.2, 0);
-  group.add(mast, dish, signalA, signalB);
-
-  for (let index = 0; index < 5; index += 1) {
-    const angle = (index / 5) * Math.PI * 2;
-    const node = new THREE.Mesh(new THREE.SphereGeometry(0.038, 10, 8), materials.aurora);
-    node.position.set(Math.cos(angle) * 0.54, 0.12, Math.sin(angle) * 0.54);
-    group.add(node);
-  }
-
-  const sign = createLabelSign(THREE, 'Dasa', materials.cyan);
-  sign.position.set(-0.03, 0.18, 0.28);
-  const panelA = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.1, 0.014), materials.window);
-  panelA.position.set(-0.19, 0.24, 0.26);
-  const panelB = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.08, 0.014), materials.aurora);
-  panelB.position.set(0.18, 0.23, 0.26);
-  const label = createTextLabel(THREE, 'Dasa IoT', '#77d8f7', 0.78);
-  label.position.set(-0.03, 0.8, 0.34);
-  group.add(sign, panelA, panelB, label, new THREE.PointLight(0x77d8f7, 0.45, 1.8));
-  return group;
-}
-
-function createOfficeBuilding(THREE: typeof Three, materials: Materials) {
-  const group = new THREE.Group();
-  const left = new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.78, 0.48), materials.glass);
-  const right = new THREE.Mesh(new THREE.BoxGeometry(0.36, 1.04, 0.42), materials.glass);
-  left.position.set(-0.18, 0.28, 0);
-  right.position.set(0.22, 0.4, -0.03);
-  group.add(left, right);
-
-  for (let row = 0; row < 4; row += 1) {
-    for (let col = 0; col < 3; col += 1) {
-      const pane = new THREE.Mesh(new THREE.BoxGeometry(0.075, 0.05, 0.014), materials.window);
-      pane.position.set(-0.34 + col * 0.18, 0.02 + row * 0.18, 0.248);
-      group.add(pane);
-    }
-  }
-
-  for (let row = 0; row < 5; row += 1) {
-    const pane = new THREE.Mesh(new THREE.BoxGeometry(0.09, 0.052, 0.014), materials.window);
-    pane.position.set(0.22, 0.02 + row * 0.18, 0.188);
-    group.add(pane);
-  }
-
-  const entrance = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.18, 0.018), materials.dark);
-  entrance.position.set(-0.18, -0.08, 0.254);
-  const walkway = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.012, 0.44), materials.path);
-  walkway.position.set(-0.18, -0.13, 0.46);
-  const sign = createLabelSign(THREE, 'Visma', materials.aurora);
-  sign.position.set(0.01, 0.84, 0.24);
-  const label = createTextLabel(THREE, 'Visma', '#b7f4d6', 0.68);
-  label.position.set(0.02, 1.08, 0.22);
-  const lobbyLight = new THREE.PointLight(0x77d8f7, 0.35, 1.4);
-  lobbyLight.position.set(-0.18, 0.22, 0.4);
-  const roofTrim = new THREE.Mesh(new THREE.BoxGeometry(0.84, 0.035, 0.52), materials.metal);
-  roofTrim.position.set(0.02, 0.94, -0.02);
-  group.add(entrance, walkway, sign, label, roofTrim, lobbyLight);
-  return group;
-}
-
-function createCinemaBuilding(THREE: typeof Three, materials: Materials) {
-  const group = new THREE.Group();
-  const body = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.42, 0.5), materials.dark);
-  const side = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.32, 0.42), materials.glass);
-  const marquee = new THREE.Mesh(new THREE.BoxGeometry(0.82, 0.11, 0.08), materials.warm);
-  const screen = new THREE.Mesh(new THREE.BoxGeometry(0.44, 0.15, 0.016), materials.glass);
-  body.position.y = 0.04;
-  side.position.set(0.28, 0.07, -0.02);
-  marquee.position.set(0, 0.33, 0.28);
-  screen.position.set(-0.05, 0.08, 0.26);
-  group.add(body, side, marquee, screen);
-
-  [-0.32, -0.12].forEach((x, index) => {
-    const poster = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.16, 0.014), index === 0 ? materials.warm : materials.window);
-    poster.position.set(x, 0.02, 0.268);
-    group.add(poster);
+  const stump = new THREE.Mesh(new THREE.CylinderGeometry(0.075, 0.1, 0.14, 9), materials.trunk);
+  stump.position.set(-0.78, -0.49, 0.34);
+  const stumpTop = new THREE.Mesh(new THREE.CylinderGeometry(0.082, 0.076, 0.012, 9), materials.stoneLight);
+  stumpTop.position.set(-0.78, -0.41, 0.34);
+  const logGeometry = new THREE.CylinderGeometry(0.045, 0.05, 0.36, 9);
+  [-0.74, -0.58, -0.42].forEach((x, index) => {
+    const log = new THREE.Mesh(logGeometry, materials.trunk);
+    log.position.set(x, -0.5, 0.66 + index * 0.05);
+    log.rotation.set(Math.PI / 2, 0, 0.42 + index * 0.18);
+    group.add(log);
   });
 
-  const door = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.22, 0.018), materials.window);
-  door.position.set(0.24, -0.04, 0.265);
-  group.add(door);
-
-  for (let index = 0; index < 6; index += 1) {
-    const light = new THREE.Mesh(new THREE.SphereGeometry(0.022, 8, 8), materials.warm);
-    light.position.set(-0.34 + index * 0.136, 0.35, 0.34);
-    group.add(light);
-  }
-
-  const reel = new THREE.Mesh(new THREE.TorusGeometry(0.09, 0.012, 6, 20), materials.warm);
-  reel.position.set(-0.46, 0.33, 0.2);
-  reel.rotation.y = Math.PI / 2;
-  const sign = createLabelSign(THREE, 'Cinema', materials.warm);
-  sign.position.set(0, 0.52, 0.22);
-  const label = createTextLabel(THREE, 'Filmstaden', '#f1d48d', 0.88);
-  label.position.set(0, 0.72, 0.24);
-  const marqueeLight = new THREE.PointLight(0xf1d48d, 0.55, 1.8);
-  marqueeLight.position.set(0, 0.42, 0.55);
-  group.add(reel, sign, label, marqueeLight);
+  const label = createTextLabel(THREE, labelText, '#77d8f7', 0.72);
+  label.position.set(0.22, 0.98, 0.12);
+  const forestLight = new THREE.PointLight(0x77d8f7, 0.38, 1.7);
+  forestLight.position.set(0.16, 0.32, 0.26);
+  group.add(machine, stump, stumpTop, label, forestLight);
   return group;
 }
 
-function createEducationZone(THREE: typeof Three, materials: Materials) {
+function createSodraHeadquartersLandmark(THREE: typeof Three, materials: Materials, labelText: string) {
   const group = new THREE.Group();
-  const studio = new THREE.Mesh(new THREE.BoxGeometry(0.66, 0.34, 0.52), materials.glass);
-  const roof = new THREE.Mesh(new THREE.BoxGeometry(0.72, 0.08, 0.58), materials.violet);
-  studio.position.y = 0.07;
-  roof.position.y = 0.29;
-  group.add(studio, roof);
+  const facadeSegments = 9;
 
-  const board = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.2, 0.018), materials.window);
-  board.position.set(-0.18, 0.12, 0.272);
-  const boardFrame = new THREE.Mesh(new THREE.BoxGeometry(0.34, 0.235, 0.01), materials.metal);
-  boardFrame.position.set(-0.18, 0.12, 0.264);
-  const bookA = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.035, 0.13), materials.violet);
-  const bookB = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.035, 0.13), materials.aurora);
-  bookA.position.set(0.22, -0.1, 0.18);
-  bookA.rotation.y = 0.28;
-  bookB.position.set(0.3, -0.05, 0.08);
-  bookB.rotation.y = -0.18;
-  const node = new THREE.Mesh(new THREE.IcosahedronGeometry(0.13, 0), materials.violet);
-  node.position.set(0.38, 0.53, -0.18);
-  const sign = createLabelSign(THREE, 'Learning', materials.violet);
-  sign.position.set(0.04, 0.45, 0.22);
-  const label = createTextLabel(THREE, 'Learning', '#c4a5ff', 0.82);
-  label.position.set(0.04, 0.66, 0.24);
-  const studioLight = new THREE.PointLight(0xc4a5ff, 0.38, 1.6);
-  studioLight.position.set(0.18, 0.32, 0.42);
-  const monitorStand = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.014, 0.12, 6), materials.metal);
-  monitorStand.position.set(-0.18, -0.06, 0.26);
-  group.add(boardFrame, board, monitorStand, bookA, bookB, node, sign, label, studioLight);
+  for (let index = 0; index < facadeSegments; index += 1) {
+    const t = index / (facadeSegments - 1);
+    const x = -0.78 + t * 1.56;
+    const z = Math.sin((t - 0.5) * Math.PI) * 0.18;
+    const height = 0.56 + Math.sin(t * Math.PI) * 0.08;
+    const glass = new THREE.Mesh(new THREE.BoxGeometry(0.2, height, 0.08), materials.darkGlass);
+    glass.position.set(x, 0.12, z);
+    glass.rotation.y = (t - 0.5) * -0.32;
+    group.add(glass);
+
+    const fin = new THREE.Mesh(new THREE.BoxGeometry(0.018, height + 0.12, 0.1), materials.whiteFacade);
+    fin.position.set(x - 0.1, 0.14, z + 0.015);
+    fin.rotation.copy(glass.rotation);
+    group.add(fin);
+  }
+
+  const base = new THREE.Mesh(new THREE.BoxGeometry(1.78, 0.12, 0.58), materials.whiteFacade);
+  base.position.set(0, -0.24, 0.02);
+  const roof = new THREE.Mesh(new THREE.BoxGeometry(1.92, 0.05, 0.68), materials.roof);
+  roof.position.set(0, 0.48, 0.02);
+  roof.rotation.z = 0.035;
+  const upperPavilion = new THREE.Mesh(new THREE.BoxGeometry(0.74, 0.32, 0.42), materials.coolGlass);
+  upperPavilion.position.set(0.38, 0.75, -0.05);
+  const upperRoof = new THREE.Mesh(new THREE.BoxGeometry(0.92, 0.045, 0.52), materials.roof);
+  upperRoof.position.set(0.38, 0.94, -0.05);
+  const sideTower = new THREE.Mesh(new THREE.BoxGeometry(0.34, 0.72, 0.46), materials.whiteFacade);
+  sideTower.position.set(0.75, 0.16, 0.12);
+  group.add(base, roof, upperPavilion, upperRoof, sideTower);
+
+  addWindowGrid(THREE, group, {
+    columns: 3,
+    rows: 4,
+    startX: 0.62,
+    startY: -0.06,
+    z: 0.358,
+    spacingX: 0.105,
+    spacingY: 0.13,
+    width: 0.064,
+    height: 0.075,
+    material: materials.darkGlass,
+    frameMaterial: materials.whiteFacade,
+  });
+
+  const grass = new THREE.Mesh(new THREE.CylinderGeometry(0.9, 0.96, 0.035, 18), materials.moss);
+  grass.position.set(-0.12, -0.55, 0.34);
+  grass.scale.z = 0.42;
+  const signPlate = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.09, 0.018), materials.sodraGreen);
+  signPlate.position.set(0.58, 0.42, 0.36);
+  const sign = createBuildingSign(THREE, 'Södra', '#72f2a3', 0.26);
+  sign.position.set(0.58, 0.42, 0.374);
+  const label = createTextLabel(THREE, labelText, '#72f2a3', 0.7);
+  label.position.set(-0.1, 1.1, 0.16);
+  const light = new THREE.PointLight(0x72f2a3, 0.32, 1.6);
+  light.position.set(0.48, 0.42, 0.42);
+  group.add(grass, signPlate, sign, label, light);
+  group.scale.setScalar(0.8);
+  return group;
+}
+
+function createVismaLandmark(THREE: typeof Three, materials: Materials, labelText: string) {
+  const group = new THREE.Group();
+  const leftWing = new THREE.Mesh(new THREE.BoxGeometry(0.62, 0.74, 0.42), materials.whiteFacade);
+  const center = new THREE.Mesh(new THREE.BoxGeometry(0.52, 0.9, 0.46), materials.orangeFacade);
+  const rightWing = new THREE.Mesh(new THREE.BoxGeometry(0.62, 0.74, 0.42), materials.whiteFacade);
+  leftWing.position.set(-0.56, 0.18, 0);
+  center.position.set(0, 0.26, 0.02);
+  rightWing.position.set(0.56, 0.18, 0);
+  group.add(leftWing, center, rightWing);
+
+  const roofLine = new THREE.Mesh(new THREE.BoxGeometry(1.8, 0.055, 0.5), materials.roof);
+  roofLine.position.set(0, 0.76, 0);
+  const entrance = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.3, 0.025), materials.coolGlass);
+  entrance.position.set(0, -0.06, 0.257);
+  const canopy = new THREE.Mesh(new THREE.BoxGeometry(0.48, 0.08, 0.16), materials.whiteFacade);
+  canopy.position.set(0, 0.16, 0.32);
+  const stairs = new THREE.Mesh(new THREE.BoxGeometry(0.56, 0.045, 0.24), materials.stoneLight);
+  stairs.position.set(0, -0.34, 0.46);
+  group.add(roofLine, entrance, canopy, stairs);
+
+  addWindowGrid(THREE, group, {
+    columns: 3,
+    rows: 3,
+    startX: -0.72,
+    startY: -0.04,
+    z: 0.218,
+    spacingX: 0.16,
+    spacingY: 0.18,
+    width: 0.085,
+    height: 0.072,
+    material: materials.coolGlass,
+  });
+  addWindowGrid(THREE, group, {
+    columns: 3,
+    rows: 3,
+    startX: 0.4,
+    startY: -0.04,
+    z: 0.218,
+    spacingX: 0.16,
+    spacingY: 0.18,
+    width: 0.085,
+    height: 0.072,
+    material: materials.coolGlass,
+  });
+  addWindowGrid(THREE, group, {
+    columns: 2,
+    rows: 3,
+    startX: -0.11,
+    startY: 0.16,
+    z: 0.258,
+    spacingX: 0.22,
+    spacingY: 0.18,
+    width: 0.12,
+    height: 0.085,
+    material: materials.darkGlass,
+  });
+
+  const sign = createBuildingSign(THREE, 'VISMA', '#10251f', 0.36);
+  sign.position.set(0, 0.22, 0.405);
+  const label = createTextLabel(THREE, labelText, '#b7f4d6', 0.68);
+  label.position.set(0, 1.0, 0.24);
+  const lobbyLight = new THREE.PointLight(0x77d8f7, 0.34, 1.3);
+  lobbyLight.position.set(0, 0.22, 0.42);
+  group.add(sign, label, lobbyLight);
+  group.add(createTree(THREE, materials, -0.92, 0.35, 0.42, 1), createTree(THREE, materials, 0.92, 0.35, 0.42, 2));
+  group.scale.setScalar(0.78);
+  return group;
+}
+
+function createFilmstadenLandmark(THREE: typeof Three, materials: Materials, labelText: string) {
+  const group = new THREE.Group();
+  const body = new THREE.Mesh(new THREE.BoxGeometry(1.22, 0.92, 0.34), materials.brick);
+  body.position.y = 0.18;
+  const stoneBase = new THREE.Mesh(new THREE.BoxGeometry(1.3, 0.22, 0.38), materials.stoneLight);
+  stoneBase.position.y = -0.24;
+  const cornice = new THREE.Mesh(new THREE.BoxGeometry(1.32, 0.06, 0.4), materials.stoneLight);
+  cornice.position.y = 0.68;
+  group.add(body, stoneBase, cornice);
+
+  addWindowGrid(THREE, group, {
+    columns: 5,
+    rows: 3,
+    startX: -0.46,
+    startY: 0.02,
+    z: 0.181,
+    spacingX: 0.23,
+    spacingY: 0.2,
+    width: 0.11,
+    height: 0.105,
+    material: materials.coolGlass,
+    frameMaterial: materials.stoneLight,
+  });
+
+  const marqueeShape = new THREE.Shape();
+  marqueeShape.moveTo(-0.66, -0.06);
+  marqueeShape.lineTo(0.66, -0.06);
+  marqueeShape.quadraticCurveTo(0.72, 0.0, 0.66, 0.08);
+  marqueeShape.lineTo(-0.66, 0.08);
+  marqueeShape.quadraticCurveTo(-0.72, 0.0, -0.66, -0.06);
+  const marquee = new THREE.Mesh(
+    new THREE.ExtrudeGeometry(marqueeShape, {
+      depth: 0.18,
+      bevelEnabled: true,
+      bevelSize: 0.015,
+      bevelThickness: 0.012,
+      bevelSegments: 2,
+    }),
+    materials.redMarquee,
+  );
+  marquee.position.set(0, -0.08, 0.18);
+  group.add(marquee);
+
+  [-0.47, -0.26, 0.34, 0.53].forEach((x, index) => {
+    const posterFrame = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.22, 0.016), materials.stoneDark);
+    const poster = new THREE.Mesh(
+      new THREE.BoxGeometry(0.09, 0.18, 0.018),
+      index % 2 === 0 ? materials.warmWindow : materials.window,
+    );
+    posterFrame.position.set(x, -0.28, 0.204);
+    poster.position.set(x, -0.28, 0.214);
+    group.add(posterFrame, poster);
+  });
+
+  const doors = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.28, 0.02), materials.darkGlass);
+  doors.position.set(0.03, -0.29, 0.205);
+  const doorBars = new THREE.Mesh(new THREE.BoxGeometry(0.025, 0.28, 0.024), materials.redMarquee);
+  doorBars.position.set(0.03, -0.29, 0.222);
+  group.add(doors, doorBars);
+
+  const roundSign = new THREE.Mesh(new THREE.CylinderGeometry(0.15, 0.15, 0.04, 32), materials.redMarquee);
+  roundSign.rotation.x = Math.PI / 2;
+  roundSign.position.set(-0.24, 0.32, 0.235);
+  const innerSign = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.11, 0.042, 32), materials.darkGlass);
+  innerSign.rotation.copy(roundSign.rotation);
+  innerSign.position.copy(roundSign.position);
+  innerSign.position.z += 0.01;
+  const fStem = new THREE.Mesh(new THREE.BoxGeometry(0.035, 0.15, 0.018), materials.redMarquee);
+  const fTop = new THREE.Mesh(new THREE.BoxGeometry(0.105, 0.035, 0.018), materials.redMarquee);
+  const fMid = new THREE.Mesh(new THREE.BoxGeometry(0.085, 0.03, 0.018), materials.redMarquee);
+  fStem.position.set(-0.255, 0.32, 0.277);
+  fTop.position.set(-0.222, 0.375, 0.277);
+  fMid.position.set(-0.228, 0.325, 0.277);
+  group.add(roundSign, innerSign, fStem, fTop, fMid);
+
+  const wordmark = createBuildingSign(THREE, 'Filmstaden', '#ff6961', 0.72);
+  wordmark.position.set(0.18, 0.29, 0.305);
+  const label = createTextLabel(THREE, labelText, '#f1d48d', 0.9);
+  label.position.set(0, 0.9, 0.22);
+  const marqueeLight = new THREE.PointLight(0xf1d48d, 0.58, 1.7);
+  marqueeLight.position.set(0.05, -0.02, 0.48);
+  for (let index = 0; index < 6; index += 1) {
+    const bulb = new THREE.Mesh(new THREE.SphereGeometry(0.018, 8, 8), materials.warmWindow);
+    bulb.position.set(-0.45 + index * 0.18, -0.11, 0.32);
+    group.add(bulb);
+  }
+  group.add(wordmark, label, marqueeLight);
+  group.scale.setScalar(0.78);
+  return group;
+}
+
+function createEducationBuildingLandmark(THREE: typeof Three, materials: Materials, labelText: string) {
+  const group = new THREE.Group();
+  const main = new THREE.Mesh(new THREE.BoxGeometry(1.18, 0.82, 0.36), materials.brick);
+  main.position.y = 0.14;
+  const leftWing = new THREE.Mesh(new THREE.BoxGeometry(0.36, 0.72, 0.34), materials.brickDark);
+  const rightWing = leftWing.clone();
+  leftWing.position.set(-0.72, 0.1, 0);
+  rightWing.position.set(0.72, 0.1, 0);
+  const plinth = new THREE.Mesh(new THREE.BoxGeometry(1.72, 0.14, 0.4), materials.stoneDark);
+  plinth.position.y = -0.28;
+  const centerBay = new THREE.Mesh(new THREE.BoxGeometry(0.34, 0.92, 0.4), materials.brickDark);
+  centerBay.position.set(0, 0.18, 0.03);
+  group.add(main, leftWing, rightWing, plinth, centerBay);
+
+  addWindowGrid(THREE, group, {
+    columns: 5,
+    rows: 3,
+    startX: -0.46,
+    startY: -0.02,
+    z: 0.191,
+    spacingX: 0.23,
+    spacingY: 0.2,
+    width: 0.09,
+    height: 0.12,
+    material: materials.coolGlass,
+    frameMaterial: materials.stoneLight,
+  });
+  addWindowGrid(THREE, group, {
+    columns: 1,
+    rows: 3,
+    startX: -0.72,
+    startY: -0.02,
+    z: 0.181,
+    spacingX: 0.1,
+    spacingY: 0.2,
+    width: 0.085,
+    height: 0.11,
+    material: materials.coolGlass,
+    frameMaterial: materials.stoneLight,
+  });
+  addWindowGrid(THREE, group, {
+    columns: 1,
+    rows: 3,
+    startX: 0.72,
+    startY: -0.02,
+    z: 0.181,
+    spacingX: 0.1,
+    spacingY: 0.2,
+    width: 0.085,
+    height: 0.11,
+    material: materials.coolGlass,
+    frameMaterial: materials.stoneLight,
+  });
+
+  const archShape = new THREE.Shape();
+  archShape.moveTo(-0.1, -0.16);
+  archShape.lineTo(-0.1, 0.02);
+  archShape.quadraticCurveTo(0, 0.17, 0.1, 0.02);
+  archShape.lineTo(0.1, -0.16);
+  archShape.lineTo(-0.1, -0.16);
+  const arch = new THREE.Mesh(
+    new THREE.ExtrudeGeometry(archShape, {
+      depth: 0.035,
+      bevelEnabled: true,
+      bevelSize: 0.006,
+      bevelThickness: 0.006,
+      bevelSegments: 1,
+    }),
+    materials.warmWindow,
+  );
+  arch.position.set(0, -0.2, 0.205);
+  group.add(arch);
+
+  [-0.54, -0.18, 0.18, 0.54].forEach((x) => {
+    const crown = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.1, 0.12), materials.brickDark);
+    crown.position.set(x, 0.66, 0);
+    group.add(crown);
+  });
+  const centerCrown = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.14, 0.15), materials.brickDark);
+  centerCrown.position.set(0, 0.74, 0.02);
+  const path = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.018, 0.48), materials.path);
+  path.position.set(0, -0.52, 0.48);
+  const accent = new THREE.Mesh(new THREE.SphereGeometry(0.036, 10, 8), materials.educationAccent);
+  accent.position.set(0.28, 0.54, 0.22);
+  const label = createTextLabel(THREE, labelText, '#c4a5ff', 0.78);
+  label.position.set(0.02, 1.0, 0.22);
+  const entranceLight = new THREE.PointLight(0xe6c885, 0.42, 1.3);
+  entranceLight.position.set(0, -0.04, 0.4);
+  group.add(centerCrown, path, accent, label, entranceLight);
+  group.add(createTree(THREE, materials, -0.98, 0.38, 0.44, 2), createTree(THREE, materials, 0.98, 0.38, 0.42, 1));
+  group.scale.setScalar(0.7);
   return group;
 }
 
@@ -703,7 +1059,11 @@ function createPath(THREE: typeof Three, materials: Materials) {
   return group;
 }
 
-export function createCareerWorld(THREE: typeof Three, compact: boolean): CareerWorldHandle {
+export function createCareerWorld(
+  THREE: typeof Three,
+  compact: boolean,
+  labels: CareerWorldLabels,
+): CareerWorldHandle {
   const materials = makeMaterials(THREE);
   const group = new THREE.Group();
   const depthLayers = [
@@ -714,11 +1074,11 @@ export function createCareerWorld(THREE: typeof Three, compact: boolean): Career
   group.add(...depthLayers, createIsland(THREE, materials), createPath(THREE, materials), createGroundDetails(THREE, materials));
 
   const factoryById = {
-    sodra: () => createForestArea(THREE, materials),
-    dasa: () => createTechHub(THREE, materials),
-    visma: () => createOfficeBuilding(THREE, materials),
-    filmstaden: () => createCinemaBuilding(THREE, materials),
-    education: () => createEducationZone(THREE, materials),
+    sodra: () => createSodraHeadquartersLandmark(THREE, materials, labels.locations.sodra ?? 'Södra'),
+    dasa: () => createDasaForestryLandmark(THREE, materials, labels.locations.dasa ?? 'Dasa IoT'),
+    visma: () => createVismaLandmark(THREE, materials, labels.locations.visma ?? 'Visma'),
+    filmstaden: () => createFilmstadenLandmark(THREE, materials, labels.locations.filmstaden ?? 'Filmstaden'),
+    education: () => createEducationBuildingLandmark(THREE, materials, labels.locations.education ?? 'Learning'),
   };
 
   const hotspots = careerMapItems.map((item) =>
@@ -733,7 +1093,7 @@ export function createCareerWorld(THREE: typeof Three, compact: boolean): Career
   const coreHalo = new THREE.Mesh(new THREE.TorusGeometry(0.32, 0.008, 8, 48), materials.marker);
   coreHalo.rotation.x = Math.PI / 2;
   coreHalo.position.set(0.02, -0.4, -0.18);
-  const coreLabel = createTextLabel(THREE, 'Career Hub', '#77d8f7', 0.82);
+  const coreLabel = createTextLabel(THREE, labels.hub, '#77d8f7', 0.82);
   coreLabel.position.set(0.02, 0.04, -0.18);
   group.add(coreBase, systemCore, coreHalo, coreLabel);
 
@@ -756,7 +1116,7 @@ export function createCareerWorld(THREE: typeof Three, compact: boolean): Career
     createDataPulse(
       THREE,
       systemCore.position,
-      new THREE.Vector3(1.35, 3.2, -2.85),
+      new THREE.Vector3(systemCore.position.x, 3.2, systemCore.position.z),
       { line: materials.line, dot: materials.dot },
       0.48,
     ),

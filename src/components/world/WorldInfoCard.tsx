@@ -20,7 +20,6 @@ function WorldInfoCard({
     <article className="world-info-card" aria-labelledby="world-info-title">
       <div className="world-info-card__header">
         <div>
-          <p>{isSwedish ? 'Utforska erfarenhet' : 'Explore experience'}</p>
           <h2 id="world-info-title">{location.label}</h2>
         </div>
         <button
@@ -33,18 +32,10 @@ function WorldInfoCard({
         </button>
       </div>
       <p className="world-info-card__role">{location.role}</p>
-      <p className="world-info-card__description">{location.description}</p>
-      <div className="world-info-card__tags" aria-label="Focus areas">
-        {location.tags.map((tag) => (
-          <span key={tag}>{tag}</span>
-        ))}
-      </div>
+      <p className="world-info-card__description">{location.summary}</p>
       <div className="world-info-card__actions">
         <button type="button" onClick={onReadMore}>
           {isSwedish ? 'Läs mer' : 'Read more'}
-        </button>
-        <button type="button" onClick={onClose}>
-          {isSwedish ? 'Stäng' : 'Close'}
         </button>
       </div>
     </article>

@@ -27,6 +27,12 @@ function WorldIntroSection({ content, locale }: WorldIntroSectionProps) {
   const locations = useMemo(() => getCareerWorldLocations(locale), [locale]);
   const [selectedLocation, setSelectedLocation] =
     useState<CareerWorldLocation | null>(null);
+  const [isWorldExpanded, setIsWorldExpanded] = useState(false);
+
+  useEffect(() => {
+    setSelectedLocation(null);
+    setIsWorldExpanded(false);
+  }, [locale]);
 
   useEffect(() => {
     if (!selectedLocation) {
@@ -44,6 +50,19 @@ function WorldIntroSection({ content, locale }: WorldIntroSectionProps) {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [selectedLocation]);
 
+  useEffect(() => {
+    if (!isWorldExpanded) {
+      return undefined;
+    }
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [isWorldExpanded]);
+
   const handleReadMore = () => {
     if (!selectedLocation) {
       return;
@@ -51,19 +70,22 @@ function WorldIntroSection({ content, locale }: WorldIntroSectionProps) {
 
     const target = document.getElementById(selectedLocation.targetId);
     setSelectedLocation(null);
+    setIsWorldExpanded(false);
 
     if (!target) {
       return;
     }
 
-    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    window.requestAnimationFrame(() => {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
     target.classList.add('section-highlight');
     window.setTimeout(() => target.classList.remove('section-highlight'), 1600);
   };
 
   return (
     <section
-      className="world-intro"
+      className={isWorldExpanded ? 'world-intro is-world-expanded' : 'world-intro'}
       id="start"
       aria-labelledby="world-intro-title"
     >
@@ -77,10 +99,13 @@ function WorldIntroSection({ content, locale }: WorldIntroSectionProps) {
         }
       >
         <CareerWorldScene
+          key={locale}
           label={content.sceneLabel}
           fallbackLabel={content.fallbackLabel}
+          locale={locale}
           locations={locations}
           onSelectLocation={setSelectedLocation}
+          isExpanded={isWorldExpanded}
         />
       </Suspense>
 
@@ -102,6 +127,25 @@ function WorldIntroSection({ content, locale }: WorldIntroSectionProps) {
       >
         {isSwedish ? 'Fortsätt till presentation' : 'Continue to profile'}
       </button>
+
+      <button
+        className="world-intro__open-world"
+        type="button"
+        onClick={() => setIsWorldExpanded(true)}
+      >
+        {isSwedish ? 'Öppna världen' : 'Open world'}
+      </button>
+
+      {isWorldExpanded && (
+        <button
+          className="world-intro__close-world"
+          type="button"
+          aria-label={isSwedish ? 'Stäng' : 'Close'}
+          onClick={() => setIsWorldExpanded(false)}
+        >
+          {isSwedish ? 'Stäng' : 'Close'}
+        </button>
+      )}
 
       {selectedLocation && (
         <WorldInfoCard

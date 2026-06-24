@@ -141,7 +141,16 @@ function HeroScene({ label, fallbackLabel }: HeroSceneProps) {
         controls.maxAzimuthAngle = Math.PI * 0.22;
         controls.target.set(0.04, 0.04, -0.22);
 
-        const world = createCareerWorld(THREE, compact);
+        const world = createCareerWorld(THREE, compact, {
+          hub: 'Career Hub',
+          locations: {
+            sodra: 'Södra',
+            dasa: 'Dasa IoT',
+            visma: 'Visma',
+            filmstaden: 'Filmstaden',
+            education: 'Learning',
+          },
+        });
         const backdrop = createSpaceBackdrop(THREE, compact);
         const aurora = createAurora(THREE);
         world.group.scale.setScalar(compact ? 0.92 : 1.06);
