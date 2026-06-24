@@ -10,6 +10,7 @@ export default tseslint.config(
       'coverage/**',
       'node_modules/**',
       'playwright-report/**',
+      'scripts/**',
       '*.config.js',
       'eslint.config.js',
     ],
@@ -17,10 +18,10 @@ export default tseslint.config(
   js.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
   {
-    files: ['src/**/*.{ts,tsx}', 'worker/**/*.{ts,tsx}', 'e2e/**/*.ts', '*.config.ts'],
+    files: ['src/**/*.{ts,tsx}', 'e2e/**/*.ts', '*.config.ts'],
     languageOptions: {
       parserOptions: {
-        project: ['./tsconfig.app.json', './tsconfig.node.json', './tsconfig.worker.json'],
+        project: ['./tsconfig.app.json', './tsconfig.node.json'],
         tsconfigRootDir: import.meta.dirname,
       },
     },

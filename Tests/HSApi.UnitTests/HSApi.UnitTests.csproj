@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\HSCms\HSCms.csproj" />
+    <ProjectReference Include="..\..\HSApi\HSApi.csproj" />
   </ItemGroup>
 
 </Project>
