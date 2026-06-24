@@ -1,0 +1,67 @@
+{
+  "version": "0.1.0",
+  "generatedBy": "Assets/Blender/Scripts/export_all.py",
+  "fallback": "procedural",
+  "landmarks": [
+    {
+      "id": "filmstaden",
+      "file": "filmstaden.glb",
+      "size": 0,
+      "triangleCount": 0,
+      "requiredNodes": ["LM_Filmstaden_Root", "Anchor_Hotspot", "Anchor_Label"],
+      "optionalAnimations": [],
+      "defaultScale": [1, 1, 1],
+      "defaultRotation": [0, 0, 0],
+      "hotspotAnchor": "Anchor_Hotspot",
+      "labelAnchor": "Anchor_Label"
+    },
+    {
+      "id": "visma",
+      "file": "visma.glb",
+      "size": 0,
+      "triangleCount": 0,
+      "requiredNodes": ["LM_Visma_Root", "Anchor_Hotspot", "Anchor_Label"],
+      "optionalAnimations": [],
+      "defaultScale": [1, 1, 1],
+      "defaultRotation": [0, 0, 0],
+      "hotspotAnchor": "Anchor_Hotspot",
+      "labelAnchor": "Anchor_Label"
+    },
+    {
+      "id": "sodra",
+      "file": "sodra.glb",
+      "size": 0,
+      "triangleCount": 0,
+      "requiredNodes": ["LM_Sodra_Root", "Anchor_Hotspot", "Anchor_Label"],
+      "optionalAnimations": [],
+      "defaultScale": [1, 1, 1],
+      "defaultRotation": [0, 0, 0],
+      "hotspotAnchor": "Anchor_Hotspot",
+      "labelAnchor": "Anchor_Label"
+    },
+    {
+      "id": "dasa",
+      "file": "dasa-forestry.glb",
+      "size": 0,
+      "triangleCount": 0,
+      "requiredNodes": ["LM_DasaForestry_Root", "Anchor_Hotspot", "Anchor_Label"],
+      "optionalAnimations": ["SensorPulse"],
+      "defaultScale": [1, 1, 1],
+      "defaultRotation": [0, 0, 0],
+      "hotspotAnchor": "Anchor_Hotspot",
+      "labelAnchor": "Anchor_Label"
+    },
+    {
+      "id": "education",
+      "file": "education.glb",
+      "size": 0,
+      "triangleCount": 0,
+      "requiredNodes": ["LM_Education_Root", "Anchor_Hotspot", "Anchor_Label"],
+      "optionalAnimations": [],
+      "defaultScale": [1, 1, 1],
+      "defaultRotation": [0, 0, 0],
+      "hotspotAnchor": "Anchor_Hotspot",
+      "labelAnchor": "Anchor_Label"
+    }
+  ]
+}
