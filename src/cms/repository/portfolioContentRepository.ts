@@ -30,6 +30,26 @@ function logCmsFallback(error: unknown) {
   }
 }
 
+function mergeExperienceFallback(
+  locale: Locale,
+  candidate: PortfolioContent,
+): PortfolioContent {
+  const fallback = content[locale];
+
+  if (candidate.experience.items.length > 0) {
+    return candidate;
+  }
+
+  if (import.meta.env.DEV) {
+    console.warn('CMS experience content was empty; using bundled experience entries.');
+  }
+
+  return {
+    ...candidate,
+    experience: fallback.experience,
+  };
+}
+
 export async function loadPortfolioContent(
   locale: Locale,
   signal?: AbortSignal,
@@ -47,16 +67,18 @@ export async function loadPortfolioContent(
       signal,
     });
 
-    writeCachedPortfolioContent(locale, cmsContent);
+    const normalizedContent = mergeExperienceFallback(locale, cmsContent);
 
-    return { content: cmsContent, source: 'cms' };
+    writeCachedPortfolioContent(locale, normalizedContent);
+
+    return { content: normalizedContent, source: 'cms' };
   } catch (error) {
     logCmsFallback(error);
 
     const cached = readCachedPortfolioContent(locale);
 
     if (cached) {
-      return { content: cached, source: 'cache' };
+      return { content: mergeExperienceFallback(locale, cached), source: 'cache' };
     }
 
     return { content: fallback, source: 'fallback' };

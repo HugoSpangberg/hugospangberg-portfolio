@@ -61,4 +61,36 @@ describe('portfolioContentRepository', () => {
     expect(result.source).toBe('fallback');
     expect(result.content.sayHi.buttonLabel).toBe('Klicka på mig');
   });
+
+  it('falls back to bundled experience content when CMS experience items are empty', async () => {
+    import.meta.env.VITE_CMS_ENABLED = 'true';
+    import.meta.env.VITE_UMBRACO_BASE_URL = 'https://cms.example.com';
+    import.meta.env.VITE_UMBRACO_CONTENT_ROUTE = '/portfolio';
+
+    vi.mocked(fetch).mockResolvedValue(
+      new Response(
+        JSON.stringify({
+          contentType: 'portfolioHome',
+          properties: {
+            portfolioContent: {
+              ...content.en,
+              hero: {
+                ...content.en.hero,
+                title: 'CMS title',
+              },
+              experience: { items: [] },
+            },
+          },
+        }),
+        { status: 200 },
+      ),
+    );
+
+    const result = await loadPortfolioContent('en');
+
+    expect(result.source).toBe('cms');
+    expect(result.content.hero.title).toBe('CMS title');
+    expect(result.content.experience.items).toHaveLength(content.en.experience.items.length);
+    expect(result.content.experience.title).toBe(content.en.experience.title);
+  });
 });

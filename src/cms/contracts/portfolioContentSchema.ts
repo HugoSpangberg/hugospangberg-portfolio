@@ -8,6 +8,16 @@ const heroActionSchema = z.object({
 });
 
 const textListSchema = z.array(z.string().min(1));
+const experienceItemSchema = z
+  .object({
+    company: z.string().min(1),
+    role: z.string().min(1),
+    period: z.string().min(1),
+    description: z.string().min(1),
+    focus: z.array(z.string().min(1)).optional(),
+    impact: z.array(z.string().min(1)).optional(),
+  })
+  .passthrough();
 
 export const portfolioContentSchema = z
   .object({
@@ -48,7 +58,7 @@ export const portfolioContentSchema = z
       .passthrough(),
     skills: z.object({ items: z.array(z.unknown()) }).passthrough(),
     systemThinking: z.object({ cards: z.array(z.unknown()) }).passthrough(),
-    experience: z.object({ items: z.array(z.unknown()) }).passthrough(),
+    experience: z.object({ items: z.array(experienceItemSchema) }).passthrough(),
     education: z.object({ items: z.array(z.unknown()) }).passthrough(),
     labs: z.object({ items: z.array(z.unknown()) }).passthrough(),
     sayHi: z
