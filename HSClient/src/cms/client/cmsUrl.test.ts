@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { buildDeliveryApiContentUrl, localeToCulture } from './cmsUrl';
+import { buildPortfolioApiContentUrl, localeToCulture } from './cmsUrl';
 
 describe('cmsUrl', () => {
   it('maps frontend locales to Umbraco cultures', () => {
@@ -7,27 +7,21 @@ describe('cmsUrl', () => {
     expect(localeToCulture.en).toBe('en-US');
   });
 
-  it('builds a Content Delivery API v2 item URL', () => {
+  it('builds an HSApi portfolio URL', () => {
     expect(
-      buildDeliveryApiContentUrl({
-        baseUrl: 'https://cms.example.com/',
-        route: '/portfolio',
+      buildPortfolioApiContentUrl({
+        baseUrl: 'https://api.example.com/',
         locale: 'sv',
       }),
-    ).toBe(
-      'https://cms.example.com/umbraco/delivery/api/v2/content/item/portfolio?culture=sv-SE',
-    );
+    ).toBe('https://api.example.com/api/v1/portfolio/sv');
   });
 
-  it('URL-encodes route segments without losing slashes', () => {
+  it('URL-encodes the locale segment', () => {
     expect(
-      buildDeliveryApiContentUrl({
-        baseUrl: 'https://cms.example.com',
-        route: '/sv/om mig',
+      buildPortfolioApiContentUrl({
+        baseUrl: 'https://api.example.com',
         locale: 'en',
       }),
-    ).toBe(
-      'https://cms.example.com/umbraco/delivery/api/v2/content/item/sv/om%20mig?culture=en-US',
-    );
+    ).toBe('https://api.example.com/api/v1/portfolio/en');
   });
 });

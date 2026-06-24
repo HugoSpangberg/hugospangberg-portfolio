@@ -1,6 +1,5 @@
 export { fetchPortfolioContentFromDeliveryApi } from './client/deliveryApiClient';
-export { buildDeliveryApiContentUrl, localeToCulture } from './client/cmsUrl';
-export { mapPortfolioContent } from './mappers/mapPortfolioContent';
+export { buildPortfolioApiContentUrl, localeToCulture } from './client/cmsUrl';
 export {
   PortfolioContentProvider,
   usePortfolioContent,

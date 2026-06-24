@@ -1,12 +1,11 @@
 import type { Locale, PortfolioContent } from '../../data/content';
-import { deliveryApiContentResponseSchema } from '../contracts/deliveryApiContracts';
-import { mapPortfolioContent } from '../mappers/mapPortfolioContent';
-import { buildDeliveryApiContentUrl, localeToCulture } from './cmsUrl';
+import { portfolioApiContentResponseSchema } from '../contracts/deliveryApiContracts';
+import { portfolioContentSchema } from '../contracts/portfolioContentSchema';
+import { buildPortfolioApiContentUrl, localeToCulture } from './cmsUrl';
 import { fetchJsonWithTimeout } from './cmsHttpClient';
 
 export type DeliveryApiClientOptions = {
   baseUrl: string;
-  route: string;
   timeoutMs: number;
   signal?: AbortSignal;
 };
@@ -15,9 +14,8 @@ export async function fetchPortfolioContentFromDeliveryApi(
   locale: Locale,
   options: DeliveryApiClientOptions,
 ): Promise<PortfolioContent> {
-  const url = buildDeliveryApiContentUrl({
+  const url = buildPortfolioApiContentUrl({
     baseUrl: options.baseUrl,
-    route: options.route,
     locale,
   });
 
@@ -29,7 +27,8 @@ export async function fetchPortfolioContentFromDeliveryApi(
     },
   });
 
-  const deliveryContent = deliveryApiContentResponseSchema.parse(json);
+  const apiContent = portfolioApiContentResponseSchema.parse(json);
+  const parsedContent = portfolioContentSchema.parse(apiContent.content);
 
-  return mapPortfolioContent(deliveryContent);
+  return parsedContent as unknown as PortfolioContent;
 }

@@ -1,14 +1,14 @@
 import { z } from 'zod';
 
-export const deliveryApiContentResponseSchema = z
+export const portfolioApiContentResponseSchema = z
   .object({
-    contentType: z.string().optional(),
-    name: z.string().optional(),
-    route: z.unknown().optional(),
-    properties: z.record(z.string(), z.unknown()).optional(),
+    locale: z.enum(['sv', 'en']),
+    source: z.string().min(1),
+    generatedAtUtc: z.string().min(1),
+    content: z.unknown(),
   })
   .passthrough();
 
-export type DeliveryApiContentResponse = z.infer<
-  typeof deliveryApiContentResponseSchema
+export type PortfolioApiContentResponse = z.infer<
+  typeof portfolioApiContentResponseSchema
 >;

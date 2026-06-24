@@ -15,8 +15,8 @@ describe('portfolioContentRepository', () => {
     Object.assign(import.meta.env, originalEnv);
   });
 
-  it('uses bundled fallback content when CMS is disabled', async () => {
-    import.meta.env.VITE_CMS_ENABLED = 'false';
+  it('uses bundled fallback content when API is disabled', async () => {
+    import.meta.env.VITE_API_ENABLED = 'false';
 
     await expect(loadPortfolioContent('sv')).resolves.toMatchObject({
       source: 'fallback',
@@ -24,16 +24,17 @@ describe('portfolioContentRepository', () => {
     });
   });
 
-  it('uses CMS content when the Delivery API returns a valid response', async () => {
-    import.meta.env.VITE_CMS_ENABLED = 'true';
-    import.meta.env.VITE_UMBRACO_BASE_URL = 'https://cms.example.com';
-    import.meta.env.VITE_UMBRACO_CONTENT_ROUTE = '/portfolio';
+  it('uses API content when HSApi returns a valid response', async () => {
+    import.meta.env.VITE_API_ENABLED = 'true';
+    import.meta.env.VITE_API_BASE_URL = 'https://api.example.com';
 
     vi.mocked(fetch).mockResolvedValue(
       new Response(
         JSON.stringify({
-          contentType: 'portfolioHome',
-          properties: { portfolioContent: content.en },
+          locale: 'en',
+          source: 'fallback',
+          generatedAtUtc: '2026-06-24T00:00:00Z',
+          content: content.en,
         }),
         { status: 200 },
       ),
@@ -41,19 +42,19 @@ describe('portfolioContentRepository', () => {
 
     const result = await loadPortfolioContent('en');
 
-    expect(result.source).toBe('cms');
+    expect(result.source).toBe('api');
     expect(result.content.seo.title).toBe(content.en.seo.title);
     expect(fetch).toHaveBeenCalledWith(
-      'https://cms.example.com/umbraco/delivery/api/v2/content/item/portfolio?culture=en-US',
+      'https://api.example.com/api/v1/portfolio/en',
       expect.objectContaining({
         headers: expect.objectContaining({ 'Accept-Language': 'en-US' }),
       }),
     );
   });
 
-  it('falls back without touching Say Hi when CMS is unavailable', async () => {
-    import.meta.env.VITE_CMS_ENABLED = 'true';
-    import.meta.env.VITE_UMBRACO_BASE_URL = 'https://cms.example.com';
+  it('falls back without touching Say Hi when API is unavailable', async () => {
+    import.meta.env.VITE_API_ENABLED = 'true';
+    import.meta.env.VITE_API_BASE_URL = 'https://api.example.com';
     vi.mocked(fetch).mockResolvedValue(new Response('Not found', { status: 404 }));
 
     const result = await loadPortfolioContent('sv');
@@ -62,24 +63,23 @@ describe('portfolioContentRepository', () => {
     expect(result.content.sayHi.buttonLabel).toBe('Klicka på mig');
   });
 
-  it('falls back to bundled experience content when CMS experience items are empty', async () => {
-    import.meta.env.VITE_CMS_ENABLED = 'true';
-    import.meta.env.VITE_UMBRACO_BASE_URL = 'https://cms.example.com';
-    import.meta.env.VITE_UMBRACO_CONTENT_ROUTE = '/portfolio';
+  it('falls back to bundled experience content when API experience items are empty', async () => {
+    import.meta.env.VITE_API_ENABLED = 'true';
+    import.meta.env.VITE_API_BASE_URL = 'https://api.example.com';
 
     vi.mocked(fetch).mockResolvedValue(
       new Response(
         JSON.stringify({
-          contentType: 'portfolioHome',
-          properties: {
-            portfolioContent: {
-              ...content.en,
-              hero: {
-                ...content.en.hero,
-                title: 'CMS title',
-              },
-              experience: { items: [] },
+          locale: 'en',
+          source: 'cms',
+          generatedAtUtc: '2026-06-24T00:00:00Z',
+          content: {
+            ...content.en,
+            hero: {
+              ...content.en.hero,
+              title: 'API title',
             },
+            experience: { items: [] },
           },
         }),
         { status: 200 },
@@ -88,8 +88,8 @@ describe('portfolioContentRepository', () => {
 
     const result = await loadPortfolioContent('en');
 
-    expect(result.source).toBe('cms');
-    expect(result.content.hero.title).toBe('CMS title');
+    expect(result.source).toBe('api');
+    expect(result.content.hero.title).toBe('API title');
     expect(result.content.experience.items).toHaveLength(content.en.experience.items.length);
     expect(result.content.experience.title).toBe(content.en.experience.title);
   });

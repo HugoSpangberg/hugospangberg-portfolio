@@ -1,7 +1,7 @@
 import type { Locale } from '../../../data/content';
 import type { SayHiApiRequest, SayHiApiResponse } from '../model/sayHiTypes';
 
-const defaultEndpoint = '/api/say-hi';
+const defaultEndpoint = '/api/v1/greetings';
 
 export type SayHiClientOptions = {
   endpoint?: string;

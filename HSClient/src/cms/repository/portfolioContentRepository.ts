@@ -5,28 +5,27 @@ import {
 } from '../cache/contentCache';
 import { fetchPortfolioContentFromDeliveryApi } from '../client/deliveryApiClient';
 
-export type PortfolioContentSource = 'cms' | 'cache' | 'fallback';
+export type PortfolioContentSource = 'api' | 'cache' | 'fallback';
 
 export type PortfolioContentResult = {
   content: PortfolioContent;
   source: PortfolioContentSource;
 };
 
-function isCmsEnabled() {
-  return import.meta.env.VITE_CMS_ENABLED === 'true';
+function isApiEnabled() {
+  return import.meta.env.VITE_API_ENABLED !== 'false';
 }
 
-function getCmsConfig() {
+function getApiConfig() {
   return {
-    baseUrl: import.meta.env.VITE_UMBRACO_BASE_URL ?? '',
-    route: import.meta.env.VITE_UMBRACO_CONTENT_ROUTE ?? '/',
-    timeoutMs: Number(import.meta.env.VITE_CMS_REQUEST_TIMEOUT_MS ?? 3500),
+    baseUrl: import.meta.env.VITE_API_BASE_URL ?? '',
+    timeoutMs: Number(import.meta.env.VITE_API_REQUEST_TIMEOUT_MS ?? 3500),
   };
 }
 
-function logCmsFallback(error: unknown) {
+function logApiFallback(error: unknown) {
   if (import.meta.env.DEV) {
-    console.warn('CMS content could not be loaded; using cached or bundled content.', error);
+    console.warn('API content could not be loaded; using cached or bundled content.', error);
   }
 }
 
@@ -41,7 +40,7 @@ function mergeExperienceFallback(
   }
 
   if (import.meta.env.DEV) {
-    console.warn('CMS experience content was empty; using bundled experience entries.');
+    console.warn('API experience content was empty; using bundled experience entries.');
   }
 
   return {
@@ -55,25 +54,29 @@ export async function loadPortfolioContent(
   signal?: AbortSignal,
 ): Promise<PortfolioContentResult> {
   const fallback = content[locale];
-  const config = getCmsConfig();
+  const config = getApiConfig();
 
-  if (!isCmsEnabled() || !config.baseUrl) {
+  if (!isApiEnabled() || !config.baseUrl) {
     return { content: fallback, source: 'fallback' };
   }
 
   try {
-    const cmsContent = await fetchPortfolioContentFromDeliveryApi(locale, {
+    const apiContent = await fetchPortfolioContentFromDeliveryApi(locale, {
       ...config,
       signal,
     });
 
-    const normalizedContent = mergeExperienceFallback(locale, cmsContent);
+    const normalizedContent = mergeExperienceFallback(locale, apiContent);
 
     writeCachedPortfolioContent(locale, normalizedContent);
 
-    return { content: normalizedContent, source: 'cms' };
+    return { content: normalizedContent, source: 'api' };
   } catch (error) {
-    logCmsFallback(error);
+    if (signal?.aborted) {
+      throw error;
+    }
+
+    logApiFallback(error);
 
     const cached = readCachedPortfolioContent(locale);
 
