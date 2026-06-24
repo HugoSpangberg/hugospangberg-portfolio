@@ -1,11 +1,12 @@
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 
-COPY cms/HugoPortfolio.Cms/HugoPortfolio.Cms.csproj cms/HugoPortfolio.Cms/
-RUN dotnet restore cms/HugoPortfolio.Cms/HugoPortfolio.Cms.csproj
+COPY Directory.Build.props Directory.Packages.props global.json ./
+COPY HSCms/HSCms.csproj HSCms/
+RUN dotnet restore HSCms/HSCms.csproj
 
-COPY cms/HugoPortfolio.Cms cms/HugoPortfolio.Cms
-RUN dotnet publish cms/HugoPortfolio.Cms/HugoPortfolio.Cms.csproj \
+COPY HSCms HSCms
+RUN dotnet publish HSCms/HSCms.csproj \
   --configuration Release \
   --no-restore \
   --output /app/publish
@@ -25,4 +26,4 @@ COPY --from=build /app/publish .
 HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 \
   CMD curl --fail http://localhost:8080/health/live || exit 1
 
-ENTRYPOINT ["dotnet", "HugoPortfolio.Cms.dll"]
+ENTRYPOINT ["dotnet", "HSCms.dll"]

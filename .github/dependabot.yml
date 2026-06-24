@@ -15,7 +15,7 @@ updates:
           - '@testing-library/*'
           - '@playwright/*'
   - package-ecosystem: nuget
-    directory: /cms
+    directory: /
     schedule:
       interval: weekly
     groups:

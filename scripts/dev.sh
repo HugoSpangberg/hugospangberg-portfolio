@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-npm run dev:frontend &
+npm run dev:client &
 frontend_pid=$!
 
 npm run dev:cms &

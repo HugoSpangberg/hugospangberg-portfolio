@@ -12,11 +12,11 @@ foreach ($name in $required) {
   }
 }
 
-dotnet restore cms/HugoPortfolio.Cms.slnx
+dotnet restore HSCms/HSCms.csproj
 
-dotnet user-secrets set "Umbraco:CMS:Unattended:InstallUnattended" "true" --project cms/HugoPortfolio.Cms/HugoPortfolio.Cms.csproj
-dotnet user-secrets set "Umbraco:CMS:Unattended:UnattendedUserName" $env:UMBRACO_ADMIN_NAME --project cms/HugoPortfolio.Cms/HugoPortfolio.Cms.csproj
-dotnet user-secrets set "Umbraco:CMS:Unattended:UnattendedUserEmail" $env:UMBRACO_ADMIN_EMAIL --project cms/HugoPortfolio.Cms/HugoPortfolio.Cms.csproj
-dotnet user-secrets set "Umbraco:CMS:Unattended:UnattendedUserPassword" $env:UMBRACO_ADMIN_PASSWORD --project cms/HugoPortfolio.Cms/HugoPortfolio.Cms.csproj
+dotnet user-secrets set "Umbraco:CMS:Unattended:InstallUnattended" "true" --project HSCms/HSCms.csproj
+dotnet user-secrets set "Umbraco:CMS:Unattended:UnattendedUserName" $env:UMBRACO_ADMIN_NAME --project HSCms/HSCms.csproj
+dotnet user-secrets set "Umbraco:CMS:Unattended:UnattendedUserEmail" $env:UMBRACO_ADMIN_EMAIL --project HSCms/HSCms.csproj
+dotnet user-secrets set "Umbraco:CMS:Unattended:UnattendedUserPassword" $env:UMBRACO_ADMIN_PASSWORD --project HSCms/HSCms.csproj
 
 Write-Host "CMS user secrets configured. Run: npm run dev:cms"
