@@ -90,6 +90,13 @@
     0 0 34px rgb(var(--brand-accent-rgb) / 0.14);
 }
 
+.education-card .card-node {
+  top: auto;
+  right: 1rem;
+  bottom: 1rem;
+  opacity: 0.58;
+}
+
 .education-card__topline {
   display: flex;
   align-items: flex-start;
