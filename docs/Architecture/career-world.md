@@ -24,7 +24,7 @@ They are used by localization, section scrolling, tests and hotspot state.
 
 ## Adding A Landmark
 
-Add a Blender builder under `Assets/Blender/Scripts`, export a GLB with `Anchor_Hotspot`, `Anchor_Label` and `Anchor_Light`, add the manifest entry in `export_all.py`, add localized content in `careerLocations.ts`, then run:
+Add a Blender builder under `Assets/Blender/Scripts`, export a GLB with `Anchor_Hotspot`, `Anchor_Label`, `Anchor_Light` and `Anchor_CameraFocus`, add the manifest entry in `export_all.py`, add localized content in `careerLocations.ts`, then run:
 
 ```bash
 npm run models:export

@@ -19,13 +19,13 @@ The environment must contain:
 
 Each landmark must contain:
 
-`Anchor_Hotspot`, `Anchor_Label`, `Anchor_Light`
+`Anchor_Hotspot`, `Anchor_Label`, `Anchor_Light`, `Anchor_CameraFocus`
 
 Anchors are exported as named empty nodes. Three.js validates them before replacing fallback geometry.
 
 ## Naming
 
-Use deliberate names such as `LM_Dasa_HarvesterBody`, `LM_Filmstaden_CurvedMarquee` and `Anchor_Label`. Avoid default names as object names. Blender may still report primitive mesh data names in exporter logs, but object names in the generated report must remain deliberate.
+Use deliberate names such as `LM_Dasa_HarvesterBody`, `LM_Filmstaden_CurvedMarquee` and `Anchor_Label`. Avoid default names as object names and mesh datablock names.
 
 ## Scale
 
