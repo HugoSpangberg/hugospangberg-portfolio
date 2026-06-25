@@ -1,49 +1,52 @@
+from __future__ import annotations
+
 from math import pi
 
-from common import add_anchor, collection, cube, cylinder, material, reset_scene, save_and_export
+from blender_common import add_anchor, collection, cube, cylinder, empty_root, reset_scene, save_and_export, shallow_canopy
+from geometry_helpers import door, window
+from materials import career_materials
 
 reset_scene()
 collection("COL_Filmstaden")
+mat = career_materials()
+root = empty_root("LM_Filmstaden_Root")
 
-brick = material("MAT_Brick_RedBrown", (0.48, 0.21, 0.16, 1), 0.86)
-brick_dark = material("MAT_Brick_Shadow", (0.34, 0.12, 0.1, 1), 0.9)
-marquee = material("MAT_Filmstaden_MarqueeRed", (0.72, 0.04, 0.035, 1), 0.58, emission=(0.32, 0.02, 0.015, 1), emission_strength=0.18)
-glass = material("MAT_Dark_Teal_Glass", (0.035, 0.11, 0.12, 1), 0.28, 0.12)
-stone = material("MAT_Muted_White_Stone", (0.76, 0.72, 0.64, 1), 0.82)
-warm = material("MAT_Warm_Canopy_Light", (0.95, 0.74, 0.35, 1), 0.48, emission=(0.95, 0.52, 0.16, 1), emission_strength=0.75)
+cube("LM_Filmstaden_BrickFacade", (0, 0, 1.22), (2.78, 0.30, 1.22), mat["brick_warm"], 0.018, root)
+cube("LM_Filmstaden_LightStoneGroundFloor", (0, -0.01, 0.34), (2.95, 0.34, 0.34), mat["concrete_light"], 0.012, root)
+cube("LM_Filmstaden_RecessedEntranceBay", (0, -0.22, 0.43), (0.68, 0.12, 0.43), mat["brick_dark"], 0.006, root)
+cube("LM_Filmstaden_RoofCornice", (0, -0.02, 2.43), (2.98, 0.34, 0.075), mat["concrete_light"], 0.006, root)
+cube("LM_Filmstaden_DarkRoofCap", (0, 0.02, 2.52), (3.04, 0.36, 0.045), mat["brick_dark"], 0.004, root)
 
-cube("LM_Filmstaden_Root", (0, 0, 1.15), (2.95, 0.36, 1.15), brick, 0.035)
-cube("LM_Filmstaden_StoneGroundFloor", (0, -0.015, 0.28), (3.12, 0.42, 0.28), stone, 0.025)
-cube("LM_Filmstaden_RoofCornice", (0, -0.02, 2.34), (3.15, 0.42, 0.09), brick_dark, 0.018)
-cube("LM_Filmstaden_DarkRedEntranceDoors", (0, -0.46, 0.48), (0.64, 0.045, 0.46), glass, 0.012)
+for row, z in enumerate([1.0, 1.42, 1.84]):
+    for col, x in enumerate([-1.08, -0.78, -0.48, -0.18, 0.18, 0.48, 0.78, 1.08]):
+        glass = mat["window_warm"] if row == 0 and col in [2, 5] else mat["glass_dark"]
+        window(f"LM_Filmstaden_UpperWindow_{row}_{col}", x, -0.168, z, 0.14, 0.18, mat["concrete_light"], glass, root)
 
-for row in range(3):
-    for col in range(8):
-        x = -2.42 + col * 0.69
-        cube(f"LM_Filmstaden_WindowFrame_{row}_{col}", (x, -0.385, 0.98 + row * 0.39), (0.19, 0.035, 0.14), stone, 0.008)
-        cube(f"LM_Filmstaden_WindowGlass_{row}_{col}", (x, -0.414, 0.98 + row * 0.39), (0.145, 0.018, 0.105), glass, 0.004)
+for index, x in enumerate([-1.08, -0.68, 0.68, 1.08]):
+    cube(f"LM_Filmstaden_GroundFloorColumn_{index}", (x, -0.2, 0.42), (0.045, 0.06, 0.45), mat["concrete_light"], 0.006, root)
+for index, x in enumerate([-1.24, -0.94, 0.94, 1.24]):
+    cube(f"LM_Filmstaden_PosterCase_{index}", (x, -0.205, 0.42), (0.15, 0.026, 0.32), mat["glass_dark"], 0.004, root)
+    cube(f"LM_Filmstaden_PosterInset_{index}", (x, -0.224, 0.42), (0.108, 0.009, 0.25), mat["window_warm"], 0.002, root)
 
-for index, x in enumerate([-1.1, -0.72, 0.72, 1.1]):
-    cube(f"LM_Filmstaden_EntranceColumn_{index}", (x, -0.49, 0.44), (0.08, 0.07, 0.52), stone, 0.012)
+door("LM_Filmstaden_RedFramedEntrance", 0, -0.23, 0.42, 0.5, 0.42, mat["filmstaden_red"], mat["glass_dark"], root)
 
-# Real curved marquee: half-cylinder body plus red horizontal bands.
-cylinder("LM_Filmstaden_CurvedMarquee", (0, -0.55, 0.83), 0.42, 1.62, marquee, 32, (0, pi / 2, 0), 0.015)
-cube("LM_Filmstaden_MarqueeBand_Upper", (0, -0.79, 1.02), (1.72, 0.035, 0.035), marquee, 0.006)
-cube("LM_Filmstaden_MarqueeBand_Lower", (0, -0.79, 0.66), (1.72, 0.035, 0.035), marquee, 0.006)
-for index, x in enumerate([-0.62, -0.31, 0, 0.31, 0.62]):
-    cylinder(f"LM_Filmstaden_CanopyBulb_{index}", (x, -0.86, 0.66), 0.035, 0.022, warm, 12, (pi / 2, 0, 0), 0)
+# Shallow curved canopy attached to the facade, not a tunnel-shaped cylinder.
+shallow_canopy("LM_Filmstaden_ShallowCurvedMarquee", 2.34, -0.17, -0.43, 0.12, 0.73, 0.9, mat["filmstaden_red"], 22, root, 0.01)
+for index, z in enumerate([0.79, 0.86, 0.92]):
+    shallow_canopy(f"LM_Filmstaden_MarqueeHorizontalBand_{index}", 2.38, -0.185, -0.45, 0.12, z, z + 0.014, mat["concrete_light"], 22, root, 0.001)
+for index, x in enumerate([-0.84, -0.5, -0.16, 0.16, 0.5, 0.84]):
+    cylinder(f"LM_Filmstaden_CanopyDownlight_{index}", (x, -0.43, 0.70), 0.018, 0.014, mat["window_warm"], 12, (pi / 2, 0, 0), 0, root)
 
-cylinder("LM_Filmstaden_RoundSign", (0, -0.50, 1.62), 0.28, 0.04, marquee, 32, (pi / 2, 0, 0), 0.006)
-cube("LM_Filmstaden_RaisedF_Stem", (-0.045, -0.535, 1.64), (0.035, 0.015, 0.17), stone, 0.003)
-cube("LM_Filmstaden_RaisedF_Top", (0.045, -0.535, 1.72), (0.125, 0.015, 0.03), stone, 0.003)
-cube("LM_Filmstaden_RaisedF_Mid", (0.025, -0.535, 1.63), (0.095, 0.015, 0.028), stone, 0.003)
+cylinder("LM_Filmstaden_RoundFSign_Backplate", (0, -0.19, 1.55), 0.21, 0.032, mat["filmstaden_red"], 32, (pi / 2, 0, 0), 0.004, root)
+cube("LM_Filmstaden_RaisedF_Stem", (-0.045, -0.212, 1.56), (0.028, 0.009, 0.13), mat["concrete_light"], 0.002, root)
+cube("LM_Filmstaden_RaisedF_Top", (0.03, -0.212, 1.62), (0.095, 0.009, 0.022), mat["concrete_light"], 0.002, root)
+cube("LM_Filmstaden_RaisedF_Mid", (0.015, -0.212, 1.55), (0.075, 0.009, 0.02), mat["concrete_light"], 0.002, root)
+cube("LM_Filmstaden_Wordmark_Base", (0.52, -0.19, 1.13), (0.38, 0.018, 0.065), mat["filmstaden_red"], 0.003, root)
+cube("LM_Filmstaden_Wordmark_RhythmA", (0.2, -0.19, 1.13), (0.09, 0.018, 0.058), mat["filmstaden_red"], 0.003, root)
+cube("LM_Filmstaden_Wordmark_RhythmB", (0.84, -0.19, 1.13), (0.09, 0.018, 0.058), mat["filmstaden_red"], 0.003, root)
 
-for index, x in enumerate([-1.34, 1.34]):
-    cube(f"LM_Filmstaden_PosterDisplay_{index}", (x, -0.48, 0.46), (0.22, 0.035, 0.34), glass, 0.006)
-    cube(f"LM_Filmstaden_PosterWarmInset_{index}", (x, -0.505, 0.46), (0.16, 0.012, 0.26), warm, 0.003)
-
-add_anchor("Anchor_Hotspot", (0, -0.82, 0.82))
-add_anchor("Anchor_Label", (0, -0.82, 2.58))
-add_anchor("Anchor_Light", (0, -0.95, 0.88))
-add_anchor("Anchor_CameraFocus", (0, -0.2, 1.12))
-save_and_export("filmstaden", "LM_Filmstaden_Root", ["LM_Filmstaden_Root", "Anchor_Hotspot", "Anchor_Label", "Anchor_Light"])
+add_anchor("Anchor_Hotspot", (0, -0.72, 0.82), root)
+add_anchor("Anchor_Label", (0, -0.72, 2.58), root)
+add_anchor("Anchor_Light", (0, -0.82, 0.86), root)
+add_anchor("Anchor_CameraFocus", (0, -0.16, 1.18), root)
+save_and_export("filmstaden", "LM_Filmstaden_Root", ["LM_Filmstaden_Root", "Anchor_Hotspot", "Anchor_Label", "Anchor_Light", "Anchor_CameraFocus"])
