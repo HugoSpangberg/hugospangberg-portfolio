@@ -33,6 +33,11 @@ function WorldInfoCard({
       </div>
       <p className="world-info-card__role">{location.role}</p>
       <p className="world-info-card__description">{location.summary}</p>
+      <div className="world-info-card__tags" aria-label={isSwedish ? 'Tekniker' : 'Technologies'}>
+        {location.tags.map((tag) => (
+          <span key={tag}>{tag}</span>
+        ))}
+      </div>
       <div className="world-info-card__actions">
         <button type="button" onClick={onReadMore}>
           {isSwedish ? 'Läs mer' : 'Read more'}

@@ -1,0 +1,81 @@
+{
+  "id": "visma",
+  "root": "LM_Visma_Root",
+  "blend": "Assets/Blender/Sources/visma.blend",
+  "glb": "Assets/Blender/Exports/visma.glb",
+  "runtimeGlb": "HSClient/public/models/career-world/visma.glb",
+  "file": "visma.glb",
+  "fileSize": 216316,
+  "objects": [
+    "LM_Visma_Root",
+    "LM_Visma_LeftWing",
+    "LM_Visma_RightWing",
+    "LM_Visma_DarkFlatRoofline",
+    "LM_Visma_GlassEntranceAtrium",
+    "LM_Visma_EntranceCanopy",
+    "LM_Visma_FrontSteps",
+    "LM_Visma_SignPlate",
+    "LM_Visma_SignAccent",
+    "LM_Visma_Window_L_0_0",
+    "LM_Visma_Window_L_0_1",
+    "LM_Visma_Window_L_0_2",
+    "LM_Visma_Window_L_0_3",
+    "LM_Visma_Window_L_1_0",
+    "LM_Visma_Window_L_1_1",
+    "LM_Visma_Window_L_1_2",
+    "LM_Visma_Window_L_1_3",
+    "LM_Visma_Window_L_2_0",
+    "LM_Visma_Window_L_2_1",
+    "LM_Visma_Window_L_2_2",
+    "LM_Visma_Window_L_2_3",
+    "LM_Visma_Window_R_0_0",
+    "LM_Visma_Window_R_0_1",
+    "LM_Visma_Window_R_0_2",
+    "LM_Visma_Window_R_0_3",
+    "LM_Visma_Window_R_1_0",
+    "LM_Visma_Window_R_1_1",
+    "LM_Visma_Window_R_1_2",
+    "LM_Visma_Window_R_1_3",
+    "LM_Visma_Window_R_2_0",
+    "LM_Visma_Window_R_2_1",
+    "LM_Visma_Window_R_2_2",
+    "LM_Visma_Window_R_2_3",
+    "LM_Visma_FrontTree_Trunk_0",
+    "LM_Visma_FrontTree_Crown_0",
+    "LM_Visma_FrontTree_Trunk_1",
+    "LM_Visma_FrontTree_Crown_1",
+    "Anchor_Hotspot",
+    "Anchor_Label",
+    "Anchor_Light",
+    "Anchor_CameraFocus"
+  ],
+  "triangleCount": 4164,
+  "meshCount": 37,
+  "materialCount": 7,
+  "textureCount": 2,
+  "animations": [],
+  "requiredNodes": [
+    "LM_Visma_Root",
+    "Anchor_Hotspot",
+    "Anchor_Label",
+    "Anchor_Light"
+  ],
+  "missingNodes": [],
+  "boundingBox": {
+    "min": [
+      -1.8515,
+      -0.73,
+      0.1
+    ],
+    "max": [
+      1.8515,
+      0.21,
+      1.9
+    ]
+  },
+  "dimensions": [
+    3.703,
+    0.94,
+    1.8
+  ]
+}

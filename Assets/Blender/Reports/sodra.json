@@ -1,0 +1,66 @@
+{
+  "id": "sodra",
+  "root": "LM_Sodra_Root",
+  "blend": "Assets/Blender/Sources/sodra.blend",
+  "glb": "Assets/Blender/Exports/sodra.glb",
+  "runtimeGlb": "HSClient/public/models/career-world/sodra.glb",
+  "file": "sodra.glb",
+  "fileSize": 125144,
+  "objects": [
+    "LM_Sodra_Root",
+    "LM_Sodra_WhiteFrameLower",
+    "LM_Sodra_WhiteFrameUpper",
+    "LM_Sodra_VerticalFin_0",
+    "LM_Sodra_VerticalFin_1",
+    "LM_Sodra_VerticalFin_2",
+    "LM_Sodra_VerticalFin_3",
+    "LM_Sodra_VerticalFin_4",
+    "LM_Sodra_VerticalFin_5",
+    "LM_Sodra_VerticalFin_6",
+    "LM_Sodra_VerticalFin_7",
+    "LM_Sodra_VerticalFin_8",
+    "LM_Sodra_VerticalFin_9",
+    "LM_Sodra_VerticalFin_10",
+    "LM_Sodra_VerticalFin_11",
+    "LM_Sodra_VerticalFin_12",
+    "LM_Sodra_LeftOffsetWing",
+    "LM_Sodra_RightOffsetWing",
+    "LM_Sodra_RoofOverhang",
+    "LM_Sodra_UpperGlassPavilion",
+    "LM_Sodra_GreenSign",
+    "LM_Sodra_GrassForeground",
+    "Anchor_Hotspot",
+    "Anchor_Label",
+    "Anchor_Light",
+    "Anchor_CameraFocus"
+  ],
+  "triangleCount": 2976,
+  "meshCount": 22,
+  "materialCount": 5,
+  "textureCount": 2,
+  "animations": [],
+  "requiredNodes": [
+    "LM_Sodra_Root",
+    "Anchor_Hotspot",
+    "Anchor_Label",
+    "Anchor_Light"
+  ],
+  "missingNodes": [],
+  "boundingBox": {
+    "min": [
+      -1.555,
+      -2.28,
+      0.075
+    ],
+    "max": [
+      1.555,
+      -0.17,
+      2.17
+    ]
+  },
+  "dimensions": [
+    3.1099,
+    2.11,
+    2.095
+  ]
+}
