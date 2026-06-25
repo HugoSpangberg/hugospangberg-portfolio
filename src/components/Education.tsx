@@ -1,4 +1,6 @@
 import type { Education as EducationItem } from '../data/content';
+import { getEducationBrand } from '../data/brandLogos';
+import BrandLogo from './BrandLogo';
 import SectionHeading from './SectionHeading';
 
 type EducationProps = {
@@ -26,15 +28,22 @@ function Education({ content }: EducationProps) {
           />
         </div>
         <div className="education__grid">
-          {content.items.map((item) => (
-            <article className="card" key={`${item.program}-${item.school}`}>
-              <span className="card-node" aria-hidden="true" />
-              <p className="meta">{item.period}</p>
-              <h3>{item.program}</h3>
-              <p className="muted">{item.school}</p>
-              <p>{item.description}</p>
-            </article>
-          ))}
+          {content.items.map((item) => {
+            const brand = getEducationBrand(item.school);
+
+            return (
+              <article className="card education-card" key={`${item.program}-${item.school}`}>
+                <span className="card-node" aria-hidden="true" />
+                <div className="education-card__topline">
+                  {brand && <BrandLogo brand={brand} />}
+                  <p className="meta">{item.period}</p>
+                </div>
+                <h3>{item.program}</h3>
+                <p className="muted">{item.school}</p>
+                <p>{item.description}</p>
+              </article>
+            );
+          })}
         </div>
       </div>
     </section>

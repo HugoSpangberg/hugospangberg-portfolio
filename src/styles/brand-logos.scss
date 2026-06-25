@@ -1,0 +1,150 @@
+.brand-logo {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  width: min(100%, 10.75rem);
+  min-height: 4.7rem;
+  place-items: center;
+  padding: 0.82rem 1rem;
+  overflow: hidden;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(227, 236, 232, 0.94)),
+    var(--brand-accent);
+  border: 1px solid rgb(var(--brand-accent-rgb) / 0.34);
+  border-radius: 0.9rem;
+  box-shadow:
+    0 16px 32px rgba(0, 0, 0, 0.2),
+    0 0 28px rgb(var(--brand-accent-rgb) / 0.1);
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease;
+}
+
+.brand-logo::before {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 3px;
+  content: '';
+  background: linear-gradient(90deg, transparent, var(--brand-accent), transparent);
+  opacity: 0.88;
+}
+
+.brand-logo::after {
+  position: absolute;
+  right: -1.5rem;
+  bottom: -2.25rem;
+  z-index: -1;
+  width: 5rem;
+  height: 5rem;
+  content: '';
+  background: radial-gradient(circle, rgb(var(--brand-accent-rgb) / 0.16), transparent 66%);
+}
+
+.brand-logo img {
+  display: block;
+  width: 100%;
+  max-width: 9rem;
+  height: auto;
+  max-height: 3.1rem;
+  object-fit: contain;
+  filter: saturate(0.94) contrast(1.05);
+}
+
+.brand-logo--stacked {
+  width: 8.25rem;
+  min-height: 5.4rem;
+}
+
+.brand-logo--stacked img {
+  max-width: 6.7rem;
+  max-height: 4.2rem;
+}
+
+.timeline-card__identity {
+  display: grid;
+  gap: 1rem;
+  align-content: start;
+}
+
+.timeline-card__identity h3 {
+  margin-bottom: 0.42rem;
+}
+
+.timeline-card__content {
+  min-width: 0;
+}
+
+.timeline-card:hover .brand-logo,
+.education-card:hover .brand-logo {
+  border-color: rgb(var(--brand-accent-rgb) / 0.5);
+  box-shadow:
+    0 18px 38px rgba(0, 0, 0, 0.24),
+    0 0 34px rgb(var(--brand-accent-rgb) / 0.16);
+  transform: translateY(-2px);
+}
+
+.timeline-card--featured .brand-logo {
+  box-shadow:
+    0 18px 36px rgba(0, 0, 0, 0.22),
+    0 0 34px rgb(var(--brand-accent-rgb) / 0.14);
+}
+
+.education-card .card-node {
+  top: auto;
+  right: 1rem;
+  bottom: 1rem;
+  opacity: 0.58;
+}
+
+.education-card__topline {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.15rem;
+}
+
+.education-card__topline .meta {
+  flex: 0 1 auto;
+  justify-content: flex-end;
+  margin: 0;
+  text-align: right;
+}
+
+.education-card h3 {
+  margin-bottom: 0.42rem;
+}
+
+@media (max-width: 760px) {
+  .brand-logo {
+    width: min(100%, 9.5rem);
+    min-height: 4.35rem;
+  }
+
+  .brand-logo--stacked {
+    width: 7.5rem;
+    min-height: 5rem;
+  }
+
+  .education-card__topline {
+    display: grid;
+    justify-items: start;
+  }
+
+  .education-card__topline .meta {
+    justify-content: flex-start;
+    text-align: left;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brand-logo {
+    transition: none;
+  }
+
+  .timeline-card:hover .brand-logo,
+  .education-card:hover .brand-logo {
+    transform: none;
+  }
+}
