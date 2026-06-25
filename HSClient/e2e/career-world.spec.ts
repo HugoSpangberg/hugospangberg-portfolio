@@ -26,9 +26,7 @@ test('career world opens a localized card and read more scrolls', async ({ page 
   await page.getByRole('button', { name: 'Filmstaden' }).click();
   await expect(page.locator('.world-info-card')).toContainText('Ledarskap & service');
 
-  await page.getByRole('button', { name: 'Läs mer' }).evaluate((button) => {
-    button.click();
-  });
+  await page.getByRole('button', { name: 'Läs mer' }).click();
   await expect(page.locator('#experience-filmstaden')).toBeInViewport();
   expect(consoleErrors).toEqual([]);
 });

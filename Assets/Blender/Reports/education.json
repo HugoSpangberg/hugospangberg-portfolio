@@ -5,7 +5,7 @@
   "glb": "Assets/Blender/Exports/education.glb",
   "runtimeGlb": "HSClient/public/models/career-world/education.glb",
   "file": "education.glb",
-  "fileSize": 414260,
+  "fileSize": 453104,
   "objects": [
     "LM_Education_Root",
     "LM_Education_MainBrickFacade",
@@ -13,8 +13,11 @@
     "LM_Education_RightWing",
     "LM_Education_StonePlinth",
     "LM_Education_CentralEntranceProjection",
+    "LM_Education_CorniceBand",
     "LM_Education_MainSlateRoof",
     "LM_Education_CentralRoofCrown",
+    "LM_Education_LeftWingRoofSeat",
+    "LM_Education_RightWingRoofSeat",
     "LM_Education_DecorativeBrickPillar_0",
     "LM_Education_DecorativeBrickPillar_1",
     "LM_Education_DecorativeBrickPillar_2",
@@ -79,11 +82,16 @@
     "LM_Education_CentralWindow_1_Frame",
     "LM_Education_CentralWindow_1_Glass",
     "LM_Education_CentralWindow_1_Sill",
+    "LM_Education_EntranceStonePier_Left",
+    "LM_Education_EntranceStonePier_Right",
+    "LM_Education_EntranceArchedStoneHeader",
+    "LM_Education_EntranceRecessShadow",
     "LM_Education_ArchedMainDoor_Frame",
     "LM_Education_ArchedMainDoor_LeftGlass",
     "LM_Education_ArchedMainDoor_RightGlass",
     "LM_Education_ArchedMainDoor_Handle",
-    "LM_Education_ArchedDoorCrown",
+    "LM_Education_EntranceSteps_Upper",
+    "LM_Education_EntranceSteps_Lower",
     "LM_Education_FrontPath",
     "LM_Education_SubtleVioletMarker",
     "Anchor_Hotspot",
@@ -91,8 +99,8 @@
     "Anchor_Light",
     "Anchor_CameraFocus"
   ],
-  "triangleCount": 8356,
-  "meshCount": 78,
+  "triangleCount": 9348,
+  "meshCount": 86,
   "materialCount": 8,
   "textureCount": 0,
   "animations": [],
@@ -112,13 +120,13 @@
     ],
     "max": [
       1.855,
-      0.26,
-      2.2746
+      0.27,
+      1.8449
     ]
   },
   "dimensions": [
     3.71,
-    1.25,
-    2.1846
+    1.26,
+    1.7549
   ]
 }

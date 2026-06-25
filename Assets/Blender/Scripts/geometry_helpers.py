@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from math import pi
+from math import cos, pi, sin
 
 import bpy
 from mathutils import Vector
@@ -79,16 +79,70 @@ def gabled_roof(
     return obj
 
 
+def arched_top(
+    name: str,
+    x: float,
+    y: float,
+    spring_z: float,
+    outer_radius: float,
+    inner_radius: float,
+    depth: float,
+    mat: bpy.types.Material,
+    root: bpy.types.Object,
+    segments: int = 18,
+) -> bpy.types.Object:
+    verts: list[tuple[float, float, float]] = []
+    for side_y in (y - depth * 0.5, y + depth * 0.5):
+        for radius in (outer_radius, inner_radius):
+            for index in range(segments + 1):
+                angle = pi - (pi * index / segments)
+                verts.append((x + cos(angle) * radius, side_y, spring_z + sin(angle) * radius))
+
+    outer_front = 0
+    inner_front = segments + 1
+    outer_back = (segments + 1) * 2
+    inner_back = (segments + 1) * 3
+    faces: list[tuple[int, ...]] = []
+    for index in range(segments):
+        faces.append((outer_front + index, outer_front + index + 1, inner_front + index + 1, inner_front + index))
+        faces.append((outer_back + index + 1, outer_back + index, inner_back + index, inner_back + index + 1))
+        faces.append((outer_front + index + 1, outer_front + index, outer_back + index, outer_back + index + 1))
+        faces.append((inner_front + index, inner_front + index + 1, inner_back + index + 1, inner_back + index))
+    faces.append((outer_front, inner_front, inner_back, outer_back))
+    faces.append((outer_front + segments, outer_back + segments, inner_back + segments, inner_front + segments))
+
+    mesh = bpy.data.meshes.new(f"{name}_Mesh")
+    mesh.from_pydata(verts, [], faces)
+    mesh.update()
+    obj = bpy.data.objects.new(name, mesh)
+    obj.data.materials.append(mat)
+    bpy.context.collection.objects.link(obj)
+    parent(obj, root)
+    bevel = obj.modifiers.new(f"{name}_Bevel", "BEVEL")
+    bevel.width = 0.004
+    bevel.segments = 1
+    obj.modifiers.new(f"{name}_WeightedNormals", "WEIGHTED_NORMAL")
+    return obj
+
+
 def pine_tree(name: str, x: float, y: float, scale: float, trunk_mat, needle_mat, root: bpy.types.Object) -> bpy.types.Object:
     group = bpy.data.objects.new(name, None)
     group.empty_display_type = "CONE"
     group.location = (0, 0, 0)
     bpy.context.collection.objects.link(group)
     parent(group, root)
-    cylinder(f"{name}_Trunk", (x, y, 0.24 * scale), 0.035 * scale, 0.48 * scale, trunk_mat, 7, root=group)
-    cone(f"{name}_Foliage_Lower", (x, y, 0.58 * scale), 0.22 * scale, 0.055 * scale, 0.42 * scale, needle_mat, 7, root=group)
-    cone(f"{name}_Foliage_Mid", (x, y, 0.82 * scale), 0.18 * scale, 0.04 * scale, 0.34 * scale, needle_mat, 7, root=group)
-    cone(f"{name}_Foliage_Top", (x, y, 1.02 * scale), 0.12 * scale, 0.015 * scale, 0.26 * scale, needle_mat, 7, root=group)
+    lean = ((x * 0.17 + y * 0.11) % 0.08) - 0.04
+    trunk = cylinder(f"{name}_Trunk", (x, y, 0.25 * scale), 0.03 * scale, 0.5 * scale, trunk_mat, 7, root=group)
+    trunk.rotation_euler[0] = lean
+    layers = [
+        ("Lower", 0.55, 0.24, 0.07, 0.34, -0.025, 0.018),
+        ("MidA", 0.74, 0.205, 0.055, 0.31, 0.018, -0.014),
+        ("MidB", 0.91, 0.17, 0.04, 0.28, -0.014, -0.006),
+        ("Top", 1.06, 0.11, 0.018, 0.24, 0.01, 0.012),
+    ]
+    for layer, z, r1, r2, depth, ox, oy in layers:
+        foliage = cone(f"{name}_Foliage_{layer}", (x + ox * scale, y + oy * scale, z * scale), r1 * scale, r2 * scale, depth * scale, needle_mat, 7, root=group)
+        foliage.rotation_euler[2] = (x + y + z) * 0.37
     return group
 
 
@@ -98,10 +152,16 @@ def birch_tree(name: str, x: float, y: float, scale: float, trunk_mat, leaf_mat,
     group.location = (0, 0, 0)
     bpy.context.collection.objects.link(group)
     parent(group, root)
-    cylinder(f"{name}_Trunk", (x, y, 0.34 * scale), 0.028 * scale, 0.68 * scale, trunk_mat, 8, root=group)
-    sphere(f"{name}_Crown_A", (x - 0.05 * scale, y, 0.78 * scale), 0.17 * scale, leaf_mat, 12, group)
-    sphere(f"{name}_Crown_B", (x + 0.07 * scale, y - 0.02 * scale, 0.9 * scale), 0.14 * scale, leaf_mat, 12, group)
-    sphere(f"{name}_Crown_C", (x, y + 0.06 * scale, 1.0 * scale), 0.13 * scale, leaf_mat, 12, group)
+    trunk = cylinder(f"{name}_Trunk", (x, y, 0.35 * scale), 0.023 * scale, 0.7 * scale, trunk_mat, 8, root=group)
+    trunk.rotation_euler[1] = ((x - y) % 0.08) - 0.04
+    for label, ox, oy, oz, radius in [
+        ("A", -0.06, 0.01, 0.76, 0.15),
+        ("B", 0.08, -0.03, 0.88, 0.14),
+        ("C", -0.01, 0.08, 1.0, 0.125),
+        ("D", 0.06, 0.05, 1.08, 0.105),
+    ]:
+        crown = sphere(f"{name}_Crown_{label}", (x + ox * scale, y + oy * scale, oz * scale), radius * scale, leaf_mat, 10, group)
+        crown.scale.z *= 0.78
     return group
 
 

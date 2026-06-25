@@ -5,7 +5,7 @@
   "glb": "Assets/Blender/Exports/sodra.glb",
   "runtimeGlb": "HSClient/public/models/career-world/sodra.glb",
   "file": "sodra.glb",
-  "fileSize": 424672,
+  "fileSize": 468428,
   "objects": [
     "LM_Sodra_Root",
     "LM_Sodra_CurvedGlassFacade",
@@ -30,12 +30,17 @@
     "LM_Sodra_RightConnectedWing",
     "LM_Sodra_LeftConnectedWing",
     "LM_Sodra_StructuralCore",
-    "LM_Sodra_RoofOverhang_CurvedBlock",
+    "LM_Sodra_AttachedCurvedRoofOverhang",
     "LM_Sodra_RoofDeck",
+    "LM_Sodra_PavilionSupportColumn_0",
+    "LM_Sodra_PavilionSupportColumn_1",
+    "LM_Sodra_PavilionSupportColumn_2",
     "LM_Sodra_UpperGlassPavilion",
     "LM_Sodra_PavilionRoof",
     "LM_Sodra_GreenSign",
     "LM_Sodra_OpenGrassForeground",
+    "LM_Sodra_RecessedEntrance",
+    "LM_Sodra_EntranceWalk",
     "LM_Sodra_FacadePanel_0_0_Frame",
     "LM_Sodra_FacadePanel_0_0_Glass",
     "LM_Sodra_FacadePanel_0_0_Sill",
@@ -83,9 +88,9 @@
     "Anchor_Light",
     "Anchor_CameraFocus"
   ],
-  "triangleCount": 10008,
-  "meshCount": 70,
-  "materialCount": 6,
+  "triangleCount": 11160,
+  "meshCount": 75,
+  "materialCount": 7,
   "textureCount": 0,
   "animations": [],
   "requiredNodes": [
@@ -98,19 +103,19 @@
   "missingNodes": [],
   "boundingBox": {
     "min": [
-      -1.4449,
-      -2.12,
-      0.1025
+      -1.4991,
+      -2.45,
+      0.0925
     ],
     "max": [
-      1.49,
+      1.4991,
       -0.65,
-      2.2225
+      2.1025
     ]
   },
   "dimensions": [
-    2.9349,
-    1.47,
-    2.12
+    2.9981,
+    1.8,
+    2.01
   ]
 }
