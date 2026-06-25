@@ -22,6 +22,7 @@
     "e2e": "npm --workspace HSClient run e2e",
     "api:generate": "npm --workspace HSClient run api:generate",
     "models:export": "bash Scripts/export-models.sh",
+    "models:preview": "bash Scripts/render-model-previews.sh",
     "models:validate": "npm --workspace HSClient run models:validate",
     "format": "prettier --check .",
     "format:write": "prettier --write ."

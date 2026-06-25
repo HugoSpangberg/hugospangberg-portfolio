@@ -9,6 +9,7 @@ import {
 import { updateDataPulses } from '../hero/DataPulse';
 import { createSpaceBackdrop } from '../hero/SpaceBackdrop';
 import { careerMapItems } from '../hero/careerMap';
+import { loadCareerWorldAssets } from '../../features/career-world';
 import WorldFallback from './WorldFallback';
 import type { Locale } from '../../data/content';
 import type { CareerWorldLocation } from './careerLocations';
@@ -176,8 +177,9 @@ function CareerWorldScene({
     void Promise.all([
       import('three'),
       import('three/examples/jsm/controls/OrbitControls.js'),
+      import('three/examples/jsm/loaders/GLTFLoader.js'),
     ])
-      .then(([THREE, controlsModule]) => {
+      .then(([THREE, controlsModule, loaderModule]) => {
         if (cancelled || !mountRef.current) {
           return;
         }
@@ -256,11 +258,23 @@ function CareerWorldScene({
         const world = createCareerWorld(THREE, compact, worldLabelsRef.current);
         const backdrop = createSpaceBackdrop(THREE, compact);
         const aurora = compact ? new THREE.Group() : createAurora(THREE);
+        const abortController = new AbortController();
+        let loadedAssets: Awaited<ReturnType<typeof loadCareerWorldAssets>> | undefined;
         world.group.scale.setScalar(initialCamera.worldScale);
         world.group.rotation.x = -0.05;
         scene.add(backdrop, aurora, world.group);
         activeHotspot = world.hotspots[0];
         world.focusRing.visible = true;
+        void loadCareerWorldAssets(THREE, loaderModule.GLTFLoader, world, {
+          reducedMotion,
+          signal: abortController.signal,
+        })
+          .then((assets) => {
+            loadedAssets = assets;
+          })
+          .catch((error) => {
+            console.warn('Career world GLB assets unavailable; procedural fallback remains active.', error);
+          });
 
         const resize = () => {
           const { width, height } = mount.getBoundingClientRect();
@@ -366,6 +380,7 @@ function CareerWorldScene({
           },
           { threshold: 0.05 },
         );
+        const resizeObserver = new ResizeObserver(() => resize());
 
         const handleVisibilityChange = () => {
           isDocumentVisible = document.visibilityState === 'visible';
@@ -422,6 +437,7 @@ function CareerWorldScene({
             node.scale.setScalar(1 + Math.sin(time * 1.7 + index * 0.5) * 0.045);
           });
           updateDataPulses(world.pulses, time, true);
+          loadedAssets?.mixers.forEach((mixer) => mixer.update(0.016));
 
           controls.update();
           renderer.render(scene, camera);
@@ -430,6 +446,7 @@ function CareerWorldScene({
 
         resize();
         visibilityObserver.observe(mount);
+        resizeObserver.observe(mount);
         window.addEventListener('resize', resize);
         mount.addEventListener('pointermove', updateHover, { passive: true });
         mount.addEventListener('pointerleave', clearHover);
@@ -443,10 +460,13 @@ function CareerWorldScene({
         cleanup = () => {
           window.cancelAnimationFrame(frameId);
           visibilityObserver.disconnect();
+          resizeObserver.disconnect();
           window.removeEventListener('resize', resize);
           mount.removeEventListener('pointermove', updateHover);
           mount.removeEventListener('pointerleave', clearHover);
           mount.removeEventListener('click', handleClick);
+          abortController.abort();
+          loadedAssets?.dispose();
           renderer.domElement.removeEventListener('webglcontextlost', handleContextLost);
           renderer.domElement.removeEventListener('webglcontextrestored', handleContextRestored);
           document.removeEventListener('visibilitychange', handleVisibilityChange);

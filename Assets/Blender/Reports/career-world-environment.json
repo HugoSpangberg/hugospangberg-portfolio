@@ -1,0 +1,80 @@
+{
+  "id": "career-world-environment",
+  "root": "ENV_FloatingIsland_Core",
+  "blend": "Assets/Blender/Sources/career-world-environment.blend",
+  "glb": "Assets/Blender/Exports/career-world-environment.glb",
+  "runtimeGlb": "HSClient/public/models/career-world/career-world-environment.glb",
+  "file": "career-world-environment.glb",
+  "fileSize": 279316,
+  "objects": [
+    "ENV_FloatingIsland_Core",
+    "ENV_FloatingIsland_LowerLayer",
+    "ENV_CareerHub_Base",
+    "ENV_CareerHub_Core",
+    "Anchor_Filmstaden",
+    "ENV_Path_Filmstaden",
+    "Anchor_Visma",
+    "ENV_Path_Visma",
+    "Anchor_Sodra",
+    "ENV_Path_Sodra",
+    "Anchor_Dasa",
+    "ENV_Path_Dasa",
+    "Anchor_Education",
+    "ENV_Path_Education",
+    "Anchor_CareerHub",
+    "ENV_Path_CareerHub",
+    "ENV_PineTrunk_0",
+    "ENV_PineCrown_0_A",
+    "ENV_PineCrown_0_B",
+    "ENV_PineTrunk_1",
+    "ENV_PineCrown_1_A",
+    "ENV_PineCrown_1_B",
+    "ENV_PineTrunk_2",
+    "ENV_PineCrown_2_A",
+    "ENV_PineCrown_2_B",
+    "ENV_PineTrunk_3",
+    "ENV_PineCrown_3_A",
+    "ENV_PineCrown_3_B",
+    "ENV_PineTrunk_4",
+    "ENV_PineCrown_4_A",
+    "ENV_PineCrown_4_B",
+    "ENV_PineTrunk_5",
+    "ENV_PineCrown_5_A",
+    "ENV_PineCrown_5_B",
+    "ENV_Rock_0",
+    "ENV_Rock_1",
+    "ENV_Rock_2",
+    "ENV_Rock_3"
+  ],
+  "triangleCount": 5448,
+  "meshCount": 32,
+  "materialCount": 8,
+  "textureCount": 2,
+  "animations": [],
+  "requiredNodes": [
+    "Anchor_Filmstaden",
+    "Anchor_Visma",
+    "Anchor_Sodra",
+    "Anchor_Dasa",
+    "Anchor_Education",
+    "Anchor_CareerHub"
+  ],
+  "missingNodes": [],
+  "boundingBox": {
+    "min": [
+      -3.122,
+      -2.037,
+      -0.76
+    ],
+    "max": [
+      2.9389,
+      1.9352,
+      0.585
+    ]
+  },
+  "dimensions": [
+    6.0609,
+    3.9721,
+    1.345
+  ]
+}

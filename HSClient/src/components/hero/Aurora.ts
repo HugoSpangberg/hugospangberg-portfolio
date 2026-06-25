@@ -10,12 +10,12 @@ export function createAurora(THREE: typeof Three) {
       new THREE.MeshBasicMaterial({
         color,
         transparent: true,
-        opacity: index === 0 ? 0.055 : 0.028,
+        opacity: index === 0 ? 0.22 : 0.12,
         depthWrite: false,
         side: THREE.DoubleSide,
       }),
     );
-    mesh.position.set(-1.2 + index * 0.62, 2.85 + index * 0.16, -4.1 - index * 0.16);
+    mesh.position.set(-1.2 + index * 0.62, 2.2 + index * 0.12, -2.7 - index * 0.12);
     mesh.rotation.set(0.34, 0.04, -0.16 - index * 0.065);
     group.add(mesh);
   });

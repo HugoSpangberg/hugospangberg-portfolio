@@ -5,6 +5,7 @@ import { careerMapItems, type CareerMapItem } from './careerMap';
 export type CareerWorldHotspot = {
   item: CareerMapItem;
   group: Three.Group;
+  content: Three.Group;
   hitTarget: Three.Mesh;
   marker: Three.Mesh;
   beacon: Three.Mesh;
@@ -12,6 +13,7 @@ export type CareerWorldHotspot = {
 
 export type CareerWorldHandle = {
   group: Three.Group;
+  proceduralBase: Three.Group;
   depthLayers: Three.Group[];
   hotspots: CareerWorldHotspot[];
   pulses: PulseHandle[];
@@ -1027,7 +1029,7 @@ function createHotspot(
   hitTarget.userData = { kind: 'career-hotspot', id: item.id };
   group.add(hitTarget);
 
-  return { item, group, hitTarget, marker, beacon };
+  return { item, group, content, hitTarget, marker, beacon };
 }
 
 function createPath(THREE: typeof Three, materials: Materials) {
@@ -1066,12 +1068,19 @@ export function createCareerWorld(
 ): CareerWorldHandle {
   const materials = makeMaterials(THREE);
   const group = new THREE.Group();
+  const proceduralBase = new THREE.Group();
   const depthLayers = [
     createTreeLayer(THREE, compact ? 9 : 16, -3.05, materials.forestBack),
     createTreeLayer(THREE, compact ? 7 : 13, -2.22, materials.forestMid),
   ];
 
-  group.add(...depthLayers, createIsland(THREE, materials), createPath(THREE, materials), createGroundDetails(THREE, materials));
+  proceduralBase.add(
+    ...depthLayers,
+    createIsland(THREE, materials),
+    createPath(THREE, materials),
+    createGroundDetails(THREE, materials),
+  );
+  group.add(proceduralBase);
 
   const factoryById = {
     sodra: () => createSodraHeadquartersLandmark(THREE, materials, labels.locations.sodra ?? 'Södra'),
@@ -1128,6 +1137,7 @@ export function createCareerWorld(
 
   return {
     group,
+    proceduralBase,
     depthLayers,
     hotspots,
     pulses,
