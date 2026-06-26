@@ -6,7 +6,8 @@ Blender is used for authored miniature geometry: buildings, terrain, forestry pr
 
 - Blender owns source geometry and PBR material values.
 - `Assets/Blender/Sources` stores generated `.blend` source files.
-- `Assets/Blender/Exports` stores generated GLB exports.
+- `Assets/Blender/Exports` stores generated local GLB exports and is ignored by Git.
+- `Assets/Blender/Previews` and `Assets/Blender/Reports` store local review artifacts and are ignored by Git.
 - `HSClient/public/models/career-world` owns runtime GLB delivery.
 - Three.js owns renderer setup, camera, controls, lights, interaction, labels, cards, atmosphere, animation lifecycle and fallback.
 
@@ -22,10 +23,10 @@ Set `BLENDER_EXECUTABLE` only when Blender is not on PATH or in a standard insta
 
 ## Review Workflow
 
-1. Copy current previews into `Assets/Blender/Previews/Before`.
+1. Optionally copy current previews into `Assets/Blender/Previews/Before` for local comparison.
 2. Rebuild the relevant Python builder under `Assets/Blender/Scripts`.
 3. Run `npm run models:export` and `npm run models:preview`.
-4. Open the generated PNG previews before accepting the change.
+4. Open the generated PNG previews before accepting the change. These previews are local-only artifacts.
 5. Run `npm run models:validate` before starting the client.
 
 ## Fallback
