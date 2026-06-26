@@ -28,14 +28,15 @@ lower = [(x * 0.9, y * 0.88) for x, y in island]
 prism_mesh("ENV_FloatingIsland_Topography", island, -0.18, 0.08, mat["forest_ground"], root, 0.08)
 prism_mesh("ENV_FloatingIsland_LayeredEdge", lower, -0.52, -0.2, mat["moss"], root, 0.07)
 
-for name, x, y, sx, sy in [
-    ("ENV_MossPatch_Visma", -2.05, 0.15, 0.78, 0.42),
-    ("ENV_MossPatch_Sodra", -1.1, -1.28, 0.9, 0.5),
-    ("ENV_MossPatch_Dasa", 1.45, -0.92, 0.86, 0.5),
-    ("ENV_MossPatch_Education", 1.76, 0.9, 0.8, 0.44),
-    ("ENV_MossPatch_Filmstaden", 0.1, 1.35, 0.92, 0.5),
-]:
-    cube(name, (x, y, 0.105), (sx, sy, 0.018), mat["grass"], 0.018, root)
+zones = {
+    "ENV_UrbanStoneZone_Filmstaden": (mat["stone"], [(-0.8, 1.04), (-0.45, 1.72), (0.22, 1.88), (0.82, 1.58), (0.72, 1.08), (0.04, 0.94)]),
+    "ENV_OfficeLawnZone_Visma": (mat["grass"], [(-2.72, -0.22), (-2.45, 0.58), (-1.74, 0.72), (-1.28, 0.24), (-1.48, -0.34), (-2.2, -0.52)]),
+    "ENV_OpenGreenZone_Sodra": (mat["moss"], [(-1.82, -1.82), (-1.32, -0.72), (-0.46, -0.78), (-0.24, -1.58), (-0.82, -2.0)]),
+    "ENV_ForestFloorZone_Dasa": (mat["forest_ground"], [(0.76, -1.6), (1.18, -0.42), (2.16, -0.58), (2.42, -1.32), (1.82, -1.82)]),
+    "ENV_SchoolMossZone_Education": (mat["grass"], [(1.1, 0.42), (1.42, 1.36), (2.12, 1.46), (2.44, 0.88), (2.0, 0.34)]),
+}
+for name, (zone_mat, points) in zones.items():
+    prism_mesh(name, points, 0.081, 0.088, zone_mat, root, 0.004)
 
 anchors = {
     "Anchor_Filmstaden": (0.1, 1.45, 0.13),
@@ -49,20 +50,22 @@ for name, location in anchors.items():
     add_anchor(name, location, root)
 
 hub = (0.02, -0.18)
-for name, target, bend in [
-    ("ENV_Path_To_Filmstaden", (0.1, 1.14), (0.0, 0.55)),
-    ("ENV_Path_To_Visma", (-1.72, 0.04), (-0.82, -0.12)),
-    ("ENV_Path_To_Sodra", (-0.92, -1.08), (-0.46, -0.58)),
-    ("ENV_Path_To_Dasa", (1.2, -0.82), (0.7, -0.55)),
-    ("ENV_Path_To_Education", (1.45, 0.72), (0.8, 0.25)),
+for name, points in [
+    ("ENV_Path_To_Filmstaden", [hub, (-0.18, 0.28), (-0.06, 0.78), (0.1, 1.12)]),
+    ("ENV_Path_To_Visma", [hub, (-0.48, -0.08), (-1.08, 0.18), (-1.74, 0.08)]),
+    ("ENV_Path_To_Sodra", [hub, (-0.22, -0.52), (-0.58, -0.9), (-0.96, -1.16)]),
+    ("ENV_Path_To_Dasa", [hub, (0.44, -0.34), (0.82, -0.72), (1.2, -0.88)]),
+    ("ENV_Path_To_Education", [hub, (0.42, 0.16), (0.96, 0.46), (1.42, 0.76)]),
 ]:
-    embedded_path(name, [hub, bend, target], 0.15, mat["path"], root)
+    embedded_path(name, points, 0.092, mat["path"], root)
 
-cube("ENV_CareerHub_Platform", (0.02, -0.18, 0.19), (0.34, 0.28, 0.045), mat["metal_dark"], 0.018, root)
-cylinder("ENV_CareerHub_CyanCore", (0.02, -0.18, 0.37), 0.105, 0.24, mat["cyan"], 18, root=root)
-cylinder("ENV_CareerHub_OuterRing", (0.02, -0.18, 0.275), 0.24, 0.025, mat["metal_mid"], 28, root=root)
-for index, (x, y) in enumerate([(0.28, -0.18), (-0.22, -0.18), (0.02, 0.1), (0.02, -0.46)]):
-    cube(f"ENV_CareerHub_ConnectionPoint_{index}", (x, y, 0.2), (0.045, 0.045, 0.025), mat["cyan"], 0.004, root)
+cylinder("ENV_CareerHub_HexBase", (0.02, -0.18, 0.16), 0.28, 0.075, mat["metal_dark"], 6, root=root)
+cylinder("ENV_CareerHub_InsetCyanCore", (0.02, -0.18, 0.24), 0.125, 0.07, mat["cyan"], 24, root=root)
+cylinder("ENV_CareerHub_ThinMetalRing", (0.02, -0.18, 0.295), 0.23, 0.018, mat["metal_mid"], 32, root=root)
+cylinder("ENV_CareerHub_GlassCap", (0.02, -0.18, 0.35), 0.105, 0.045, mat["glass_cool"], 24, root=root)
+for index, (x, y, rz) in enumerate([(0.26, -0.18, 0), (-0.2, -0.08, 0.32), (-0.02, 0.08, 1.57), (-0.12, -0.42, -1.0), (0.23, -0.38, -0.62)]):
+    port = cube(f"ENV_CareerHub_ConnectionPort_{index}", (x, y, 0.205), (0.075, 0.035, 0.022), mat["cyan"], 0.004, root)
+    port.rotation_euler[2] = rz
 
 tree_positions = [
     (-3.0, -0.48, 0.72), (-2.62, 1.1, 0.62), (-2.42, -1.12, 0.48),

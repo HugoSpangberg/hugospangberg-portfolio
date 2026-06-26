@@ -21,19 +21,27 @@ cube("LM_Dasa_FrontChassisRail", (0.45, 0, 0.40), (0.68, 0.25, 0.085), mat["mach
 cylinder("LM_Dasa_ArticulatedCenterJoint", (-0.02, 0, 0.43), 0.105, 0.28, mat["metal_mid"], 18, (pi / 2, 0, 0), 0.004, root)
 cube("LM_Dasa_RearEngineBody", (-0.54, 0, 0.72), (0.62, 0.34, 0.24), mat["machine_green"], 0.018, root)
 cube("LM_Dasa_RearEngineHood", (-0.72, 0, 0.9), (0.34, 0.32, 0.12), mat["machine_green"], 0.012, root)
+for index, y in enumerate([-0.18, -0.1, -0.02, 0.06, 0.14]):
+    cube(f"LM_Dasa_RearVentSlat_{index}", (-0.92, y, 0.9), (0.018, 0.045, 0.075), mat["metal_dark"], 0.0015, root)
 cube("LM_Dasa_FrontBody", (0.34, 0, 0.67), (0.56, 0.32, 0.23), mat["machine_green"], 0.018, root)
+cube("LM_Dasa_FrontBody_AngledNose", (0.67, -0.005, 0.69), (0.18, 0.30, 0.19), mat["machine_green"], 0.012, root)
 
 # Cabin with readable glass and roof/frame.
 cube("LM_Dasa_CabinFrame", (-0.2, -0.02, 1.02), (0.34, 0.32, 0.32), mat["machine_black"], 0.012, root)
-cube("LM_Dasa_CabinWindshield", (-0.2, -0.205, 1.02), (0.23, 0.018, 0.24), mat["glass_cool"], 0.004, root)
+windshield = cube("LM_Dasa_CabinAngledWindshield", (-0.2, -0.205, 1.02), (0.23, 0.018, 0.24), mat["glass_cool"], 0.004, root)
+windshield.rotation_euler[0] = -0.16
 cube("LM_Dasa_CabinSideGlass_Left", (-0.38, -0.02, 1.02), (0.018, 0.22, 0.22), mat["glass_cool"], 0.004, root)
+cube("LM_Dasa_CabinSideGlass_Right", (-0.02, -0.02, 1.02), (0.018, 0.22, 0.22), mat["glass_cool"], 0.004, root)
+cube("LM_Dasa_CabinRearGlass", (-0.2, 0.145, 1.02), (0.22, 0.018, 0.21), mat["glass_dark"], 0.004, root)
 cube("LM_Dasa_CabinRoof", (-0.2, -0.02, 1.22), (0.39, 0.35, 0.055), mat["machine_black"], 0.006, root)
+cube("LM_Dasa_CabinDoorOutline", (-0.385, -0.165, 0.99), (0.01, 0.095, 0.22), mat["metal_mid"], 0.0015, root)
 cube("LM_Dasa_CabinLightBar", (-0.2, -0.22, 1.27), (0.28, 0.035, 0.035), mat["metal_dark"], 0.003, root)
 
 # Wheels with hubs and simplified tread blocks.
 for side, y in [("Left", -0.34), ("Right", 0.34)]:
     for index, x in enumerate([-0.82, -0.46, 0.28, 0.66]):
         cylinder(f"LM_Dasa_Tire_{side}_{index}", (x, y, 0.28), 0.18, 0.13, mat["machine_black"], 28, (pi / 2, 0, 0), 0.004, root)
+        cylinder(f"LM_Dasa_TireSidewall_{side}_{index}", (x, y, 0.28), 0.145, 0.145, mat["metal_dark"], 28, (pi / 2, 0, 0), 0.002, root)
         cylinder(f"LM_Dasa_WheelHub_{side}_{index}", (x, y + (-0.073 if y < 0 else 0.073), 0.28), 0.072, 0.022, mat["metal_mid"], 18, (pi / 2, 0, 0), 0.002, root)
         for tread in range(4):
             cube(f"LM_Dasa_Tread_{side}_{index}_{tread}", (x + (tread - 1.5) * 0.055, y, 0.43), (0.018, 0.14, 0.028), mat["metal_dark"], 0.002, root)
@@ -43,10 +51,14 @@ cube("LM_Dasa_BoomPedestal", (0.54, -0.02, 0.86), (0.16, 0.18, 0.18), mat["machi
 beam_between("LM_Dasa_Boom_SectionA", (0.58, -0.03, 0.95), (0.98, -0.03, 1.15), 0.065, mat["machine_black"], 0.006, root)
 beam_between("LM_Dasa_Boom_SectionB", (0.98, -0.03, 1.15), (1.28, -0.03, 0.82), 0.058, mat["machine_black"], 0.006, root)
 beam_between("LM_Dasa_Boom_SectionC", (1.28, -0.03, 0.82), (1.38, -0.03, 0.43), 0.052, mat["machine_black"], 0.006, root)
+cylinder("LM_Dasa_BoomBasePivotPin", (0.58, -0.03, 0.95), 0.055, 0.24, mat["metal_mid"], 16, (pi / 2, 0, 0), 0.002, root)
+cylinder("LM_Dasa_BoomElbowPivotPin", (0.98, -0.03, 1.15), 0.05, 0.22, mat["metal_mid"], 16, (pi / 2, 0, 0), 0.002, root)
+cylinder("LM_Dasa_HeadRotatorJoint", (1.38, -0.03, 0.43), 0.045, 0.16, mat["metal_mid"], 14, (pi / 2, 0, 0), 0.002, root)
 beam_between("LM_Dasa_HydraulicCylinder_Main", (0.62, -0.11, 0.88), (1.0, -0.11, 1.03), 0.018, mat["metal_mid"], 0.002, root)
 beam_between("LM_Dasa_HydraulicCylinder_Yellow", (1.04, 0.08, 1.02), (1.28, 0.08, 0.76), 0.018, mat["window_warm"], 0.002, root)
 beam_between("LM_Dasa_HoseBundle", (0.82, -0.13, 0.92), (1.36, -0.13, 0.44), 0.026, mat["machine_black"], 0.002, root)
 cube("LM_Dasa_HarvesterHead_Frame", (1.4, -0.03, 0.29), (0.24, 0.16, 0.17), mat["machine_black"], 0.008, root)
+cube("LM_Dasa_HarvesterHead_CuttingHousing", (1.5, -0.03, 0.2), (0.11, 0.18, 0.055), mat["metal_mid"], 0.004, root)
 cylinder("LM_Dasa_HarvesterHead_RollerA", (1.43, -0.1, 0.31), 0.045, 0.075, mat["metal_mid"], 14, (pi / 2, 0, 0), 0.001, root)
 cylinder("LM_Dasa_HarvesterHead_RollerB", (1.43, 0.05, 0.31), 0.045, 0.075, mat["metal_mid"], 14, (pi / 2, 0, 0), 0.001, root)
 cube("LM_Dasa_HarvesterHead_LeftGrip", (1.25, -0.16, 0.23), (0.055, 0.16, 0.045), mat["machine_black"], 0.004, root)

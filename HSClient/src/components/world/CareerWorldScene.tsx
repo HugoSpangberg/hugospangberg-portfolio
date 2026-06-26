@@ -43,10 +43,10 @@ function getCameraConfig(width: number, isExpanded = false) {
 
   if (width < 720) {
     return {
-      fov: 62,
-      position: [-0.08, 4.15, 10.4] as const,
-      target: [-0.22, -0.12, -0.06] as const,
-      worldScale: 0.68,
+      fov: 58,
+      position: [-0.08, 3.55, 8.75] as const,
+      target: [-0.18, -0.06, -0.06] as const,
+      worldScale: 0.78,
       pixelRatio: 1.15,
     };
   }

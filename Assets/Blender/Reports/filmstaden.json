@@ -5,7 +5,7 @@
   "glb": "Assets/Blender/Exports/filmstaden.glb",
   "runtimeGlb": "HSClient/public/models/career-world/filmstaden.glb",
   "file": "filmstaden.glb",
-  "fileSize": 553324,
+  "fileSize": 592764,
   "objects": [
     "LM_Filmstaden_Root",
     "LM_Filmstaden_BrickFacade",
@@ -13,6 +13,7 @@
     "LM_Filmstaden_RecessedEntranceBay",
     "LM_Filmstaden_RoofCornice",
     "LM_Filmstaden_DarkRoofCap",
+    "LM_Filmstaden_BrickCorniceDetail",
     "LM_Filmstaden_UpperWindow_0_0_Frame",
     "LM_Filmstaden_UpperWindow_0_0_Glass",
     "LM_Filmstaden_UpperWindow_0_0_Sill",
@@ -89,6 +90,8 @@
     "LM_Filmstaden_GroundFloorColumn_1",
     "LM_Filmstaden_GroundFloorColumn_2",
     "LM_Filmstaden_GroundFloorColumn_3",
+    "LM_Filmstaden_MarqueeSupportColumn_0",
+    "LM_Filmstaden_MarqueeSupportColumn_1",
     "LM_Filmstaden_PosterCase_0",
     "LM_Filmstaden_PosterInset_0",
     "LM_Filmstaden_PosterCase_1",
@@ -102,6 +105,7 @@
     "LM_Filmstaden_RedFramedEntrance_RightGlass",
     "LM_Filmstaden_RedFramedEntrance_Handle",
     "LM_Filmstaden_ShallowCurvedMarquee",
+    "LM_Filmstaden_MarqueeUnderside",
     "LM_Filmstaden_MarqueeHorizontalBand_0",
     "LM_Filmstaden_MarqueeHorizontalBand_1",
     "LM_Filmstaden_MarqueeHorizontalBand_2",
@@ -112,6 +116,7 @@
     "LM_Filmstaden_CanopyDownlight_4",
     "LM_Filmstaden_CanopyDownlight_5",
     "LM_Filmstaden_RoundFSign_Backplate",
+    "LM_Filmstaden_RoundSignWallBracket",
     "LM_Filmstaden_RaisedF_Stem",
     "LM_Filmstaden_RaisedF_Top",
     "LM_Filmstaden_RaisedF_Mid",
@@ -123,9 +128,9 @@
     "Anchor_Light",
     "Anchor_CameraFocus"
   ],
-  "triangleCount": 13328,
-  "meshCount": 110,
-  "materialCount": 6,
+  "triangleCount": 14288,
+  "meshCount": 115,
+  "materialCount": 7,
   "textureCount": 0,
   "animations": [],
   "requiredNodes": [
@@ -145,12 +150,12 @@
     "max": [
       1.52,
       0.2,
-      2.5425
+      1.9525
     ]
   },
   "dimensions": [
     3.04,
     0.77,
-    2.3725
+    1.7825
   ]
 }
