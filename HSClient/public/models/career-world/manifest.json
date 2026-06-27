@@ -797,7 +797,7 @@
         "glb": "Assets/Blender/Exports/dasa-forestry.glb",
         "runtimeGlb": "HSClient/public/models/career-world/dasa-forestry.glb",
         "file": "dasa-forestry.glb",
-        "fileSize": 810560,
+        "fileSize": 790280,
         "objects": [
           "LM_Dasa_Root",
           "LM_Dasa_ForestGround",
@@ -819,8 +819,6 @@
           "LM_Dasa_CabinSideGlass_Right",
           "LM_Dasa_CabinRearGlass",
           "LM_Dasa_CabinRoof",
-          "LM_Dasa_CabinDoorOutline",
-          "LM_Dasa_CabinLightBar",
           "LM_Dasa_Tire_Left_0",
           "LM_Dasa_TireSidewall_Left_0",
           "LM_Dasa_WheelHub_Left_0",
@@ -893,27 +891,21 @@
           "LM_Dasa_HarvesterHead_RollerB",
           "LM_Dasa_HarvesterHead_LeftGrip",
           "LM_Dasa_HarvesterHead_RightGrip",
-          "LM_Dasa_IoTSensor_Beacon",
-          "LM_Dasa_IoTSensor_Base",
-          "LM_Dasa_Pine_0",
           "LM_Dasa_Pine_0_Trunk",
           "LM_Dasa_Pine_0_Foliage_Lower",
           "LM_Dasa_Pine_0_Foliage_MidA",
           "LM_Dasa_Pine_0_Foliage_MidB",
           "LM_Dasa_Pine_0_Foliage_Top",
-          "LM_Dasa_Pine_1",
           "LM_Dasa_Pine_1_Trunk",
           "LM_Dasa_Pine_1_Foliage_Lower",
           "LM_Dasa_Pine_1_Foliage_MidA",
           "LM_Dasa_Pine_1_Foliage_MidB",
           "LM_Dasa_Pine_1_Foliage_Top",
-          "LM_Dasa_Pine_2",
           "LM_Dasa_Pine_2_Trunk",
           "LM_Dasa_Pine_2_Foliage_Lower",
           "LM_Dasa_Pine_2_Foliage_MidA",
           "LM_Dasa_Pine_2_Foliage_MidB",
           "LM_Dasa_Pine_2_Foliage_Top",
-          "LM_Dasa_Pine_3",
           "LM_Dasa_Pine_3_Trunk",
           "LM_Dasa_Pine_3_Foliage_Lower",
           "LM_Dasa_Pine_3_Foliage_MidA",
@@ -943,9 +935,9 @@
           "Anchor_Light",
           "Anchor_CameraFocus"
         ],
-        "triangleCount": 15916,
-        "meshCount": 132,
-        "materialCount": 14,
+        "triangleCount": 15368,
+        "meshCount": 128,
+        "materialCount": 13,
         "textureCount": 0,
         "animations": [
           "Dasa_BoomIdle"
@@ -960,20 +952,20 @@
         "missingNodes": [],
         "boundingBox": {
           "min": [
-            -1.5813,
-            -0.763,
-            -0.0005
+            -1.8222,
+            -0.7929,
+            0.0525
           ],
           "max": [
-            1.64,
-            0.655,
-            1.355
+            2.1022,
+            0.7929,
+            1.0147
           ]
         },
         "dimensions": [
-          3.2213,
-          1.418,
-          1.3555
+          3.9243,
+          1.5858,
+          0.9622
         ]
       }
     },

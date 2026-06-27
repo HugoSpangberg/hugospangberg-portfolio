@@ -36,6 +36,13 @@ LANDMARKS = [
         "canonical": "sodra",
     },
     {
+        "id": "dasa",
+        "source": "dasa-forestry-Update.blend",
+        "collection": "COL_Dasa",
+        "root": "LM_Dasa_Root",
+        "canonical": "dasa-forestry",
+    },
+    {
         "id": "education",
         "source": "education-update.blend",
         "collection": "COL_Education",
