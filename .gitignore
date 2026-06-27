@@ -80,6 +80,7 @@ Assets/CareerWorldReferences/Private/
 *.autosave
 Assets/Blender/Sources/*-update.blend
 Assets/Blender/Sources/*-Update.blend
+!Assets/Blender/Sources/*-update.blend
 Assets/Blender/Sources/career-world-master.blend
 Assets/Blender/Exports/*.glb
 Assets/Blender/Previews/**/*.png

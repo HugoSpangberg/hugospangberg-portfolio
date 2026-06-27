@@ -34,9 +34,9 @@ function getCameraConfig(width: number, isExpanded = false) {
   if (isExpanded && width < 720) {
     return {
       fov: 56,
-      position: [0.1, 3.25, 8.4] as const,
-      target: [-0.08, -0.08, -0.05] as const,
-      worldScale: 0.82,
+      position: [0.08, 5.2, 14.2] as const,
+      target: [0.1, -0.08, 0.12] as const,
+      worldScale: 0.5,
       pixelRatio: 1.2,
     };
   }
@@ -44,9 +44,9 @@ function getCameraConfig(width: number, isExpanded = false) {
   if (width < 720) {
     return {
       fov: 58,
-      position: [-0.08, 3.55, 8.75] as const,
-      target: [-0.18, -0.06, -0.06] as const,
-      worldScale: 0.78,
+      position: [0.02, 5.25, 14.8] as const,
+      target: [0.08, -0.08, 0.12] as const,
+      worldScale: 0.44,
       pixelRatio: 1.15,
     };
   }
@@ -54,18 +54,18 @@ function getCameraConfig(width: number, isExpanded = false) {
   if (width < 1120) {
     return {
       fov: 50,
-      position: [0.3, 3.0, 7.65] as const,
-      target: [0.02, -0.08, -0.06] as const,
-      worldScale: 1.08,
+      position: [0.24, 4.65, 12.4] as const,
+      target: [0.1, -0.06, 0.1] as const,
+      worldScale: 0.64,
       pixelRatio: 1.35,
     };
   }
 
   return {
-    fov: 42,
-    position: [0.34, 2.35, 6.35] as const,
-    target: [0.02, -0.02, -0.05] as const,
-    worldScale: 1.22,
+    fov: 46,
+    position: [0.38, 4.35, 11.8] as const,
+    target: [0.12, -0.04, 0.1] as const,
+    worldScale: 0.66,
     pixelRatio: 1.5,
   };
 }
@@ -194,13 +194,13 @@ function CareerWorldScene({
         const pointer = new THREE.Vector2(8, 8);
         const raycaster = new THREE.Raycaster();
         const scene = new THREE.Scene();
-        scene.fog = new THREE.FogExp2(0x071713, compact ? 0.072 : 0.085);
+        scene.fog = new THREE.FogExp2(0x0d241f, compact ? 0.06 : 0.068);
 
-        const ambientFill = new THREE.AmbientLight(0xc8eee4, compact ? 0.56 : 0.46);
-        const skyFill = new THREE.HemisphereLight(0xd5f4ee, 0x10271f, compact ? 1.02 : 0.88);
-        const moonLight = new THREE.DirectionalLight(0xe2fff8, compact ? 1.55 : 1.38);
+        const ambientFill = new THREE.AmbientLight(0xd7f0e7, compact ? 0.68 : 0.58);
+        const skyFill = new THREE.HemisphereLight(0xdff7ef, 0x17362d, compact ? 1.08 : 0.94);
+        const moonLight = new THREE.DirectionalLight(0xf1fff8, compact ? 1.34 : 1.18);
         moonLight.position.set(-3.6, 5.8, 4.2);
-        const rimLight = new THREE.DirectionalLight(0x82e2ff, compact ? 1.0 : 0.84);
+        const rimLight = new THREE.DirectionalLight(0xa4e7df, compact ? 0.78 : 0.66);
         rimLight.position.set(4.2, 3.25, -4.8);
         const forestGlow = new THREE.PointLight(0x72f2a3, compact ? 1.62 : 1.35, 4.8);
         forestGlow.position.set(-1.35, 0.48, -1.08);

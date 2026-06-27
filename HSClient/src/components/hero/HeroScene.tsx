@@ -114,7 +114,7 @@ function HeroScene({ label, fallbackLabel }: HeroSceneProps) {
         const pointer = new THREE.Vector2(8, 8);
         const raycaster = new THREE.Raycaster();
         const scene = new THREE.Scene();
-        scene.fog = new THREE.FogExp2(0x06110e, compact ? 0.15 : 0.115);
+        scene.fog = new THREE.FogExp2(0x0d241f, compact ? 0.092 : 0.078);
 
         const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 38);
         camera.position.set(compact ? 0.35 : 0.25, compact ? 2.3 : 2.05, compact ? 6.7 : 5.6);
@@ -152,7 +152,7 @@ function HeroScene({ label, fallbackLabel }: HeroSceneProps) {
           },
         });
         const backdrop = createSpaceBackdrop(THREE, compact);
-        const aurora = createAurora(THREE);
+        const aurora = compact ? new THREE.Group() : createAurora(THREE);
         world.group.scale.setScalar(compact ? 0.92 : 1.06);
         world.group.rotation.x = -0.05;
         scene.add(backdrop, aurora, world.group);
