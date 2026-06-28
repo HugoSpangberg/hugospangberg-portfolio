@@ -1,10 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type * as Three from 'three';
-import { createAurora } from './Aurora';
 import { createCareerWorld, type CareerWorldHotspot } from './CareerWorld';
 import { updateDataPulses } from './DataPulse';
 import HeroFallback from './HeroFallback';
-import { createSpaceBackdrop } from './SpaceBackdrop';
 import { careerMapItems, getCareerMapItem, type CareerMapItem } from './careerMap';
 
 type HeroSceneProps = {
@@ -151,11 +149,9 @@ function HeroScene({ label, fallbackLabel }: HeroSceneProps) {
             education: 'Learning',
           },
         });
-        const backdrop = createSpaceBackdrop(THREE, compact);
-        const aurora = compact ? new THREE.Group() : createAurora(THREE);
         world.group.scale.setScalar(compact ? 0.92 : 1.06);
         world.group.rotation.x = -0.05;
-        scene.add(backdrop, aurora, world.group);
+        scene.add(world.group);
         activeHotspot = world.hotspots[0];
         world.focusRing.visible = true;
 
@@ -184,7 +180,7 @@ function HeroScene({ label, fallbackLabel }: HeroSceneProps) {
           setActiveItemId(hotspot.item.id);
           world.focusRing.position.set(
             hotspot.group.position.x,
-            -0.58,
+            -0.3,
             hotspot.group.position.z,
           );
           world.focusRing.visible = true;
@@ -254,15 +250,17 @@ function HeroScene({ label, fallbackLabel }: HeroSceneProps) {
 
           world.depthLayers[0].position.x = Math.sin(time * 0.12) * 0.035;
           world.depthLayers[1].position.x = Math.cos(time * 0.1) * 0.028;
-          aurora.children.forEach((child, index) => {
-            child.position.x += Math.sin(time * 0.16 + index) * 0.0008;
-            child.position.y += Math.cos(time * 0.14 + index) * 0.00045;
-          });
-
           world.hotspots.forEach((hotspot, index) => {
             const isFocused = targetHotspot?.item.id === hotspot.item.id;
             const pulse = 1 + Math.sin(time * 2.25 + index) * (isFocused ? 0.075 : 0.03);
+            const outwardPulse = (time * 0.45 + index * 0.14) % 1;
+            const pulseMaterial = hotspot.pulseRing.material as Three.MeshBasicMaterial;
+            const haloMaterial = hotspot.hoverHalo.material as Three.MeshBasicMaterial;
             hotspot.marker.scale.setScalar(isFocused ? 1.18 * pulse : pulse);
+            hotspot.hoverHalo.scale.setScalar(isFocused ? 1.06 + Math.sin(time * 2.2 + index) * 0.055 : 0.72);
+            haloMaterial.opacity = isFocused ? 0.22 : 0.055;
+            hotspot.pulseRing.scale.setScalar(0.8 + outwardPulse * (isFocused ? 0.84 : 0.48));
+            pulseMaterial.opacity = isFocused ? 0.28 * (1 - outwardPulse) : 0.12 * (1 - outwardPulse);
             hotspot.group.position.y +=
               (hotspot.item.position[1] + itemFloat(time, index, isFocused) - hotspot.group.position.y) * 0.025;
           });

@@ -1,13 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type * as Three from 'three';
-import { createAurora } from '../hero/Aurora';
 import {
   createCareerWorld,
   type CareerWorldHotspot,
   type CareerWorldLabels,
 } from '../hero/CareerWorld';
 import { updateDataPulses } from '../hero/DataPulse';
-import { createSpaceBackdrop } from '../hero/SpaceBackdrop';
 import { careerMapItems } from '../hero/careerMap';
 import { loadCareerWorldAssets } from '../../features/career-world';
 import WorldFallback from './WorldFallback';
@@ -33,39 +31,39 @@ type PointerState = {
 function getCameraConfig(width: number, isExpanded = false) {
   if (isExpanded && width < 720) {
     return {
-      fov: 56,
-      position: [0.08, 5.2, 14.2] as const,
-      target: [0.1, -0.08, 0.12] as const,
-      worldScale: 0.5,
+      fov: 55,
+      position: [0.08, 4.32, 13.05] as const,
+      target: [0.08, -0.1, 0.1] as const,
+      worldScale: 0.41,
       pixelRatio: 1.2,
     };
   }
 
   if (width < 720) {
     return {
-      fov: 58,
-      position: [0.02, 5.25, 14.8] as const,
-      target: [0.08, -0.08, 0.12] as const,
-      worldScale: 0.44,
+      fov: 56,
+      position: [0.04, 4.36, 13.75] as const,
+      target: [0.06, -0.1, 0.1] as const,
+      worldScale: 0.36,
       pixelRatio: 1.15,
     };
   }
 
   if (width < 1120) {
     return {
-      fov: 50,
-      position: [0.24, 4.65, 12.4] as const,
+      fov: 48,
+      position: [0.24, 4.32, 11.35] as const,
       target: [0.1, -0.06, 0.1] as const,
-      worldScale: 0.64,
+      worldScale: 0.54,
       pixelRatio: 1.35,
     };
   }
 
   return {
-    fov: 46,
-    position: [0.38, 4.35, 11.8] as const,
+    fov: 43,
+    position: [0.36, 3.98, 10.25] as const,
     target: [0.12, -0.04, 0.1] as const,
-    worldScale: 0.66,
+    worldScale: 0.58,
     pixelRatio: 1.5,
   };
 }
@@ -194,25 +192,25 @@ function CareerWorldScene({
         const pointer = new THREE.Vector2(8, 8);
         const raycaster = new THREE.Raycaster();
         const scene = new THREE.Scene();
-        scene.fog = new THREE.FogExp2(0x0d241f, compact ? 0.06 : 0.068);
+        scene.fog = new THREE.FogExp2(0x12342e, compact ? 0.045 : 0.052);
 
-        const ambientFill = new THREE.AmbientLight(0xd7f0e7, compact ? 0.68 : 0.58);
-        const skyFill = new THREE.HemisphereLight(0xdff7ef, 0x17362d, compact ? 1.08 : 0.94);
-        const moonLight = new THREE.DirectionalLight(0xf1fff8, compact ? 1.34 : 1.18);
-        moonLight.position.set(-3.6, 5.8, 4.2);
-        const rimLight = new THREE.DirectionalLight(0xa4e7df, compact ? 0.78 : 0.66);
-        rimLight.position.set(4.2, 3.25, -4.8);
-        const forestGlow = new THREE.PointLight(0x72f2a3, compact ? 1.62 : 1.35, 4.8);
-        forestGlow.position.set(-1.35, 0.48, -1.08);
-        const warmGlow = new THREE.PointLight(0xf1d48d, compact ? 1.34 : 1.12, 3.6);
-        warmGlow.position.set(0.25, 0.35, 1.35);
-        const techGlow = new THREE.PointLight(0x77d8f7, compact ? 1.55 : 1.28, 4.2);
-        techGlow.position.set(1.55, 0.55, -0.82);
-        const officeGlow = new THREE.PointLight(0xb7f4d6, compact ? 0.72 : 0.56, 2.6);
-        officeGlow.position.set(-2.12, 0.2, 0.24);
-        const learningGlow = new THREE.PointLight(0xc4a5ff, compact ? 0.74 : 0.58, 2.6);
-        learningGlow.position.set(1.75, 0.24, 1.02);
-        scene.add(ambientFill, skyFill, moonLight, rimLight, forestGlow, warmGlow, techGlow, officeGlow, learningGlow);
+        const ambientFill = new THREE.AmbientLight(0xd9eee4, compact ? 0.5 : 0.44);
+        const skyFill = new THREE.HemisphereLight(0xe9fff7, 0x18372f, compact ? 0.86 : 0.78);
+        const keyLight = new THREE.DirectionalLight(0xf4fff6, compact ? 1.34 : 1.26);
+        keyLight.position.set(-4.8, 6.9, 4.2);
+        const rimLight = new THREE.DirectionalLight(0x99e7df, compact ? 0.94 : 0.88);
+        rimLight.position.set(4.8, 4.0, -5.8);
+        const forestGlow = new THREE.PointLight(0x72f2a3, compact ? 1.16 : 0.98, 4.6);
+        forestGlow.position.set(-3.1, 0.65, -1.65);
+        const warmGlow = new THREE.PointLight(0xf1b26f, compact ? 1.22 : 1.08, 3.9);
+        warmGlow.position.set(0.0, 0.58, -1.85);
+        const techGlow = new THREE.PointLight(0x77d8f7, compact ? 1.18 : 1.0, 4.2);
+        techGlow.position.set(3.1, 0.62, 1.68);
+        const officeGlow = new THREE.PointLight(0xb7f4d6, compact ? 0.78 : 0.64, 3.2);
+        officeGlow.position.set(-3.1, 0.5, 1.55);
+        const learningGlow = new THREE.PointLight(0xc4a5ff, compact ? 0.82 : 0.68, 3.0);
+        learningGlow.position.set(3.0, 0.52, -1.35);
+        scene.add(ambientFill, skyFill, keyLight, rimLight, forestGlow, warmGlow, techGlow, officeGlow, learningGlow);
 
         const camera = new THREE.PerspectiveCamera(initialCamera.fov, 1, 0.1, 48);
         camera.position.set(
@@ -230,7 +228,7 @@ function CareerWorldScene({
         renderer.setClearColor(0x000000, 0);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, initialCamera.pixelRatio));
         renderer.toneMapping = THREE.ACESFilmicToneMapping;
-        renderer.toneMappingExposure = compact ? 1.24 : 1.12;
+        renderer.toneMappingExposure = compact ? 1.08 : 1.06;
         renderer.outputColorSpace = THREE.SRGBColorSpace;
         renderer.domElement.style.touchAction = isExpandedRef.current ? 'none' : 'pan-y';
         mount.appendChild(renderer.domElement);
@@ -256,24 +254,77 @@ function CareerWorldScene({
         renderer.domElement.style.touchAction = 'pan-y';
 
         const world = createCareerWorld(THREE, compact, worldLabelsRef.current);
-        const backdrop = createSpaceBackdrop(THREE, compact);
-        const aurora = compact ? new THREE.Group() : createAurora(THREE);
         const abortController = new AbortController();
         let loadedAssets: Awaited<ReturnType<typeof loadCareerWorldAssets>> | undefined;
         world.group.scale.setScalar(initialCamera.worldScale);
         world.group.rotation.x = -0.05;
-        scene.add(backdrop, aurora, world.group);
         activeHotspot = world.hotspots[0];
-        world.focusRing.visible = true;
+
+        const setInteractiveLayerVisible = (visible: boolean) => {
+          world.hotspots.forEach((hotspot) => {
+            hotspot.marker.visible = visible;
+            hotspot.beacon.visible = visible;
+            hotspot.pulseRing.visible = visible;
+            hotspot.hoverHalo.visible = visible;
+            hotspot.hitTarget.visible = visible;
+          });
+          world.focusRing.visible = visible;
+          world.systemCore.visible = visible;
+        };
+
+        const showLoadedWorld = () => {
+          world.group.visible = true;
+          world.proceduralBase.visible = false;
+          setInteractiveLayerVisible(true);
+
+          if (activeHotspot) {
+            world.focusRing.position.set(activeHotspot.group.position.x, -0.3, activeHotspot.group.position.z);
+          }
+        };
+
+        const showProceduralFallbackWorld = () => {
+          world.group.visible = true;
+          world.proceduralBase.visible = true;
+          world.hotspots.forEach((hotspot) => {
+            hotspot.content.visible = true;
+          });
+          setInteractiveLayerVisible(true);
+
+          if (activeHotspot) {
+            world.focusRing.position.set(activeHotspot.group.position.x, -0.3, activeHotspot.group.position.z);
+          }
+        };
+
+        world.group.visible = false;
+        world.proceduralBase.visible = false;
+        world.hotspots.forEach((hotspot) => {
+          hotspot.content.visible = false;
+        });
+        setInteractiveLayerVisible(false);
+        scene.add(world.group);
+
         void loadCareerWorldAssets(THREE, loaderModule.GLTFLoader, world, {
           reducedMotion,
           signal: abortController.signal,
         })
           .then((assets) => {
+            if (cancelled) {
+              assets.dispose();
+              return;
+            }
+
             loadedAssets = assets;
+            showLoadedWorld();
+            setSceneStatus('ready');
           })
           .catch((error) => {
+            if (cancelled) {
+              return;
+            }
+
             console.warn('Career world GLB assets unavailable; procedural fallback remains active.', error);
+            showProceduralFallbackWorld();
+            setSceneStatus('ready');
           });
 
         const resize = () => {
@@ -282,7 +333,7 @@ function CareerWorldScene({
           const cameraConfig = getCameraConfig(width, expanded);
           renderer.setSize(width, height, false);
           renderer.setPixelRatio(Math.min(window.devicePixelRatio, cameraConfig.pixelRatio));
-          renderer.toneMappingExposure = width < 720 ? 1.24 : 1.12;
+          renderer.toneMappingExposure = width < 720 ? 1.08 : 1.06;
           renderer.domElement.style.touchAction = expanded && width < 720 ? 'none' : 'pan-y';
           camera.aspect = width / Math.max(height, 1);
           camera.fov = cameraConfig.fov;
@@ -322,7 +373,7 @@ function CareerWorldScene({
         const showHotspot = (hotspot: CareerWorldHotspot, event?: PointerEvent) => {
           activeHotspot = hotspot;
           setActiveItemId(hotspot.item.id);
-          world.focusRing.position.set(hotspot.group.position.x, -0.58, hotspot.group.position.z);
+          world.focusRing.position.set(hotspot.group.position.x, -0.3, hotspot.group.position.z);
           world.focusRing.visible = true;
 
           if (event) {
@@ -406,28 +457,33 @@ function CareerWorldScene({
 
           world.depthLayers[0].position.x = Math.sin(time * 0.12) * 0.035;
           world.depthLayers[1].position.x = Math.cos(time * 0.1) * 0.028;
-          aurora.children.forEach((child, index) => {
-            child.position.x += Math.sin(time * 0.16 + index) * 0.0008;
-            child.position.y += Math.cos(time * 0.14 + index) * 0.00045;
-          });
-
           world.hotspots.forEach((hotspot, index) => {
             const isFocused = targetHotspot?.item.id === hotspot.item.id;
-            const pulse = 1 + Math.sin(time * 2.25 + index) * (isFocused ? 0.075 : 0.03);
-            hotspot.marker.scale.setScalar(isFocused ? 1.18 * pulse : pulse);
-            if ('opacity' in hotspot.marker.material) {
-              hotspot.marker.material.opacity = isFocused ? 0.72 : 0.36;
-            }
-            if ('opacity' in hotspot.beacon.material) {
-              hotspot.beacon.material.opacity = isFocused ? 0.95 : 0.68;
-            }
-            hotspot.beacon.scale.setScalar(isFocused ? 1.32 * pulse : 1.02 * pulse);
+            const softPulse = 1 + Math.sin(time * 2.0 + index) * (isFocused ? 0.08 : 0.035);
+            const outwardPulse = (time * 0.45 + index * 0.14) % 1;
+            const markerMaterial = hotspot.marker.material as Three.MeshBasicMaterial;
+            const beaconMaterial = hotspot.beacon.material as Three.MeshBasicMaterial;
+            const pulseMaterial = hotspot.pulseRing.material as Three.MeshBasicMaterial;
+            const haloMaterial = hotspot.hoverHalo.material as Three.MeshBasicMaterial;
+
+            hotspot.marker.scale.setScalar(isFocused ? 1.22 * softPulse : 1.02 * softPulse);
+            markerMaterial.opacity = isFocused ? 0.92 : 0.5;
+            beaconMaterial.opacity = isFocused ? 1 : 0.68;
+            hotspot.beacon.scale.setScalar(isFocused ? 1.38 * softPulse : 1.02 * softPulse);
+            hotspot.hoverHalo.scale.setScalar(isFocused ? 1.08 + Math.sin(time * 2.2 + index) * 0.06 : 0.72);
+            haloMaterial.opacity = isFocused ? 0.24 : 0.055;
+            hotspot.pulseRing.scale.setScalar(0.78 + outwardPulse * (isFocused ? 0.9 : 0.54));
+            pulseMaterial.opacity = isFocused
+              ? 0.42 * (1 - outwardPulse)
+              : 0.2 * (1 - outwardPulse);
             hotspot.group.position.y +=
               (hotspot.item.position[1] + itemFloat(time, index, isFocused) - hotspot.group.position.y) * 0.025;
           });
 
           if (world.focusRing.visible && targetHotspot) {
-            world.focusRing.scale.setScalar(1 + Math.sin(time * 2.5) * 0.055);
+            const focusMaterial = world.focusRing.material as Three.MeshBasicMaterial;
+            world.focusRing.scale.setScalar(1.04 + Math.sin(time * 2.5) * 0.09);
+            focusMaterial.opacity = 0.72 + Math.sin(time * 3.1) * 0.12;
             world.focusRing.position.x += (targetHotspot.group.position.x - world.focusRing.position.x) * 0.09;
             world.focusRing.position.z += (targetHotspot.group.position.z - world.focusRing.position.z) * 0.09;
           }
@@ -454,7 +510,6 @@ function CareerWorldScene({
         renderer.domElement.addEventListener('webglcontextlost', handleContextLost);
         renderer.domElement.addEventListener('webglcontextrestored', handleContextRestored);
         document.addEventListener('visibilitychange', handleVisibilityChange);
-        setSceneStatus('ready');
         animate();
 
         cleanup = () => {

@@ -16,7 +16,7 @@ export const careerMapItems = [
     targetSection: 'experience-sodra',
     description: 'Forest automation, RPA and real operational workflows.',
     accent: 0x72f2a3,
-    position: [-1.1, -0.46, -1.35],
+    position: [-3.18, -0.4, -1.86],
   },
   {
     id: 'dasa',
@@ -25,7 +25,7 @@ export const careerMapItems = [
     targetSection: 'experience-dasa',
     description: '.NET backend, IoT services and system architecture.',
     accent: 0x77d8f7,
-    position: [1.45, -0.44, -0.95],
+    position: [3.18, -0.4, 1.86],
   },
   {
     id: 'visma',
@@ -34,7 +34,7 @@ export const careerMapItems = [
     targetSection: 'experience-visma',
     description: 'Test automation, quality tooling and CI/CD.',
     accent: 0xb7f4d6,
-    position: [-2.1, -0.46, 0.06],
+    position: [-3.22, -0.4, 1.72],
   },
   {
     id: 'filmstaden',
@@ -43,7 +43,7 @@ export const careerMapItems = [
     targetSection: 'experience-filmstaden',
     description: 'Cinema operations, people leadership and service.',
     accent: 0xf1d48d,
-    position: [0.1, -0.5, 1.45],
+    position: [0.02, -0.4, -1.96],
   },
   {
     id: 'education',
@@ -52,7 +52,7 @@ export const careerMapItems = [
     targetSection: 'education',
     description: '.NET, design, motion and continuous learning.',
     accent: 0xc4a5ff,
-    position: [1.75, -0.48, 0.9],
+    position: [3.18, -0.4, -1.42],
   },
 ] satisfies CareerMapItem[];
 

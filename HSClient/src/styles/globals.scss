@@ -272,8 +272,86 @@ p {
   margin: 0;
   padding: 0;
   background:
-    radial-gradient(circle at 68% 26%, rgba(119, 216, 247, 0.1), transparent 22rem),
-    linear-gradient(180deg, #06110e, #07120f 56%, #0a1a16);
+    radial-gradient(circle at 52% 38%, rgba(114, 242, 163, 0.08), transparent 24rem),
+    radial-gradient(circle at 78% 30%, rgba(119, 216, 247, 0.11), transparent 21rem),
+    linear-gradient(180deg, #102720 0%, #0b1d18 42%, #071411 100%);
+}
+
+.world-intro::before,
+.world-intro::after {
+  position: absolute;
+  right: -8vw;
+  left: -8vw;
+  z-index: 0;
+  pointer-events: none;
+  content: '';
+}
+
+.world-intro::before {
+  bottom: 18%;
+  height: 34%;
+  background:
+    radial-gradient(ellipse at 50% 100%, rgba(183, 244, 214, 0.045), transparent 54%),
+    linear-gradient(180deg, rgba(39, 87, 73, 0.02), rgba(21, 58, 49, 0.15));
+  clip-path: polygon(
+    0 78%,
+    4% 68%,
+    8% 72%,
+    12% 55%,
+    16% 70%,
+    21% 45%,
+    25% 67%,
+    31% 52%,
+    36% 72%,
+    42% 50%,
+    47% 68%,
+    53% 42%,
+    58% 66%,
+    64% 49%,
+    70% 70%,
+    76% 46%,
+    82% 67%,
+    88% 54%,
+    93% 72%,
+    100% 58%,
+    100% 100%,
+    0 100%
+  );
+  filter: blur(0.35px);
+  opacity: 0.42;
+}
+
+.world-intro::after {
+  bottom: -18%;
+  height: 36%;
+  background:
+    linear-gradient(180deg, rgba(9, 31, 26, 0), rgba(7, 22, 18, 0.28) 44%, rgba(4, 13, 11, 0.6)),
+    radial-gradient(ellipse at 52% 28%, rgba(114, 242, 163, 0.045), transparent 54%);
+  clip-path: polygon(
+    0 64%,
+    5% 44%,
+    9% 70%,
+    14% 34%,
+    18% 68%,
+    23% 46%,
+    28% 74%,
+    33% 38%,
+    38% 68%,
+    45% 44%,
+    51% 72%,
+    57% 36%,
+    62% 68%,
+    69% 42%,
+    75% 74%,
+    81% 39%,
+    86% 70%,
+    92% 48%,
+    100% 66%,
+    100% 100%,
+    0 100%
+  );
+  filter: blur(0.55px);
+  opacity: 0.32;
 }
 
 .world-intro.is-world-expanded {
@@ -292,6 +370,62 @@ p {
 
 .world-scene {
   overflow: hidden;
+  z-index: 1;
+}
+
+.world-scene::before,
+.world-scene::after {
+  position: absolute;
+  right: -12vw;
+  left: -12vw;
+  z-index: 0;
+  pointer-events: none;
+  content: '';
+}
+
+.world-scene::before {
+  bottom: 22%;
+  height: 34%;
+  background:
+    radial-gradient(ellipse at 48% 72%, rgba(119, 216, 247, 0.035), transparent 48%),
+    linear-gradient(180deg, rgba(31, 78, 66, 0.04), rgba(13, 42, 35, 0.24));
+  clip-path: polygon(
+    0 72%,
+    5% 58%,
+    10% 74%,
+    16% 45%,
+    21% 69%,
+    27% 52%,
+    32% 76%,
+    38% 47%,
+    44% 70%,
+    50% 42%,
+    56% 72%,
+    62% 50%,
+    68% 76%,
+    74% 46%,
+    80% 70%,
+    86% 54%,
+    92% 74%,
+    100% 56%,
+    100% 100%,
+    0 100%
+  );
+  filter: blur(0.6px);
+  opacity: 0.36;
+}
+
+.world-scene::after {
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 50% 47%, rgba(183, 244, 214, 0.08), transparent 30%),
+    radial-gradient(ellipse at 50% 64%, rgba(5, 15, 12, 0), rgba(5, 15, 12, 0.22) 72%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.018), transparent 30%, rgba(5, 15, 12, 0.18));
+  opacity: 0.78;
+}
+
+.world-scene__canvas {
+  z-index: 2;
 }
 
 .world-scene__canvas canvas {
@@ -307,8 +441,9 @@ p {
   z-index: 1;
   pointer-events: none;
   background:
-    radial-gradient(circle at 50% 46%, transparent 0 38%, rgba(6, 17, 14, 0.08) 64%, rgba(6, 17, 14, 0.48)),
-    linear-gradient(180deg, rgba(6, 17, 14, 0.12), transparent 24%, rgba(6, 17, 14, 0.58));
+    radial-gradient(ellipse at 50% 58%, transparent 0 43%, rgba(6, 17, 14, 0.05) 68%, rgba(5, 14, 12, 0.3)),
+    radial-gradient(ellipse at 50% 82%, rgba(3, 10, 8, 0.46), transparent 38%),
+    linear-gradient(180deg, rgba(183, 244, 214, 0.035), transparent 32%, rgba(7, 18, 15, 0.24));
 }
 
 .world-loading {

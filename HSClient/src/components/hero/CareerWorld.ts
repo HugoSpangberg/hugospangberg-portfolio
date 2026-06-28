@@ -9,6 +9,8 @@ export type CareerWorldHotspot = {
   hitTarget: Three.Mesh;
   marker: Three.Mesh;
   beacon: Three.Mesh;
+  pulseRing: Three.Mesh;
+  hoverHalo: Three.Mesh;
 };
 
 export type CareerWorldHandle = {
@@ -53,6 +55,9 @@ type Materials = {
   dot: Three.MeshStandardMaterial;
   invisible: Three.MeshBasicMaterial;
   marker: Three.MeshBasicMaterial;
+  sitePad: Three.MeshBasicMaterial;
+  forestClearing: Three.MeshBasicMaterial;
+  hubGlow: Three.MeshBasicMaterial;
   forestBack: Three.MeshBasicMaterial;
   forestMid: Three.MeshBasicMaterial;
   brick: Three.MeshStandardMaterial;
@@ -145,6 +150,27 @@ function makeMaterials(THREE: typeof Three): Materials {
       color: 0x77d8f7,
       transparent: true,
       opacity: 0.58,
+      side: THREE.DoubleSide,
+    }),
+    sitePad: new THREE.MeshBasicMaterial({
+      color: 0x8aa99a,
+      transparent: true,
+      opacity: 0.2,
+      depthWrite: false,
+      side: THREE.DoubleSide,
+    }),
+    forestClearing: new THREE.MeshBasicMaterial({
+      color: 0x294b3d,
+      transparent: true,
+      opacity: 0.28,
+      depthWrite: false,
+      side: THREE.DoubleSide,
+    }),
+    hubGlow: new THREE.MeshBasicMaterial({
+      color: 0x77d8f7,
+      transparent: true,
+      opacity: 0.18,
+      depthWrite: false,
       side: THREE.DoubleSide,
     }),
     forestBack: new THREE.MeshBasicMaterial({ color: 0x1b4a40, transparent: true, opacity: 0.26, depthWrite: false }),
@@ -986,18 +1012,37 @@ function createHotspot(
 ) {
   const group = new THREE.Group();
   group.position.set(...item.position);
+  group.add(createGroundingPad(THREE, item, materials));
+  if (item.id === 'dasa') {
+    group.add(createDasaGroundAccents(THREE, materials));
+  }
   group.add(content);
 
   const markerMaterial = new THREE.MeshBasicMaterial({
     color: item.accent,
     transparent: true,
-    opacity: 0.42,
+    opacity: 0.46,
     side: THREE.DoubleSide,
+    depthWrite: false,
   });
   const marker = new THREE.Mesh(new THREE.TorusGeometry(0.46, 0.009, 8, 54), markerMaterial);
   marker.rotation.x = Math.PI / 2;
-  marker.position.y = -0.08;
+  marker.position.y = 0.1;
   group.add(marker);
+
+  const pulseRing = new THREE.Mesh(
+    new THREE.RingGeometry(0.58, 0.86, 72),
+    new THREE.MeshBasicMaterial({
+      color: item.accent,
+      transparent: true,
+      opacity: 0.22,
+      side: THREE.DoubleSide,
+      depthWrite: false,
+    }),
+  );
+  pulseRing.rotation.x = Math.PI / 2;
+  pulseRing.position.y = 0.105;
+  group.add(pulseRing);
 
   const beacon = new THREE.Mesh(
     new THREE.SphereGeometry(0.045, 12, 10),
@@ -1011,17 +1056,16 @@ function createHotspot(
   group.add(beacon);
 
   const hoverHalo = new THREE.Mesh(
-    new THREE.RingGeometry(0.12, 0.18, 28),
+    new THREE.RingGeometry(0.1, 0.16, 32),
     new THREE.MeshBasicMaterial({
       color: item.accent,
       transparent: true,
-      opacity: 0.18,
+      opacity: 0.12,
       side: THREE.DoubleSide,
       depthWrite: false,
     }),
   );
-  hoverHalo.rotation.x = Math.PI / 2;
-  hoverHalo.position.y = 0.95;
+  hoverHalo.position.y = 1.04;
   group.add(hoverHalo);
 
   const hitTarget = new THREE.Mesh(new THREE.BoxGeometry(1.32, 1.45, 1.32), materials.invisible);
@@ -1029,18 +1073,71 @@ function createHotspot(
   hitTarget.userData = { kind: 'career-hotspot', id: item.id };
   group.add(hitTarget);
 
-  return { item, group, content, hitTarget, marker, beacon };
+  return { item, group, content, hitTarget, marker, beacon, pulseRing, hoverHalo };
+}
+
+function createGroundingPad(THREE: typeof Three, item: CareerMapItem, materials: Materials) {
+  const pad = new THREE.Mesh(
+    new THREE.CircleGeometry(1, 64),
+    item.id === 'dasa' ? materials.forestClearing : materials.sitePad,
+  );
+  const padScale: Record<string, [number, number, number]> = {
+    sodra: [1.82, 0.86, -0.1],
+    dasa: [1.78, 1.08, 0.18],
+    visma: [1.58, 0.94, 0.04],
+    filmstaden: [1.48, 0.86, 0],
+    education: [1.34, 0.9, -0.03],
+  };
+  const [scaleX, scaleZ, rotation] = padScale[item.id] ?? [1.35, 0.9, 0];
+
+  pad.name = `Runtime_${item.id}_GroundingPad`;
+  pad.rotation.x = -Math.PI / 2;
+  pad.rotation.z = rotation;
+  pad.position.y = 0.12;
+  pad.scale.set(scaleX, scaleZ, 1);
+  pad.renderOrder = -2;
+
+  return pad;
+}
+
+function createDasaGroundAccents(THREE: typeof Three, materials: Materials) {
+  const group = new THREE.Group();
+  group.name = 'Runtime_Dasa_ForestryContext';
+
+  const logs = [
+    [-0.86, 0.14, 0.52, 0.48, 0.036, 0.95],
+    [-0.58, 0.145, 0.7, 0.42, 0.032, 0.72],
+    [0.82, 0.14, -0.58, 0.36, 0.03, -0.42],
+  ];
+
+  logs.forEach(([x, y, z, length, radius, rotation], index) => {
+    const log = new THREE.Mesh(new THREE.CylinderGeometry(radius, radius, length, 10), materials.trunk);
+    log.name = `Runtime_Dasa_GroundedLog_${index}`;
+    log.position.set(x, y, z);
+    log.rotation.set(Math.PI / 2, 0, rotation);
+    group.add(log);
+  });
+
+  const stump = new THREE.Mesh(new THREE.CylinderGeometry(0.075, 0.1, 0.12, 9), materials.trunk);
+  stump.name = 'Runtime_Dasa_GroundedStump';
+  stump.position.set(-0.2, 0.15, 0.8);
+  stump.rotation.y = 0.38;
+  group.add(stump);
+
+  const sensor = new THREE.Mesh(new THREE.SphereGeometry(0.035, 12, 8), materials.cyan);
+  sensor.name = 'Runtime_Dasa_CyanSensor';
+  sensor.position.set(-1.08, 0.3, 0.2);
+  group.add(sensor);
+
+  return group;
 }
 
 function createPath(THREE: typeof Three, materials: Materials) {
   const group = new THREE.Group();
+  const hub = new THREE.Vector3(0, -0.57, -0.16);
   const points = [
-    new THREE.Vector3(0.02, -0.57, -0.18),
-    new THREE.Vector3(-1.1, -0.57, -1.0),
-    new THREE.Vector3(1.22, -0.57, -0.8),
-    new THREE.Vector3(-1.72, -0.57, 0.1),
-    new THREE.Vector3(0.08, -0.57, 1.08),
-    new THREE.Vector3(1.48, -0.57, 0.72),
+    hub,
+    ...careerMapItems.map((item) => new THREE.Vector3(item.position[0], -0.57, item.position[2])),
   ];
 
   points.slice(1).forEach((target, index) => {
@@ -1095,20 +1192,27 @@ export function createCareerWorld(
   );
   hotspots.forEach((hotspot) => group.add(hotspot.group));
 
+  const hubX = 0;
+  const hubZ = -0.16;
+  const hubPlatform = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.58, 0.055, 10), materials.dark);
+  hubPlatform.position.set(hubX, -0.34, hubZ);
+  const hubGroundGlow = new THREE.Mesh(new THREE.RingGeometry(0.36, 0.56, 72), materials.hubGlow);
+  hubGroundGlow.rotation.x = Math.PI / 2;
+  hubGroundGlow.position.set(hubX, -0.29, hubZ);
   const coreBase = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.28, 0.1, 8), materials.dark);
-  coreBase.position.set(0.02, -0.54, -0.18);
+  coreBase.position.set(hubX, -0.27, hubZ);
   const systemCore = new THREE.Mesh(new THREE.IcosahedronGeometry(0.16, 1), materials.cyan);
-  systemCore.position.set(0.02, -0.27, -0.18);
+  systemCore.position.set(hubX, -0.05, hubZ);
   const coreHalo = new THREE.Mesh(new THREE.TorusGeometry(0.32, 0.008, 8, 48), materials.marker);
   coreHalo.rotation.x = Math.PI / 2;
-  coreHalo.position.set(0.02, -0.4, -0.18);
+  coreHalo.position.set(hubX, -0.17, hubZ);
   const coreLabel = createTextLabel(THREE, labels.hub, '#77d8f7', 0.82);
-  coreLabel.position.set(0.02, 0.04, -0.18);
-  group.add(coreBase, systemCore, coreHalo, coreLabel);
+  coreLabel.position.set(hubX, 0.22, hubZ);
+  group.add(hubPlatform, hubGroundGlow, coreBase, systemCore, coreHalo, coreLabel);
 
   const focusRing = new THREE.Mesh(new THREE.TorusGeometry(0.56, 0.014, 8, 56), materials.marker);
   focusRing.rotation.x = Math.PI / 2;
-  focusRing.position.set(0, -0.58, 0);
+  focusRing.position.set(0, -0.3, 0);
   focusRing.visible = false;
   group.add(focusRing);
 
@@ -1125,7 +1229,7 @@ export function createCareerWorld(
     createDataPulse(
       THREE,
       systemCore.position,
-      new THREE.Vector3(systemCore.position.x, 3.2, systemCore.position.z),
+      new THREE.Vector3(systemCore.position.x, 1.55, systemCore.position.z),
       { line: materials.line, dot: materials.dot },
       0.48,
     ),
@@ -1133,7 +1237,7 @@ export function createCareerWorld(
   pulses.forEach((pulse) => group.add(pulse.line, pulse.dot));
 
   const interactives = hotspots.map((hotspot) => hotspot.hitTarget);
-  const animatedNodes = [systemCore, coreHalo, ...hotspots.flatMap((hotspot) => [hotspot.marker, hotspot.beacon])];
+  const animatedNodes = [systemCore, coreHalo, hubGroundGlow, ...hotspots.flatMap((hotspot) => [hotspot.marker, hotspot.beacon, hotspot.pulseRing])];
 
   return {
     group,
