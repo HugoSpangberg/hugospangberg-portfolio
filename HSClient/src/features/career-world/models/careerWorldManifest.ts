@@ -1,6 +1,10 @@
 import type { CareerWorldManifest } from './modelTypes';
 
-export const CAREER_WORLD_MODEL_BASE_URL = '/models/career-world';
+const publicBaseUrl = import.meta.env.BASE_URL.endsWith('/')
+  ? import.meta.env.BASE_URL
+  : `${import.meta.env.BASE_URL}/`;
+
+export const CAREER_WORLD_MODEL_BASE_URL = `${publicBaseUrl}models/career-world`;
 
 export function getCareerWorldModelUrl(file: string) {
   return `${CAREER_WORLD_MODEL_BASE_URL}/${encodeURIComponent(file)}`;
