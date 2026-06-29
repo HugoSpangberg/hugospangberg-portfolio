@@ -6,6 +6,20 @@ export type CareerMapItem = {
   description: string;
   accent: number;
   position: [number, number, number];
+  hoverVisual?:
+    | {
+        kind: 'image';
+        src: string;
+        alt: string;
+        caption: string;
+      }
+    | {
+        kind: 'educationLogos';
+        logos: Array<{
+          label: string;
+          tone: 'forest' | 'mono';
+        }>;
+      };
 };
 
 export const careerMapItems = [
@@ -16,7 +30,13 @@ export const careerMapItems = [
     targetSection: 'experience-sodra',
     description: 'Forest automation, RPA and real operational workflows.',
     accent: 0x72f2a3,
-    position: [-3.18, -0.4, -1.86],
+    position: [-3.18, -0.4, 1.72],
+    hoverVisual: {
+      kind: 'image',
+      src: '/images/career-world/hover/sodra-reference.jpg',
+      alt: 'Södra headquarters reference',
+      caption: 'Södra reference',
+    },
   },
   {
     id: 'dasa',
@@ -26,6 +46,12 @@ export const careerMapItems = [
     description: '.NET backend, IoT services and system architecture.',
     accent: 0x77d8f7,
     position: [3.18, -0.4, 1.86],
+    hoverVisual: {
+      kind: 'image',
+      src: '/images/career-world/hover/rottne-harvester.svg',
+      alt: 'Rottne forestry harvester illustration',
+      caption: 'Rottne skördare',
+    },
   },
   {
     id: 'visma',
@@ -34,7 +60,13 @@ export const careerMapItems = [
     targetSection: 'experience-visma',
     description: 'Test automation, quality tooling and CI/CD.',
     accent: 0xb7f4d6,
-    position: [-3.22, -0.4, 1.72],
+    position: [-3.22, -0.4, -1.86],
+    hoverVisual: {
+      kind: 'image',
+      src: '/images/career-world/hover/visma-reference.jpg',
+      alt: 'Visma office reference',
+      caption: 'Visma reference',
+    },
   },
   {
     id: 'filmstaden',
@@ -44,6 +76,12 @@ export const careerMapItems = [
     description: 'Cinema operations, people leadership and service.',
     accent: 0xf1d48d,
     position: [0.02, -0.4, -1.96],
+    hoverVisual: {
+      kind: 'image',
+      src: '/images/career-world/hover/filmstaden-reference.jpg',
+      alt: 'Filmstaden cinema reference',
+      caption: 'Filmstaden reference',
+    },
   },
   {
     id: 'education',
@@ -53,6 +91,13 @@ export const careerMapItems = [
     description: '.NET, design, motion and continuous learning.',
     accent: 0xc4a5ff,
     position: [3.18, -0.4, -1.42],
+    hoverVisual: {
+      kind: 'educationLogos',
+      logos: [
+        { label: 'EC Utbildning', tone: 'forest' },
+        { label: 'Hyper Island', tone: 'mono' },
+      ],
+    },
   },
 ] satisfies CareerMapItem[];
 

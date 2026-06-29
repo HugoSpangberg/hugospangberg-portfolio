@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import math
+import json
 import sys
 from pathlib import Path
 
@@ -10,7 +11,15 @@ from mathutils import Vector
 SCRIPT_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(SCRIPT_DIR))
 
-from common import EXPORTS, PREVIEWS, SOURCES, cube, reset_scene
+from common import EXPORTS, PREVIEWS, REPORTS, SOURCES, cube, parent, reset_scene
+from placement_contract import (
+    LANDMARK_REQUIRED_ANCHORS,
+    PLACEMENT_ANCHOR,
+    align_root_placement_to_target,
+    ensure_landmark_contract,
+    link_object_to_collection,
+    require_child_anchor,
+)
 
 MASTER_BLEND = SOURCES / "career-world-master.blend"
 MASTER_EXPORT = EXPORTS / "career-world-master.glb"
@@ -25,47 +34,52 @@ LANDMARKS = [
     {
         "id": "filmstaden",
         "collection": "COL_Filmstaden",
-        "source": "filmstaden.blend",
+        "source": "filmstaden-update.blend",
         "root": "LM_Filmstaden_Root",
         "anchor": "Anchor_Filmstaden",
         "rotation_z": math.radians(0),
         "scale": 0.78,
+        "footprint_include": ["brickfacade", "lightstonegroundfloor", "recessedentrancebay", "groundfloorcolumn"],
     },
     {
         "id": "visma",
         "collection": "COL_Visma",
-        "source": "visma.blend",
+        "source": "visma-update.blend",
         "root": "LM_Visma_Root",
         "anchor": "Anchor_Visma",
         "rotation_z": math.radians(4),
         "scale": 0.78,
+        "footprint_include": ["leftwing", "rightwing", "center", "orangecore", "entrance"],
     },
     {
         "id": "sodra",
         "collection": "COL_Sodra",
-        "source": "sodra.blend",
+        "source": "sodra-update.blend",
         "root": "LM_Sodra_Root",
         "anchor": "Anchor_Sodra",
         "rotation_z": math.radians(-5),
         "scale": 0.66,
+        "footprint_include": ["curvedwing", "centralcore", "sidewing", "facade"],
     },
     {
         "id": "dasa",
         "collection": "COL_DasaForestry",
-        "source": "dasa-forestry.blend",
+        "source": "dasa-forestry-Update.blend",
         "root": "LM_Dasa_Root",
         "anchor": "Anchor_Dasa",
         "rotation_z": math.radians(10),
         "scale": 0.64,
+        "footprint_include": ["frontbody", "rearbody", "chassis", "wheel", "boompedestal", "articulated"],
     },
     {
         "id": "education",
         "collection": "COL_Education",
-        "source": "education.blend",
+        "source": "education-update.blend",
         "root": "LM_Education_Root",
         "anchor": "Anchor_Education",
         "rotation_z": math.radians(-14),
         "scale": 0.76,
+        "footprint_include": ["mainbrickfacade", "centralentrance", "leftwing", "rightwing", "stoneplinth"],
     },
 ]
 
@@ -90,6 +104,63 @@ def require_object(name: str) -> bpy.types.Object:
     if obj is None:
         raise RuntimeError(f"Missing object {name}")
     return obj
+
+
+def ensure_collection(name: str) -> bpy.types.Collection:
+    collection = bpy.data.collections.get(name)
+    if collection is not None:
+        return collection
+    collection = bpy.data.collections.new(name)
+    bpy.context.scene.collection.children.link(collection)
+    return collection
+
+
+def prepare_source_landmark(landmark: dict) -> dict:
+    source_path = SOURCES / landmark["source"]
+    if not source_path.exists():
+        raise SystemExit(f"Missing updated Blender source: {source_path}")
+
+    bpy.ops.wm.open_mainfile(filepath=str(source_path))
+    target_collection = ensure_collection(landmark["collection"])
+
+    root = bpy.data.objects.get(landmark["root"])
+    if root is None:
+        root = bpy.data.objects.new(landmark["root"], None)
+        root.empty_display_type = "CUBE"
+        root.location = (0, 0, 0)
+        bpy.context.collection.objects.link(root)
+    link_object_to_collection(root, target_collection)
+
+    for obj in list(bpy.context.scene.objects):
+        if obj == root:
+            continue
+        if obj.name.startswith("Anchor_"):
+            bpy.data.objects.remove(obj, do_unlink=True)
+            continue
+        link_object_to_collection(obj, target_collection)
+        if obj.parent is None:
+            parent(obj, root)
+
+    report = ensure_landmark_contract(
+        root,
+        landmark["footprint_include"],
+        landmark.get("footprint_exclude"),
+    )
+
+    for obj in [root, *root.children_recursive]:
+        link_object_to_collection(obj, target_collection)
+
+    root["placement_contract"] = "Anchor_Placement is the footprint center at local ground level."
+    root["placement_source"] = landmark["source"]
+    for anchor_name in LANDMARK_REQUIRED_ANCHORS:
+        require_child_anchor(root, anchor_name)
+
+    bpy.ops.wm.save_as_mainfile(filepath=str(source_path))
+    return {
+        "source": landmark["source"],
+        "root": landmark["root"],
+        **report,
+    }
 
 
 def look_at(obj: bpy.types.Object, target: Vector) -> None:
@@ -139,6 +210,8 @@ def add_master_cameras() -> None:
     add_camera("Camera_Master_Mobile", center + Vector((span * 0.40, -span * 1.02, span * 0.78)), target, 31)
     add_camera("Camera_Master_Left", center + Vector((-span * 0.84, -span * 0.74, span * 0.60)), target, 36)
     add_camera("Camera_Master_Right", center + Vector((span * 0.90, -span * 0.70, span * 0.60)), target, 36)
+    add_camera("Camera_Master_PlacementTop", center + Vector((0.0, -0.01, span * 1.45)), center, 58, 180)
+    add_camera("Camera_Master_PlacementFront", center + Vector((span * 0.68, -span * 0.82, span * 0.52)), target, 40, 120)
 
     focus_offsets = {
         "Sodra": Vector((3.4, -3.7, 2.45)),
@@ -212,18 +285,22 @@ def add_workflow_notes() -> None:
                 "",
                 "Recommended workflow:",
                 "1. Run: npm run models:assemble",
-                "2. Open: Assets/Blender/Sources/career-world-master.blend",
-                "3. Edit geometry/materials in this master scene.",
-                "4. Move environment anchors to adjust runtime placement.",
-                "5. Keep each landmark under its LM_*_Root object.",
-                "6. Run: npm run models:export-master",
-                "7. Run: npm run models:preview-master",
-                "8. Run: npm run models:validate",
+                "2. Open: npm run models:open-master",
+                "3. Edit geometry/materials/anchors in this master scene.",
+                "4. Save the master .blend file in Blender.",
+                "5. Run: npm run models:export-master",
+                "6. Run: npm run models:preview-master",
+                "7. Run: npm run models:validate",
+                "",
+                "Do not run npm run models:assemble after manual master-scene edits",
+                "unless you intentionally want to regenerate and overwrite this file.",
                 "",
                 "Important runtime convention:",
                 "- Environment anchors define placement in the web scene.",
+                f"- Each landmark owns {PLACEMENT_ANCHOR}, centered on its intended footprint at ground level.",
+                f"- Master assembly aligns {PLACEMENT_ANCHOR} to the matching environment anchor.",
                 "- Landmark roots are exported back to local origin by export_master_world.py.",
-                "- Do not delete Anchor_Hotspot, Anchor_Label, Anchor_Light, or Anchor_CameraFocus.",
+                f"- Do not delete {', '.join(LANDMARK_REQUIRED_ANCHORS)}.",
             ]
         )
     )
@@ -249,21 +326,41 @@ def export_combined_master() -> None:
 def main() -> None:
     SOURCES.mkdir(parents=True, exist_ok=True)
     PREVIEWS.mkdir(parents=True, exist_ok=True)
+    REPORTS.mkdir(parents=True, exist_ok=True)
+    source_reports = {landmark["id"]: prepare_source_landmark(landmark) for landmark in LANDMARKS}
+    bpy.ops.wm.read_factory_settings(use_empty=True)
     reset_scene()
 
     append_collection("career-world-environment.blend", ENVIRONMENT["collection"])
     environment_root = require_object(ENVIRONMENT["root"])
     environment_root.name = ENVIRONMENT["root"]
 
+    placement_reports = {}
     for landmark in LANDMARKS:
         anchor = require_object(landmark["anchor"])
         append_collection(landmark["source"], landmark["collection"])
         root = require_object(landmark["root"])
-        root.location = anchor.matrix_world.translation
-        root.rotation_euler.z = landmark["rotation_z"]
-        root.scale = (landmark["scale"], landmark["scale"], landmark["scale"])
+        alignment = align_root_placement_to_target(
+            root,
+            anchor.matrix_world.translation,
+            landmark["rotation_z"],
+            landmark["scale"],
+        )
+        if abs(alignment["groundOffset"]) > 0.001:
+            raise RuntimeError(f"{landmark['id']} placement ground offset is not zero: {alignment['groundOffset']}")
         root["master_anchor"] = landmark["anchor"]
         root["runtime_export_root_at_origin"] = True
+        root["placement_contract"] = "Master aligns Anchor_Placement to the destination environment anchor."
+        placement_reports[landmark["id"]] = {
+            "source": source_reports[landmark["id"]],
+            "destinationAnchor": landmark["anchor"],
+            "destinationAnchorPosition": [
+                round(anchor.matrix_world.translation.x, 5),
+                round(anchor.matrix_world.translation.y, 5),
+                round(anchor.matrix_world.translation.z, 5),
+            ],
+            **alignment,
+        }
 
     add_master_cameras()
     add_master_lighting()
@@ -275,9 +372,24 @@ def main() -> None:
     bpy.context.scene.view_settings.view_transform = "Filmic"
     bpy.context.scene.view_settings.look = "Medium High Contrast"
     bpy.ops.wm.save_as_mainfile(filepath=str(MASTER_BLEND))
+    (REPORTS / "master-placement-report.json").write_text(
+        json.dumps(
+            {
+                "contract": {
+                    "placementAnchor": PLACEMENT_ANCHOR,
+                    "requiredLandmarkAnchors": LANDMARK_REQUIRED_ANCHORS,
+                    "rule": "Anchor_Placement is generated from intended footprint meshes and aligned to the destination zone center.",
+                },
+                "landmarks": placement_reports,
+            },
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
     export_combined_master()
     print(f"Saved editable master scene: {MASTER_BLEND}")
     print(f"Exported combined review GLB: {MASTER_EXPORT}")
+    print(f"Wrote placement report: {REPORTS / 'master-placement-report.json'}")
 
 
 if __name__ == "__main__":

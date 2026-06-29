@@ -566,6 +566,18 @@ p {
   backdrop-filter: blur(12px);
 }
 
+.world-tooltip--with-media {
+  max-width: min(19rem, calc(100% - 1.5rem));
+  gap: 0.42rem;
+  padding: 0.5rem;
+  white-space: normal;
+}
+
+.world-tooltip__media,
+.world-tooltip__logos {
+  width: 13rem;
+}
+
 .world-tooltip span {
   color: var(--color-fog);
   font-size: 0.68rem;
@@ -998,8 +1010,9 @@ p {
   overflow: hidden;
   min-height: min(47rem, calc(100svh - 7rem));
   background:
-    radial-gradient(circle at 62% 38%, rgba(119, 216, 247, 0.1), transparent 16rem),
-    linear-gradient(145deg, rgba(18, 42, 38, 0.78), rgba(6, 17, 14, 0.58));
+    radial-gradient(circle at 54% 48%, rgba(119, 216, 247, 0.12), transparent 18rem),
+    radial-gradient(ellipse at 50% 86%, rgba(114, 242, 163, 0.12), transparent 28rem),
+    linear-gradient(180deg, rgba(30, 65, 58, 0.72), rgba(10, 27, 23, 0.78) 54%, rgba(5, 14, 12, 0.9));
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-soft);
@@ -1007,29 +1020,35 @@ p {
 
 .hero-demo::before {
   position: absolute;
-  inset: 1rem;
-  z-index: 2;
+  inset: 0;
+  z-index: 0;
   pointer-events: none;
   content: '';
-  border: 1px solid rgba(119, 216, 247, 0.16);
-  border-radius: var(--radius-sm);
+  background:
+    radial-gradient(ellipse at 12% 78%, rgba(18, 51, 42, 0.72) 0 7rem, transparent 7.2rem),
+    radial-gradient(ellipse at 27% 76%, rgba(17, 47, 39, 0.82) 0 8.5rem, transparent 8.7rem),
+    radial-gradient(ellipse at 43% 79%, rgba(20, 55, 46, 0.7) 0 6.8rem, transparent 7rem),
+    radial-gradient(ellipse at 67% 76%, rgba(17, 47, 39, 0.82) 0 9rem, transparent 9.2rem),
+    radial-gradient(ellipse at 88% 78%, rgba(18, 51, 42, 0.72) 0 7.6rem, transparent 7.8rem),
+    linear-gradient(180deg, transparent 0 54%, rgba(9, 27, 22, 0.4) 73%, rgba(4, 13, 11, 0.82) 100%);
+  opacity: 0.72;
 }
 
 .hero-demo::after {
   position: absolute;
   inset: 0;
-  z-index: 1;
+  z-index: 2;
   pointer-events: none;
   content: '';
   background:
-    linear-gradient(90deg, rgba(6, 17, 14, 0.2), transparent 34%),
-    linear-gradient(180deg, rgba(6, 17, 14, 0.08), rgba(6, 17, 14, 0.62));
+    radial-gradient(ellipse at 50% 57%, transparent 0 38%, rgba(6, 17, 14, 0.22) 76%, rgba(6, 17, 14, 0.54)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), transparent 28%, rgba(6, 17, 14, 0.34));
 }
 
 .hero-demo__scene {
   position: absolute;
   inset: 0;
-  z-index: 0;
+  z-index: 1;
 }
 
 .hero-demo__scene canvas {
@@ -1041,18 +1060,18 @@ p {
 .hero-demo__overlay {
   position: absolute;
   inset: 0;
-  z-index: 1;
+  z-index: 2;
   pointer-events: none;
   background:
-    radial-gradient(circle at 50% 52%, transparent, rgba(6, 17, 14, 0.14) 58%, rgba(6, 17, 14, 0.5)),
-    linear-gradient(180deg, transparent, rgba(6, 17, 14, 0.42));
+    radial-gradient(circle at 50% 52%, transparent, rgba(6, 17, 14, 0.1) 62%, rgba(6, 17, 14, 0.38)),
+    linear-gradient(180deg, rgba(119, 216, 247, 0.045), transparent 42%, rgba(6, 17, 14, 0.34));
 }
 
 .hero-demo__caption,
 .hero-demo__tooltip,
 .sensor-panel {
   position: absolute;
-  z-index: 3;
+  z-index: 4;
   pointer-events: none;
 }
 
@@ -1084,6 +1103,78 @@ p {
   font-weight: 800;
   pointer-events: none;
   white-space: nowrap;
+}
+
+.hero-demo__tooltip--with-media {
+  max-width: min(19rem, calc(100% - 1.5rem));
+  gap: 0.42rem;
+  padding: 0.5rem;
+  white-space: normal;
+}
+
+.hero-demo__tooltip-media {
+  position: relative;
+  overflow: hidden;
+  width: 13rem;
+  max-width: 100%;
+  margin: 0;
+  aspect-ratio: 16 / 9;
+  background:
+    radial-gradient(circle at 50% 30%, rgba(119, 216, 247, 0.12), transparent 62%),
+    rgba(6, 17, 14, 0.62);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: calc(var(--radius-sm) - 0.2rem);
+}
+
+.hero-demo__tooltip-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-demo__tooltip-media figcaption {
+  position: absolute;
+  right: 0.45rem;
+  bottom: 0.38rem;
+  padding: 0.18rem 0.42rem;
+  color: rgba(232, 247, 240, 0.88);
+  background: rgba(6, 17, 14, 0.68);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  font-size: 0.56rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hero-demo__tooltip-logos {
+  display: grid;
+  width: 13rem;
+  max-width: 100%;
+  gap: 0.45rem;
+}
+
+.hero-demo__tooltip-logo {
+  display: grid;
+  min-height: 3.1rem;
+  place-items: center;
+  padding: 0.55rem 0.75rem;
+  border-radius: calc(var(--radius-sm) - 0.15rem);
+  font-size: 1rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+}
+
+.hero-demo__tooltip-logo--forest {
+  color: #10231f;
+  background: linear-gradient(135deg, #cfeee1, #76d89b);
+}
+
+.hero-demo__tooltip-logo--mono {
+  color: #f4f8f6;
+  background: linear-gradient(135deg, #171f1d, #31413d);
+  border: 1px solid rgba(255, 255, 255, 0.14);
 }
 
 .hero-demo__tooltip span {

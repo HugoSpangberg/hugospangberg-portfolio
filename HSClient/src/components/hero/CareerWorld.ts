@@ -282,6 +282,52 @@ function createIsland(THREE: typeof Three, materials: Materials) {
   return group;
 }
 
+function createPresentationFloor(THREE: typeof Three) {
+  const group = new THREE.Group();
+  group.name = 'Runtime_PresentationGroundingFloor';
+
+  const makeDisc = (radius: number, color: number, opacity: number, scaleZ: number, y: number) => {
+    const disc = new THREE.Mesh(
+      new THREE.CircleGeometry(radius, 96),
+      new THREE.MeshBasicMaterial({
+        color,
+        transparent: true,
+        opacity,
+        depthWrite: false,
+        side: THREE.DoubleSide,
+      }),
+    );
+    disc.rotation.x = -Math.PI / 2;
+    disc.position.y = y;
+    disc.scale.z = scaleZ;
+    return disc;
+  };
+
+  const mainGround = makeDisc(4.95, 0x132d27, 0.3, 0.64, -0.96);
+  mainGround.name = 'Runtime_PresentationGroundingFloor_Main';
+  const softShadow = makeDisc(5.65, 0x06110e, 0.28, 0.46, -0.985);
+  softShadow.name = 'Runtime_PresentationGroundingFloor_SoftShadow';
+  const nearMoss = makeDisc(3.2, 0x244c3f, 0.16, 0.54, -0.955);
+  nearMoss.name = 'Runtime_PresentationGroundingFloor_MossGlow';
+  const horizonMist = new THREE.Mesh(
+    new THREE.RingGeometry(4.7, 5.75, 112),
+    new THREE.MeshBasicMaterial({
+      color: 0x77d8f7,
+      transparent: true,
+      opacity: 0.045,
+      depthWrite: false,
+      side: THREE.DoubleSide,
+    }),
+  );
+  horizonMist.name = 'Runtime_PresentationGroundingFloor_HorizonMist';
+  horizonMist.rotation.x = -Math.PI / 2;
+  horizonMist.position.y = -0.94;
+  horizonMist.scale.z = 0.5;
+
+  group.add(softShadow, mainGround, nearMoss, horizonMist);
+  return group;
+}
+
 function createTree(
   THREE: typeof Three,
   materials: Materials,
@@ -1177,7 +1223,7 @@ export function createCareerWorld(
     createPath(THREE, materials),
     createGroundDetails(THREE, materials),
   );
-  group.add(proceduralBase);
+  group.add(createPresentationFloor(THREE), proceduralBase);
 
   const factoryById = {
     sodra: () => createSodraHeadquartersLandmark(THREE, materials, labels.locations.sodra ?? 'Södra'),

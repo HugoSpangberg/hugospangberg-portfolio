@@ -28,17 +28,26 @@ The generated master `.blend` and review GLB are local workflow artifacts and ar
 
 ## Edit In Blender
 
-Open:
+Open the current master scene without regenerating it:
+
+```bash
+npm run models:open-master
+```
+
+This opens:
 
 ```text
 Assets/Blender/Sources/career-world-master.blend
 ```
 
+Save this file normally in Blender when you are done editing. Do not run `npm run models:assemble` after manual edits unless you intentionally want to rebuild the master file from the separate source `.blend` files and overwrite those manual master-scene changes.
+
 Recommended rules:
 
 - Keep each landmark under its `LM_*_Root` object.
 - Move environment anchors such as `Anchor_Sodra` to change runtime placement.
-- Do not delete `Anchor_Hotspot`, `Anchor_Label`, `Anchor_Light`, or `Anchor_CameraFocus`.
+- Keep `Anchor_Placement` at the footprint center and ground level for each landmark.
+- Do not delete `Anchor_Placement`, `Anchor_Hotspot`, `Anchor_Label`, `Anchor_Light`, or `Anchor_CameraFocus`.
 - Keep landmark geometry local to its landmark root.
 - Use `Camera_Master_Hero` and `Camera_Master_Mobile` to review the whole scene.
 
@@ -55,6 +64,15 @@ HSClient/public/models/career-world/
 ```
 
 Landmark roots are temporarily exported around local origin because runtime placement is driven by the environment anchors.
+
+After export, run:
+
+```bash
+npm run models:validate
+npm run dev:client
+```
+
+The website loads the generated files from `HSClient/public/models/career-world/`.
 
 ## Render Master Previews
 

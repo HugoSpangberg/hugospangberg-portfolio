@@ -23,6 +23,7 @@
     "api:generate": "npm --workspace HSClient run api:generate",
     "models:export": "bash scripts/export-models.sh",
     "models:assemble": "bash scripts/assemble-world.sh",
+    "models:open-master": "bash scripts/open-master-world.sh",
     "models:export-master": "bash scripts/export-master-world.sh",
     "models:preview": "bash scripts/render-model-previews.sh",
     "models:preview-master": "bash scripts/render-master-world.sh",

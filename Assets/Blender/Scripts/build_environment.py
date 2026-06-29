@@ -62,8 +62,8 @@ for index in range(0, len(island), 2):
 
 zones = {
     "ENV_UrbanStoneZone_Filmstaden": (mat["stone"], [(-0.55, 1.98), (0.08, 2.86), (1.10, 3.10), (2.02, 2.58), (1.72, 1.74), (0.52, 1.54)]),
-    "ENV_OfficeLawnZone_Visma": (mat["grass"], [(-4.72, 1.18), (-4.10, 2.62), (-2.78, 2.88), (-1.72, 2.10), (-2.28, 0.92), (-3.72, 0.72)]),
-    "ENV_OpenGreenZone_Sodra": (mat["moss"], [(-4.45, -2.62), (-3.42, -1.18), (-2.10, -1.04), (-1.42, -2.18), (-2.24, -3.08), (-3.58, -3.14)]),
+    "ENV_OpenGreenZone_Sodra": (mat["moss"], [(-4.72, 1.18), (-4.10, 2.62), (-2.78, 2.88), (-1.72, 2.10), (-2.28, 0.92), (-3.72, 0.72)]),
+    "ENV_OfficeLawnZone_Visma": (mat["grass"], [(-4.45, -2.62), (-3.42, -1.18), (-2.10, -1.04), (-1.42, -2.18), (-2.24, -3.08), (-3.58, -3.14)]),
     "ENV_ForestFloorZone_Dasa": (mat["forest_ground"], [(2.02, -2.92), (2.48, -1.24), (4.12, -0.94), (4.86, -2.18), (3.92, -3.08)]),
     "ENV_SchoolMossZone_Education": (mat["grass"], [(2.70, 0.52), (3.26, 1.92), (4.44, 2.10), (5.00, 1.02), (4.32, 0.18)]),
 }
@@ -73,14 +73,14 @@ for name, (zone_mat, points) in zones.items():
 for name, zone_mat, points in [
     ("ENV_CentralMeadow_MossRise", mat["moss"], [(-1.12, -0.48), (-0.38, 0.24), (0.48, 0.18), (1.04, -0.42), (0.44, -1.04), (-0.62, -0.98)]),
     ("ENV_Filmstaden_Forecourt_DarkPaving", mat["stone"], [(0.06, 1.78), (1.34, 1.82), (1.62, 2.32), (0.48, 2.72), (-0.28, 2.30)]),
-    ("ENV_Sodra_Entrance_LawnApron", mat["grass"], [(-3.98, -2.44), (-3.08, -1.36), (-2.12, -1.56), (-2.28, -2.64), (-3.34, -2.86)]),
+    ("ENV_Sodra_Entrance_LawnApron", mat["grass"], [(-3.98, 1.36), (-3.08, 2.44), (-2.12, 2.12), (-2.28, 1.26), (-3.34, 1.04)]),
 ]:
     prism_mesh(name, points, 0.089, 0.096, zone_mat, root, 0.004)
 
 anchors = {
     "Anchor_Filmstaden": (0.72, 2.42, 0.13),
-    "Anchor_Visma": (-3.28, 1.92, 0.13),
-    "Anchor_Sodra": (-3.12, -2.08, 0.13),
+    "Anchor_Sodra": (-3.28, 1.92, 0.13),
+    "Anchor_Visma": (-3.12, -2.08, 0.13),
     "Anchor_Dasa": (3.32, -2.12, 0.13),
     "Anchor_Education": (3.92, 1.12, 0.13),
     "Anchor_CareerHub": (0.0, -0.16, 0.26),
@@ -91,15 +91,15 @@ for name, location in anchors.items():
 hub = (0.0, -0.16)
 for name, points in [
     ("ENV_Path_To_Filmstaden", [hub, (0.24, 0.54), (0.16, 1.34), (0.62, 2.02)]),
-    ("ENV_Path_To_Visma", [hub, (-0.76, 0.22), (-1.74, 1.12), (-2.72, 1.62)]),
-    ("ENV_Path_To_Sodra", [hub, (-0.82, -0.62), (-1.78, -1.48), (-2.64, -1.90)]),
+    ("ENV_Path_To_Sodra", [hub, (-0.76, 0.22), (-1.74, 1.12), (-2.72, 1.62)]),
+    ("ENV_Path_To_Visma", [hub, (-0.82, -0.62), (-1.78, -1.48), (-2.64, -1.90)]),
     ("ENV_Path_To_Dasa", [hub, (0.86, -0.58), (1.86, -1.28), (2.78, -1.82)]),
     ("ENV_Path_To_Education", [hub, (0.86, 0.38), (2.02, 0.70), (3.30, 0.94)]),
 ]:
     embedded_path(name, points, 0.092, mat["path"], root, 0.14 if name != "ENV_Path_To_Dasa" else 0.12)
 
 for name, points, width in [
-    ("ENV_Path_Visma_To_Filmstaden", [(-2.28, 1.62), (-1.08, 2.08), (0.12, 2.14)], 0.075),
+    ("ENV_Path_Sodra_To_Filmstaden", [(-2.28, 1.62), (-1.08, 2.08), (0.12, 2.14)], 0.075),
     ("ENV_Path_Dasa_ForestBranch", [(2.78, -1.82), (3.50, -2.58), (4.34, -2.72)], 0.07),
     ("ENV_Path_Education_Courtyard", [(3.30, 0.94), (3.86, 0.74), (4.36, 0.88)], 0.07),
 ]:

@@ -10,22 +10,6 @@ type LoadCareerWorldOptions = {
   onProgress?: (loaded: number, total: number) => void;
 };
 
-const LANDMARK_MODEL_SCALE: Record<string, number> = {
-  sodra: 0.64,
-  dasa: 0.62,
-  visma: 0.66,
-  filmstaden: 0.66,
-  education: 0.66,
-};
-
-const LANDMARK_MODEL_Y_OFFSET: Record<string, number> = {
-  sodra: 0.06,
-  dasa: 0.03,
-  visma: 0.06,
-  filmstaden: 0.06,
-  education: 0.06,
-};
-
 export type LoadedCareerWorldAssets = {
   mixers: Three.AnimationMixer[];
   dispose: () => void;
@@ -92,15 +76,10 @@ function softenFloatingIslandUnderside(root: Three.Object3D) {
     if (
       name.includes('floatingisland_shadowedrootmass') ||
       name.includes('floatingisland_earthstrata') ||
-      name.includes('floatingisland_edgestrata_rib')
+      name.includes('floatingisland_edgestrata_rib') ||
+      name.includes('floatingisland_layerededge')
     ) {
       object.visible = false;
-      return;
-    }
-
-    if (name.includes('floatingisland_layerededge')) {
-      object.scale.y *= 0.36;
-      object.position.y += 0.12;
     }
   });
 }
@@ -140,8 +119,7 @@ export async function loadCareerWorldAssets(
 
     const model = await loadCareerModel(loader, THREE, landmark.file, landmark.requiredNodes);
     model.root.name = `GLB_${landmark.id}`;
-    model.root.scale.setScalar(LANDMARK_MODEL_SCALE[landmark.id] ?? 0.74);
-    model.root.position.set(0, LANDMARK_MODEL_Y_OFFSET[landmark.id] ?? 0.05, 0);
+    model.root.position.set(0, 0, 0);
     polishImportedMaterials(model.root, landmark.id);
     hotspot.content.visible = false;
     hotspot.group.add(model.root);

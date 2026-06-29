@@ -13,11 +13,12 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(SCRIPT_DIR))
 
 from common import EXPORTS, REPO_ROOT, REPORTS, RUNTIME_MODELS, SOURCES
+from placement_contract import LANDMARK_REQUIRED_ANCHORS, PLACEMENT_ANCHOR, normalize_root_for_local_export
 
 MASTER_BLEND = SOURCES / "career-world-master.blend"
 MASTER_COMBINED_GLB = EXPORTS / "career-world-master.glb"
 
-LANDMARK_ANCHORS = ["Anchor_Hotspot", "Anchor_Label", "Anchor_Light", "Anchor_CameraFocus"]
+LANDMARK_ANCHORS = LANDMARK_REQUIRED_ANCHORS
 ENVIRONMENT_REQUIRED_NODES = [
     "Anchor_Filmstaden",
     "Anchor_Visma",
@@ -174,7 +175,8 @@ def object_stats(objects: set[bpy.types.Object], required_nodes: list[str]) -> d
 def export_selected_asset(asset: dict) -> dict:
     root = require_root(asset["root"])
     selected = descendants(root)
-    original_location = root.location.copy()
+    original_matrix = root.matrix_world.copy()
+    export_normalization = None
 
     EXPORTS.mkdir(parents=True, exist_ok=True)
     REPORTS.mkdir(parents=True, exist_ok=True)
@@ -182,8 +184,8 @@ def export_selected_asset(asset: dict) -> dict:
 
     with canonical_landmark_anchors(selected, asset["required"]):
         if asset["id"] != "environment":
-            # Runtime places landmarks from environment anchors, so landmark GLBs must export around local origin.
-            root.location = (0, 0, 0)
+            # Runtime attaches landmarks to environment anchors. Anchor_Placement must therefore export at local origin.
+            export_normalization = normalize_root_for_local_export(root)
         bpy.context.view_layer.update()
 
         bpy.ops.object.select_all(action="DESELECT")
@@ -206,6 +208,10 @@ def export_selected_asset(asset: dict) -> dict:
         stats = object_stats(selected, asset["required"])
         if stats["missingNodes"]:
             raise RuntimeError(f"{asset['asset_id']} missing required nodes: {stats['missingNodes']}")
+        if asset["id"] != "environment":
+            anchor_export_position = export_normalization["exportAnchorPosition"] if export_normalization else None
+            if anchor_export_position is None or any(abs(value) > 0.001 for value in anchor_export_position):
+                raise RuntimeError(f"{asset['asset_id']} {PLACEMENT_ANCHOR} did not export at local origin: {anchor_export_position}")
 
         report = {
             "id": asset["asset_id"],
@@ -215,11 +221,12 @@ def export_selected_asset(asset: dict) -> dict:
             "runtimeGlb": str((RUNTIME_MODELS / asset["file"]).relative_to(REPO_ROOT)),
             "file": asset["file"],
             "fileSize": glb_path.stat().st_size,
+            "exportNormalization": export_normalization,
             **stats,
         }
         (REPORTS / f"{asset['asset_id']}.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
 
-    root.location = original_location
+    root.matrix_world = original_matrix
     bpy.context.view_layer.update()
     return report
 

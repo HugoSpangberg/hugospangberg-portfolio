@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+  <title id="title">Stylized Rottne forestry harvester</title>
+  <desc id="desc">A stylized green forestry harvester inspired by Rottne machines in a Nordic forest setting.</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#17332d"/>
+      <stop offset="0.58" stop-color="#1d453c"/>
+      <stop offset="1" stop-color="#10231f"/>
+    </linearGradient>
+    <linearGradient id="machine" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#5f8f35"/>
+      <stop offset="0.48" stop-color="#3f762f"/>
+      <stop offset="1" stop-color="#264f2a"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#9ddbd5" stop-opacity="0.86"/>
+      <stop offset="1" stop-color="#16322f" stop-opacity="0.94"/>
+    </linearGradient>
+    <filter id="softGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <rect width="960" height="540" fill="url(#sky)"/>
+  <path d="M0 356c94-36 168-42 252-17 78 23 148 14 238-9 106-28 198-9 282 17 74 23 128 15 188-10v203H0Z" fill="#1b3e35"/>
+  <path d="M0 402c108-24 200-20 296 2 84 19 164 12 252-5 134-27 258-15 412 20v121H0Z" fill="#122822"/>
+  <g opacity="0.72">
+    <path d="M72 358 118 184l48 174Z" fill="#275947"/>
+    <path d="M148 372 202 142l58 230Z" fill="#214b40"/>
+    <path d="M756 360 802 176l50 184Z" fill="#235244"/>
+    <path d="M830 378 888 132l62 246Z" fill="#1e463c"/>
+  </g>
+  <ellipse cx="474" cy="421" rx="304" ry="44" fill="#071310" opacity="0.46"/>
+  <g transform="translate(168 122)">
+    <path d="M248 175h222c48 0 78 24 91 66l21 67H231l-48-58 17-45c8-20 26-30 48-30Z" fill="url(#machine)"/>
+    <path d="M234 164h103c25 0 42 13 53 34l26 50H224l-32-40 13-22c7-14 16-22 29-22Z" fill="#4f8734"/>
+    <path d="M260 94h126c18 0 32 12 36 30l20 85H228l16-82c4-20 9-33 16-33Z" fill="#1a2724"/>
+    <path d="M286 111h72c14 0 24 8 28 22l13 52H266l9-51c2-14 6-23 11-23Z" fill="url(#glass)"/>
+    <path d="M394 122h26l21 83h-32Z" fill="#0c1715"/>
+    <path d="M514 188h86l16 49-25 26h-95Z" fill="#355f2d"/>
+    <path d="M177 253h436v29H166Z" fill="#17211f"/>
+    <g fill="#111816">
+      <circle cx="214" cy="315" r="53"/>
+      <circle cx="332" cy="315" r="53"/>
+      <circle cx="466" cy="315" r="53"/>
+      <circle cx="584" cy="315" r="53"/>
+    </g>
+    <g fill="#22312d">
+      <circle cx="214" cy="315" r="34"/>
+      <circle cx="332" cy="315" r="34"/>
+      <circle cx="466" cy="315" r="34"/>
+      <circle cx="584" cy="315" r="34"/>
+    </g>
+    <g fill="#d2a339">
+      <circle cx="214" cy="315" r="16"/>
+      <circle cx="332" cy="315" r="16"/>
+      <circle cx="466" cy="315" r="16"/>
+      <circle cx="584" cy="315" r="16"/>
+    </g>
+    <path d="M542 181c54-86 132-116 228-86" fill="none" stroke="#141d1a" stroke-width="26" stroke-linecap="round"/>
+    <path d="M610 117c35 32 58 72 70 120" fill="none" stroke="#273530" stroke-width="13" stroke-linecap="round"/>
+    <path d="M698 99c40 28 67 65 80 111" fill="none" stroke="#273530" stroke-width="13" stroke-linecap="round"/>
+    <circle cx="544" cy="182" r="21" fill="#24322d"/>
+    <circle cx="694" cy="101" r="16" fill="#24322d"/>
+    <g transform="translate(748 178) rotate(-12)">
+      <rect x="-28" y="-20" width="68" height="100" rx="12" fill="#17211e"/>
+      <rect x="-44" y="18" width="28" height="72" rx="12" fill="#263630"/>
+      <rect x="31" y="16" width="28" height="74" rx="12" fill="#263630"/>
+      <circle cx="-3" cy="72" r="17" fill="#d2a339"/>
+      <circle cx="24" cy="72" r="17" fill="#d2a339"/>
+    </g>
+    <path d="M642 130c31 23 53 55 68 96" fill="none" stroke="#50625a" stroke-width="6" stroke-linecap="round"/>
+    <path d="M725 129c30 22 52 52 66 91" fill="none" stroke="#50625a" stroke-width="6" stroke-linecap="round"/>
+  </g>
+  <g filter="url(#softGlow)" opacity="0.72">
+    <circle cx="714" cy="246" r="8" fill="#77d8f7"/>
+    <path d="M714 246c31 4 55 18 73 41" fill="none" stroke="#77d8f7" stroke-width="3" stroke-linecap="round" opacity="0.42"/>
+  </g>
+  <text x="54" y="72" fill="#d6efe7" font-family="Verdana, Arial, sans-serif" font-size="32" font-weight="700">Rottne skördare</text>
+  <text x="54" y="108" fill="#9fc9bd" font-family="Verdana, Arial, sans-serif" font-size="18" font-weight="600">stylized forestry-tech reference</text>
+</svg>

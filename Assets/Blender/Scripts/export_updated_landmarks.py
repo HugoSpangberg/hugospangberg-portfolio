@@ -10,7 +10,8 @@ from mathutils import Vector
 SCRIPT_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(SCRIPT_DIR))
 
-from blender_common import RUNTIME_MODELS, SOURCES, add_anchor, collection, parent, save_and_export
+from blender_common import RUNTIME_MODELS, SOURCES, collection, parent, save_and_export
+from placement_contract import LANDMARK_REQUIRED_ANCHORS, ensure_landmark_contract
 
 
 LANDMARKS = [
@@ -20,6 +21,7 @@ LANDMARKS = [
         "collection": "COL_Filmstaden",
         "root": "LM_Filmstaden_Root",
         "canonical": "filmstaden",
+        "footprint_include": ["brickfacade", "lightstonegroundfloor", "recessedentrancebay", "groundfloorcolumn"],
     },
     {
         "id": "visma",
@@ -27,6 +29,7 @@ LANDMARKS = [
         "collection": "COL_Visma",
         "root": "LM_Visma_Root",
         "canonical": "visma",
+        "footprint_include": ["leftwing", "rightwing", "center", "orangecore", "entrance"],
     },
     {
         "id": "sodra",
@@ -34,13 +37,15 @@ LANDMARKS = [
         "collection": "COL_Sodra",
         "root": "LM_Sodra_Root",
         "canonical": "sodra",
+        "footprint_include": ["curvedwing", "centralcore", "sidewing", "facade"],
     },
     {
         "id": "dasa",
         "source": "dasa-forestry-Update.blend",
-        "collection": "COL_Dasa",
+        "collection": "COL_DasaForestry",
         "root": "LM_Dasa_Root",
         "canonical": "dasa-forestry",
+        "footprint_include": ["frontbody", "rearbody", "chassis", "wheel", "boompedestal", "articulated"],
     },
     {
         "id": "education",
@@ -48,10 +53,9 @@ LANDMARKS = [
         "collection": "COL_Education",
         "root": "LM_Education_Root",
         "canonical": "education",
+        "footprint_include": ["mainbrickfacade", "centralentrance", "leftwing", "rightwing", "stoneplinth"],
     },
 ]
-
-LANDMARK_REQUIRED_NODES = ["Anchor_Hotspot", "Anchor_Label", "Anchor_Light", "Anchor_CameraFocus"]
 
 
 def mesh_bounds() -> tuple[Vector, Vector]:
@@ -120,20 +124,9 @@ def prepare_landmark(landmark: dict[str, str]) -> dict:
         if obj.parent is None:
             parent(obj, root)
 
-    bbox_min, bbox_max = mesh_bounds()
-    center = (bbox_min + bbox_max) * 0.5
-    dimensions = bbox_max - bbox_min
-    front_y = bbox_min.y - max(dimensions.y * 0.08, 0.08)
-    top_z = bbox_max.z
-    mid_z = bbox_min.z + dimensions.z * 0.58
-
-    for anchor in LANDMARK_REQUIRED_NODES:
-        remove_existing_anchor(anchor)
-
-    add_anchor("Anchor_Hotspot", (center.x, front_y, mid_z), root)
-    add_anchor("Anchor_Label", (center.x, front_y, top_z + max(dimensions.z * 0.22, 0.22)), root)
-    add_anchor("Anchor_Light", (center.x, front_y, bbox_min.z + dimensions.z * 0.72), root)
-    add_anchor("Anchor_CameraFocus", (center.x, center.y, bbox_min.z + dimensions.z * 0.54), root)
+    ensure_landmark_contract(root, landmark["footprint_include"])
+    for obj in [root, *root.children_recursive]:
+        link_to_collection(obj, target_collection)
 
     return save_and_export(
         landmark["canonical"],

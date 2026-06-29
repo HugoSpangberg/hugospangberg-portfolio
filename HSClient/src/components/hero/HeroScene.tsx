@@ -11,6 +11,7 @@ type HeroSceneProps = {
 };
 
 type PointerState = {
+  id: string;
   label: string;
   role: string;
   x: number;
@@ -39,6 +40,34 @@ function scrollToSection(targetSection: string) {
   target.scrollIntoView({ behavior: 'smooth', block: 'start' });
   target.classList.add('section-target-highlight');
   window.setTimeout(() => target.classList.remove('section-target-highlight'), 1400);
+}
+
+function HoverVisual({ item }: { item?: CareerMapItem }) {
+  if (!item?.hoverVisual) {
+    return null;
+  }
+
+  if (item.hoverVisual.kind === 'educationLogos') {
+    return (
+      <div className="hero-demo__tooltip-logos" aria-hidden="true">
+        {item.hoverVisual.logos.map((logo) => (
+          <span
+            key={logo.label}
+            className={`hero-demo__tooltip-logo hero-demo__tooltip-logo--${logo.tone}`}
+          >
+            {logo.label}
+          </span>
+        ))}
+      </div>
+    );
+  }
+
+  return (
+    <figure className="hero-demo__tooltip-media">
+      <img src={item.hoverVisual.src} alt={item.hoverVisual.alt} loading="lazy" decoding="async" />
+      <figcaption>{item.hoverVisual.caption}</figcaption>
+    </figure>
+  );
 }
 
 function disposeScene(THREE: typeof Three, scene: Three.Scene, renderer: Three.WebGLRenderer) {
@@ -81,6 +110,7 @@ function HeroScene({ label, fallbackLabel }: HeroSceneProps) {
     () => getCareerMapItem(activeItemId) ?? careerMapItems[0],
     [activeItemId],
   );
+  const hoverItem = hoverLabel ? getCareerMapItem(hoverLabel.id) : undefined;
 
   useEffect(() => {
     const mount = mountRef.current;
@@ -113,6 +143,14 @@ function HeroScene({ label, fallbackLabel }: HeroSceneProps) {
         const raycaster = new THREE.Raycaster();
         const scene = new THREE.Scene();
         scene.fog = new THREE.FogExp2(0x0d241f, compact ? 0.092 : 0.078);
+        const skyFill = new THREE.HemisphereLight(0xdaf7ee, 0x102720, compact ? 0.62 : 0.56);
+        const keyLight = new THREE.DirectionalLight(0xf2fff7, compact ? 1.05 : 0.98);
+        keyLight.position.set(-3.6, 5.2, 4.2);
+        const rimLight = new THREE.DirectionalLight(0x77d8f7, compact ? 0.46 : 0.42);
+        rimLight.position.set(4.4, 2.8, -4.8);
+        const forestFill = new THREE.PointLight(0x72f2a3, compact ? 0.64 : 0.56, 5.4);
+        forestFill.position.set(-2.2, 0.6, -2.4);
+        scene.add(skyFill, keyLight, rimLight, forestFill);
 
         const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 38);
         camera.position.set(compact ? 0.35 : 0.25, compact ? 2.3 : 2.05, compact ? 6.7 : 5.6);
@@ -188,6 +226,7 @@ function HeroScene({ label, fallbackLabel }: HeroSceneProps) {
           if (event) {
             const bounds = mount.getBoundingClientRect();
             setHoverLabel({
+              id: hotspot.item.id,
               label: hotspot.item.label,
               role: hotspot.item.role,
               x: event.clientX - bounds.left,
@@ -320,11 +359,12 @@ function HeroScene({ label, fallbackLabel }: HeroSceneProps) {
       <p className="hero-demo__caption">Interactive career map</p>
       {hoverLabel && (
         <div
-          className="hero-demo__tooltip"
+          className={`hero-demo__tooltip${hoverItem?.hoverVisual ? ' hero-demo__tooltip--with-media' : ''}`}
           style={{
             transform: `translate(${hoverLabel.x + 12}px, ${hoverLabel.y - 22}px)`,
           }}
         >
+          <HoverVisual item={hoverItem} />
           <strong>{hoverLabel.label}</strong>
           <span>{hoverLabel.role}</span>
         </div>

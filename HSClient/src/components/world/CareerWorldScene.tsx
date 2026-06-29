@@ -6,7 +6,7 @@ import {
   type CareerWorldLabels,
 } from '../hero/CareerWorld';
 import { updateDataPulses } from '../hero/DataPulse';
-import { careerMapItems } from '../hero/careerMap';
+import { careerMapItems, getCareerMapItem, type CareerMapItem } from '../hero/careerMap';
 import { loadCareerWorldAssets } from '../../features/career-world';
 import WorldFallback from './WorldFallback';
 import type { Locale } from '../../data/content';
@@ -22,6 +22,7 @@ type CareerWorldSceneProps = {
 };
 
 type PointerState = {
+  id: string;
   label: string;
   role: string;
   x: number;
@@ -78,6 +79,34 @@ function supportsWebGL() {
   } catch {
     return false;
   }
+}
+
+function HoverVisual({ item }: { item?: CareerMapItem }) {
+  if (!item?.hoverVisual) {
+    return null;
+  }
+
+  if (item.hoverVisual.kind === 'educationLogos') {
+    return (
+      <div className="hero-demo__tooltip-logos world-tooltip__logos" aria-hidden="true">
+        {item.hoverVisual.logos.map((logo) => (
+          <span
+            key={logo.label}
+            className={`hero-demo__tooltip-logo hero-demo__tooltip-logo--${logo.tone}`}
+          >
+            {logo.label}
+          </span>
+        ))}
+      </div>
+    );
+  }
+
+  return (
+    <figure className="hero-demo__tooltip-media world-tooltip__media">
+      <img src={item.hoverVisual.src} alt={item.hoverVisual.alt} loading="lazy" decoding="async" />
+      <figcaption>{item.hoverVisual.caption}</figcaption>
+    </figure>
+  );
 }
 
 function disposeScene(THREE: typeof Three, scene: Three.Scene, renderer: Three.WebGLRenderer) {
@@ -138,6 +167,7 @@ function CareerWorldScene({
   );
   const worldLabelsRef = useRef(worldLabels);
   const isSwedish = locale === 'sv';
+  const hoverItem = hoverLabel ? getCareerMapItem(hoverLabel.id) : undefined;
 
   useEffect(() => {
     locationsRef.current = locations;
@@ -381,6 +411,7 @@ function CareerWorldScene({
             const location =
               locationsRef.current.find((item) => item.id === hotspot.item.id) ?? hotspot.item;
             setHoverLabel({
+              id: hotspot.item.id,
               label: location.label,
               role: location.role,
               x: event.clientX - bounds.left,
@@ -566,11 +597,12 @@ function CareerWorldScene({
       )}
       {hoverLabel && (
         <div
-          className="world-tooltip"
+          className={`world-tooltip${hoverItem?.hoverVisual ? ' world-tooltip--with-media' : ''}`}
           style={{
             transform: `translate(${hoverLabel.x + 12}px, ${hoverLabel.y - 22}px)`,
           }}
         >
+          <HoverVisual item={hoverItem} />
           <strong>{hoverLabel.label}</strong>
           <span>{hoverLabel.role}</span>
         </div>
