@@ -183,8 +183,14 @@ def log(name: str, x: float, y: float, z: float, length: float, radius: float, m
     return obj
 
 
-def embedded_path(name: str, points: list[tuple[float, float]], z: float, mat, root: bpy.types.Object) -> bpy.types.Object:
-    width = 0.12
+def embedded_path(
+    name: str,
+    points: list[tuple[float, float]],
+    z: float,
+    mat,
+    root: bpy.types.Object,
+    width: float = 0.12,
+) -> bpy.types.Object:
     verts: list[tuple[float, float, float]] = []
     for index, (x, y) in enumerate(points):
         if index == 0:
