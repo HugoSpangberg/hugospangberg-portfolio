@@ -1,5 +1,6 @@
 
 using HugoPortfolio.Cms.Configuration;
+using HugoPortfolio.Cms.Features.PortfolioManagement;
 using HugoPortfolio.Cms.Health;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -21,6 +22,10 @@ builder.Services.AddCors(options =>
         }
     });
 });
+builder.Services.AddControllers();
+builder.Services.AddOptions<PortfolioOptions>()
+    .Bind(builder.Configuration.GetSection(PortfolioOptions.SectionName));
+builder.Services.AddScoped<PortfolioContentManagementService>();
 
 builder.CreateUmbracoBuilder()
     .AddBackOffice()
@@ -38,6 +43,7 @@ app.UseHttpsRedirection();
 app.UseCors(PortfolioOptions.CorsPolicyName);
 
 app.MapPortfolioHealthEndpoints();
+app.MapControllers();
 
 app.UseUmbraco()
     .WithMiddleware(u =>

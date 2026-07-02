@@ -12,6 +12,8 @@ public sealed class PortfolioOptions
     public string ContentRootRoute { get; init; } = "/";
 
     public int CacheSeconds { get; init; } = 300;
+
+    public string? InternalManagementSecret { get; init; }
 }
 
 public sealed class SeedOptions

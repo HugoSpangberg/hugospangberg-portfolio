@@ -41,7 +41,7 @@ public sealed class GetPortfolioController(GetPortfolioHandler handler) : Contro
                 document.Locale,
                 document.Source,
                 document.GeneratedAtUtc,
-                document.Content.RootElement.Clone()));
+                PortfolioContentMapper.FilterPublishedContent(document.Content.RootElement)));
         }
     }
 }

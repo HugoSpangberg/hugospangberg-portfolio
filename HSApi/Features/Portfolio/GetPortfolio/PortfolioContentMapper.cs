@@ -1,4 +1,5 @@
 using System.Text.Json;
+using System.Text.Json.Nodes;
 
 namespace HSApi.Features.Portfolio.GetPortfolio;
 
@@ -46,6 +47,53 @@ public static class PortfolioContentMapper
         {
             throw new JsonException("Portfolio content must contain at least one experience item.");
         }
+    }
+
+    public static JsonElement FilterPublishedContent(JsonElement content)
+    {
+        JsonNode? node = JsonNode.Parse(content.GetRawText());
+
+        if (node is not JsonObject root)
+        {
+            return content.Clone();
+        }
+
+        FilterSectionItems(root, "experience");
+        FilterSectionItems(root, "labs");
+
+        return JsonSerializer.SerializeToElement(root);
+    }
+
+    private static void FilterSectionItems(JsonObject root, string sectionName)
+    {
+        if (root[sectionName] is not JsonObject section ||
+            section["items"] is not JsonArray items)
+        {
+            return;
+        }
+
+        JsonNode?[] publishedItems = items
+            .Where(item => item is JsonObject itemObject && IsPublished(itemObject))
+            .Select(item => item?.DeepClone())
+            .ToArray();
+
+        items.Clear();
+
+        foreach (JsonNode? item in publishedItems)
+        {
+            items.Add(item);
+        }
+    }
+
+    private static bool IsPublished(JsonObject item)
+    {
+        if (item["isPublished"] is not JsonValue value ||
+            !value.TryGetValue(out bool published))
+        {
+            return true;
+        }
+
+        return published;
     }
 
     private static JsonElement? TryGetProperty(JsonElement element, string name) =>
