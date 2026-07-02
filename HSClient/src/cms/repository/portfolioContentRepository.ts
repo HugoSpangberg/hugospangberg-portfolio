@@ -13,7 +13,7 @@ export type PortfolioContentResult = {
 };
 
 function isApiEnabled() {
-  return import.meta.env.VITE_API_ENABLED !== 'false';
+  return import.meta.env.VITE_API_ENABLED === 'true';
 }
 
 function getApiConfig() {

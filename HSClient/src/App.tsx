@@ -13,6 +13,7 @@ import SystemThinking from './components/SystemThinking';
 import WorldIntroSection from './components/world/WorldIntroSection';
 import { PortfolioContentProvider, usePortfolioContent } from './cms';
 import type { Locale } from './data/content';
+import AdminApp from './features/admin/AdminApp';
 import { SayHiSection } from './features/say-hi';
 
 const defaultLocale: Locale = 'sv';
@@ -29,6 +30,14 @@ function getInitialLocale(): Locale {
 }
 
 function App() {
+  if (window.location.pathname.startsWith('/admin')) {
+    return <AdminApp />;
+  }
+
+  return <PublicApp />;
+}
+
+function PublicApp() {
   const [locale, setLocale] = useState<Locale>(getInitialLocale);
 
   return (
