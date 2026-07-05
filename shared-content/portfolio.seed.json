@@ -2,7 +2,7 @@
   "sv": {
     "seo": {
       "title": "Hugo Spångberg – Webbutvecklare & Systemutvecklare",
-      "description": "Portfolio för Hugo Spångberg, webbutvecklare och systemutvecklare med fokus på .NET, automation, kvalitet och verksamhetsnytta."
+      "description": "Portfolio för Hugo Spångberg, webbutvecklare och systemutvecklare med fokus på .NET, automation, kvalitet och nytta i praktiken."
     },
     "nav": [
       {
@@ -38,7 +38,7 @@
       "eyebrow": "Portfolio",
       "title": "Hugo Spångberg",
       "role": "Webbutvecklare & systemutvecklare med .NET-fokus",
-      "subtitle": "Jag bygger moderna webb- och systemlösningar med fokus på .NET, automation, kvalitet och verklig verksamhetsnytta. Med erfarenhet från IoT, processautomation, test och design skapar jag lösningar som är stabila, genomtänkta och användbara i praktiken.",
+      "subtitle": "Jag bygger moderna webb- och systemlösningar med fokus på .NET, automation, kvalitet och nytta i verkligheten. Med erfarenhet från IoT, processautomation, test och design gillar jag att skapa lösningar som är stabila, begripliga och användbara i praktiken.",
       "tagline": "Kod, system och problemlösning med rötterna i skogen och blicken mot framtiden.",
       "actionsLabel": "Primära länkar",
       "actions": [
@@ -82,7 +82,7 @@
         "Jag är en webbutvecklare och systemutvecklare med fokus på .NET, backend och lösningar som gör nytta i riktiga verksamheter. Jag trivs bäst i miljöer där man samarbetar, delar idéer och bygger lösningar som håller över tid.",
         "Min erfarenhet sträcker sig från IoT-tjänster och systemutveckling till automation, test, CI-flöden och verksamhetsnära problemlösning. Jag har även en bakgrund inom motion design, service och ledarskap, vilket gör att jag gärna ser helheten: tekniken, användaren, teamet och värdet lösningen faktiskt skapar.",
         "Jag drivs av nyfikenhet, problemlösning och viljan att hela tiden bli bättre. För mig är bra utveckling inte bara kod som fungerar, utan kod och system som är begripliga, stabila och byggda med omtanke.",
-        "Den här portfolion är inspirerad av nordisk skog, teknik och subtil sci-fi - en blandning som speglar både min arbetslivserfarenhet och mina personliga intressen."
+        "Den här portfolion är inspirerad av nordisk skog, teknik och subtil sci-fi. Det är ungefär där mina erfarenheter och personliga intressen möts."
       ],
       "lookingForTitle": "Vad jag söker",
       "lookingFor": [
@@ -207,7 +207,7 @@
     "systemThinking": {
       "kicker": "Systemtänk",
       "title": "Systemtänk i praktiken",
-      "body": "Jag gillar att förstå hur delar hänger ihop — människor, processer, data, system och användarflöden. Min erfarenhet från automation, IoT, test och verksamhetsnära utveckling gör att jag ofta tänker på hela kedjan: från behov och analys till implementation, kvalitet och långsiktig förvaltning.",
+      "body": "Jag gillar att förstå hur saker hänger ihop: människor, processer, data, system och användarflöden. Min erfarenhet från automation, IoT, test och verksamhetsnära utveckling gör att jag ofta tänker på hela kedjan, från behov och analys till implementation, kvalitet och långsiktig förvaltning.",
       "cards": [
         {
           "title": "Förstå behovet",
@@ -525,7 +525,7 @@
       "kicker": "Kontakt",
       "title": "Låt oss bygga något genomtänkt",
       "paragraphs": [
-        "Jag är öppen för roller inom webbutveckling, systemutveckling och backendutveckling — särskilt där teknik, kvalitet och verksamhetsnytta möts. Hör gärna av dig om du söker en utvecklare som är nyfiken, ansvarstagande och van vid att arbeta nära både teknik och människor."
+        "Jag är öppen för roller inom webbutveckling, systemutveckling och backendutveckling. Jag trivs särskilt bra där teknik, kvalitet och verkliga behov möts. Hör gärna av dig om du söker en utvecklare som är nyfiken, ansvarstagande och van vid att arbeta nära både teknik och människor."
       ],
       "cta": "Kontakta mig",
       "secondaryCta": "Besök LinkedIn",
@@ -557,7 +557,7 @@
   "en": {
     "seo": {
       "title": "Hugo Spångberg – Web Developer & Software Developer",
-      "description": "Portfolio for Hugo Spångberg, a web and software developer focused on .NET, automation, quality and real business value."
+      "description": "Portfolio for Hugo Spångberg, a web and software developer focused on .NET, automation, quality and real-world usefulness."
     },
     "nav": [
       {
@@ -593,8 +593,8 @@
       "eyebrow": "Portfolio",
       "title": "Hugo Spångberg",
       "role": "Web & Software Developer focused on .NET",
-      "subtitle": "I build modern web and software solutions with a focus on .NET, automation, quality and real business value. With experience from IoT, process automation, testing and design, I create solutions that are reliable, thoughtful and useful in real-world environments.",
-      "tagline": "Code, systems and problem-solving - rooted in the forest, looking toward the future.",
+      "subtitle": "I build modern web and software solutions with a focus on .NET, automation, quality and real-world usefulness. With experience from IoT, process automation, testing and design, I like creating solutions that are stable, understandable and useful in practice.",
+      "tagline": "Code, systems and problem-solving with roots in the forest and eyes on what comes next.",
       "actionsLabel": "Primary links",
       "actions": [
         {
@@ -637,7 +637,7 @@
         "I am a web developer and software developer focused on .NET, backend and solutions that create value in real organizations. I work best in environments where people collaborate, share ideas and build solutions that last.",
         "My experience spans IoT services and software development, automation, testing, CI workflows and business-focused problem solving. I also have a background in motion design, service and leadership, which helps me look at the whole picture: the technology, the user, the team and the value the solution actually creates.",
         "I am driven by curiosity, problem solving and the ambition to keep improving. To me, good development is not only code that works, but code and systems that are understandable, stable and built with care.",
-        "This portfolio is inspired by Nordic forest, technology and subtle sci-fi - a mix that reflects both my work experience and my personal interests."
+        "This portfolio is inspired by Nordic forest, technology and subtle sci-fi. That is where my work experience and personal interests meet."
       ],
       "lookingForTitle": "What I am looking for",
       "lookingFor": [
@@ -762,7 +762,7 @@
     "systemThinking": {
       "kicker": "System thinking",
       "title": "System thinking in practice",
-      "body": "I enjoy understanding how things connect — people, processes, data, systems and user flows. My experience from automation, IoT, testing and business-oriented development helps me think across the full chain: from needs and analysis to implementation, quality and long-term maintainability.",
+      "body": "I enjoy understanding how things connect: people, processes, data, systems and user flows. My experience from automation, IoT, testing and business-oriented development helps me think across the full chain, from needs and analysis to implementation, quality and long-term maintainability.",
       "cards": [
         {
           "title": "Understand the need",
@@ -1080,7 +1080,7 @@
       "kicker": "Contact",
       "title": "Let’s build something thoughtful",
       "paragraphs": [
-        "I am open to roles within web development, software development and backend development — especially where technology, quality and business value meet. Feel free to reach out if you are looking for a developer who is curious, responsible and used to working close to both technology and people."
+        "I am open to roles within web development, software development and backend development. I especially enjoy work where technology, quality and real business needs meet. Feel free to reach out if you are looking for a developer who is curious, responsible and used to working close to both technology and people."
       ],
       "cta": "Contact me",
       "secondaryCta": "Visit LinkedIn",
