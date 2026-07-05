@@ -4,6 +4,7 @@
     radial-gradient(circle at 18% 72%, rgba(114, 242, 163, 0.08), transparent 24rem),
     linear-gradient(180deg, rgba(5, 15, 13, 0.72), rgba(9, 24, 21, 0.44));
   border-block: 1px solid rgba(183, 244, 214, 0.08);
+  scroll-margin-top: 6rem;
 }
 
 .local-ai__layout {
@@ -149,6 +150,10 @@
 }
 
 @media (max-width: 560px) {
+  .local-ai {
+    scroll-margin-top: 8.5rem;
+  }
+
   .local-ai-scene {
     min-height: 21rem;
   }
