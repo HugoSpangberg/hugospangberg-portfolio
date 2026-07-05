@@ -14,10 +14,10 @@ export type CareerMapItem = {
         caption?: string;
       }
     | {
-        kind: 'educationLogos';
-        logos: Array<{
-          label: string;
-          tone: 'forest' | 'mono';
+        kind: 'imageGrid';
+        images: Array<{
+          src: string;
+          alt: string;
         }>;
       };
 };
@@ -47,8 +47,8 @@ export const careerMapItems = [
     position: [3.18, -0.4, 1.86],
     hoverVisual: {
       kind: 'image',
-      src: 'images/career-world/hover/rottne-harvester.svg',
-      alt: 'Rottne forestry harvester illustration',
+      src: 'images/career-world/hover/rottne-skodare.jpg',
+      alt: 'Rottne forestry machine in use',
     },
   },
   {
@@ -88,10 +88,16 @@ export const careerMapItems = [
     accent: 0xc4a5ff,
     position: [3.18, -0.4, -1.42],
     hoverVisual: {
-      kind: 'educationLogos',
-      logos: [
-        { label: 'EC Utbildning', tone: 'forest' },
-        { label: 'Hyper Island', tone: 'mono' },
+      kind: 'imageGrid',
+      images: [
+        {
+          src: 'images/career-world/hover/ecutbildning-logo.png',
+          alt: 'EC Utbildning logo',
+        },
+        {
+          src: 'images/career-world/hover/hyperisland-logo.png',
+          alt: 'Hyper Island logo',
+        },
       ],
     },
   },

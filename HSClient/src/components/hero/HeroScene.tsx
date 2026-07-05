@@ -49,16 +49,17 @@ function HoverVisual({ item }: { item?: CareerMapItem }) {
     return null;
   }
 
-  if (item.hoverVisual.kind === 'educationLogos') {
+  if (item.hoverVisual.kind === 'imageGrid') {
     return (
-      <div className="hero-demo__tooltip-logos" aria-hidden="true">
-        {item.hoverVisual.logos.map((logo) => (
-          <span
-            key={logo.label}
-            className={`hero-demo__tooltip-logo hero-demo__tooltip-logo--${logo.tone}`}
-          >
-            {logo.label}
-          </span>
+      <div className="hero-demo__tooltip-image-grid">
+        {item.hoverVisual.images.map((image) => (
+          <img
+            key={image.src}
+            src={publicAssetUrl(image.src)}
+            alt={image.alt}
+            loading="lazy"
+            decoding="async"
+          />
         ))}
       </div>
     );
@@ -148,20 +149,20 @@ function HeroScene({ label, fallbackLabel }: HeroSceneProps) {
         const pointer = new THREE.Vector2(8, 8);
         const raycaster = new THREE.Raycaster();
         const scene = new THREE.Scene();
-        scene.fog = new THREE.FogExp2(0x10251f, compact ? 0.088 : 0.074);
-        const moonFill = new THREE.HemisphereLight(0x9fd0dc, 0x07120f, compact ? 0.4 : 0.34);
-        const moonKey = new THREE.DirectionalLight(0xbfd9e7, compact ? 0.98 : 0.9);
-        moonKey.position.set(-5.2, 4.2, 5.8);
+        scene.fog = new THREE.FogExp2(0x0b211c, compact ? 0.108 : 0.092);
+        const moonFill = new THREE.HemisphereLight(0x9fc7c0, 0x06110f, compact ? 0.32 : 0.28);
+        const moonKey = new THREE.DirectionalLight(0xb9d4da, compact ? 0.58 : 0.52);
+        moonKey.position.set(-4.8, 4.8, 5.2);
         const facadeFillTarget = new THREE.Object3D();
-        facadeFillTarget.position.set(0.04, -0.2, -0.1);
-        const facadeFill = new THREE.SpotLight(0xbde8e5, compact ? 1.75 : 1.52, 10, Math.PI * 0.38, 0.82, 1.2);
-        facadeFill.position.set(0.6, 1.8, 6.2);
+        facadeFillTarget.position.set(0.04, 0.0, -0.1);
+        const facadeFill = new THREE.SpotLight(0xb7ddd7, compact ? 0.48 : 0.42, 12, Math.PI * 0.48, 0.94, 2.0);
+        facadeFill.position.set(0.15, 2.5, 6.9);
         facadeFill.target = facadeFillTarget;
-        const cyanRim = new THREE.DirectionalLight(0x74d7ff, compact ? 0.7 : 0.6);
+        const cyanRim = new THREE.DirectionalLight(0x74d7ff, compact ? 0.48 : 0.42);
         cyanRim.position.set(4.8, 2.8, -5.6);
-        const warmCinemaFill = new THREE.PointLight(0xffb16d, compact ? 0.62 : 0.52, 3.2, 2.2);
+        const warmCinemaFill = new THREE.PointLight(0xffb16d, compact ? 0.22 : 0.18, 3.2, 2.6);
         warmCinemaFill.position.set(0.05, 0.35, -1.24);
-        const forestFill = new THREE.PointLight(0x72f2a3, compact ? 0.34 : 0.28, 4.0, 2.2);
+        const forestFill = new THREE.PointLight(0x72f2a3, compact ? 0.16 : 0.12, 4.0, 2.6);
         forestFill.position.set(-2.2, 0.42, -1.85);
         scene.add(moonFill, moonKey, facadeFillTarget, facadeFill, cyanRim, warmCinemaFill, forestFill);
 
@@ -177,7 +178,7 @@ function HeroScene({ label, fallbackLabel }: HeroSceneProps) {
         renderer.setClearColor(0x000000, 0);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, compact ? 1.2 : 1.55));
         renderer.toneMapping = THREE.ACESFilmicToneMapping;
-        renderer.toneMappingExposure = compact ? 0.96 : 0.92;
+        renderer.toneMappingExposure = compact ? 0.72 : 0.68;
         renderer.outputColorSpace = THREE.SRGBColorSpace;
         mount.appendChild(renderer.domElement);
 
@@ -312,10 +313,10 @@ function HeroScene({ label, fallbackLabel }: HeroSceneProps) {
             const pulseMaterial = hotspot.pulseRing.material as Three.MeshBasicMaterial;
             const haloMaterial = hotspot.hoverHalo.material as Three.MeshBasicMaterial;
             hotspot.marker.scale.setScalar(isFocused ? 1.18 * pulse : pulse);
-            hotspot.hoverHalo.scale.setScalar(isFocused ? 1.06 + Math.sin(time * 2.2 + index) * 0.055 : 0.72);
-            haloMaterial.opacity = isFocused ? 0.22 : 0.055;
+            hotspot.hoverHalo.scale.setScalar(isFocused ? 1.02 + Math.sin(time * 2.2 + index) * 0.045 : 0.7);
+            haloMaterial.opacity = isFocused ? 0.14 : 0.04;
             hotspot.pulseRing.scale.setScalar(0.8 + outwardPulse * (isFocused ? 0.84 : 0.48));
-            pulseMaterial.opacity = isFocused ? 0.28 * (1 - outwardPulse) : 0.12 * (1 - outwardPulse);
+            pulseMaterial.opacity = isFocused ? 0.17 * (1 - outwardPulse) : 0.08 * (1 - outwardPulse);
             hotspot.group.position.y +=
               (hotspot.basePosition.y + itemFloat(time, index, isFocused) - hotspot.group.position.y) * 0.025;
           });

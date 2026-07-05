@@ -109,7 +109,9 @@
         "TypeScript",
         "SQL",
         "Automation",
-        "IoT"
+        "IoT",
+        "AI",
+        "Linux"
       ],
       "items": [
         {
@@ -186,6 +188,18 @@
             "Umbraco",
             "Scrum",
             "AI-assisterad utveckling"
+          ]
+        },
+        {
+          "title": "AI & Linux",
+          "description": "Jag utforskar lokala AI-miljöer på Linux med fokus på modeller, agenter, Docker och praktiska automationer där kontroll och mänskligt godkännande är centralt.",
+          "tags": [
+            "Linux",
+            "Docker",
+            "Ollama",
+            "lokala språkmodeller",
+            "AI-agenter",
+            "automation"
           ]
         }
       ]
@@ -650,7 +664,9 @@
         "TypeScript",
         "SQL",
         "Automation",
-        "IoT"
+        "IoT",
+        "AI",
+        "Linux"
       ],
       "items": [
         {
@@ -727,6 +743,18 @@
             "Umbraco",
             "Scrum",
             "AI-assisted development"
+          ]
+        },
+        {
+          "title": "AI & Linux",
+          "description": "I explore local AI environments on Linux with a focus on models, agents, Docker and practical automations where control and human approval stay central.",
+          "tags": [
+            "Linux",
+            "Docker",
+            "Ollama",
+            "local language models",
+            "AI agents",
+            "automation"
           ]
         }
       ]

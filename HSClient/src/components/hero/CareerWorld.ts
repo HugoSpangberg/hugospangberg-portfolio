@@ -178,10 +178,10 @@ function makeMaterials(THREE: typeof Three): Materials {
     forestMid: new THREE.MeshBasicMaterial({ color: 0x2c6759, transparent: true, opacity: 0.38, depthWrite: false }),
     brick: standard(THREE, 0x7b3f34, { roughness: 0.88 }),
     brickDark: standard(THREE, 0x65372f, { roughness: 0.9 }),
-    stoneLight: standard(THREE, 0xd7d2c8, { roughness: 0.86 }),
-    stoneDark: standard(THREE, 0x8b8d88, { roughness: 0.88 }),
-    whiteFacade: standard(THREE, 0xd8ddd9, { roughness: 0.78 }),
-    orangeFacade: standard(THREE, 0xc66d3e, { roughness: 0.82 }),
+    stoneLight: standard(THREE, 0xb7b1a8, { roughness: 0.9 }),
+    stoneDark: standard(THREE, 0x747872, { roughness: 0.9 }),
+    whiteFacade: standard(THREE, 0xb5c2bd, { roughness: 0.86 }),
+    orangeFacade: standard(THREE, 0xa95b38, { roughness: 0.86 }),
     redMarquee: standard(THREE, 0xb8322a, {
       roughness: 0.58,
       emissive: 0x4c0c0a,
@@ -199,10 +199,10 @@ function makeMaterials(THREE: typeof Three): Materials {
       emissive: 0x123d46,
       emissiveIntensity: 0.2,
     }),
-    warmWindow: standard(THREE, 0xe6c885, {
+    warmWindow: standard(THREE, 0xc9aa6d, {
       roughness: 0.36,
       emissive: 0x8b6427,
-      emissiveIntensity: 0.5,
+      emissiveIntensity: 0.28,
     }),
     forestMachineGreen: standard(THREE, 0x2e6a57, { roughness: 0.62, metalness: 0.08 }),
     forestMachineDark: standard(THREE, 0x121a18, { roughness: 0.54, metalness: 0.24 }),
@@ -728,7 +728,7 @@ function createDasaForestryLandmark(THREE: typeof Three, materials: Materials, l
 
   const label = createTextLabel(THREE, labelText, '#77d8f7', 0.72);
   label.position.set(0.22, 0.98, 0.12);
-  const forestLight = new THREE.PointLight(0x77d8f7, 0.38, 1.7);
+  const forestLight = new THREE.PointLight(0x77d8f7, 0.22, 1.55);
   forestLight.position.set(0.16, 0.32, 0.26);
   group.add(machine, stump, stumpTop, label, forestLight);
   return group;
@@ -790,7 +790,7 @@ function createSodraHeadquartersLandmark(THREE: typeof Three, materials: Materia
   sign.position.set(0.58, 0.42, 0.374);
   const label = createTextLabel(THREE, labelText, '#72f2a3', 0.7);
   label.position.set(-0.1, 1.1, 0.16);
-  const light = new THREE.PointLight(0x72f2a3, 0.32, 1.6);
+  const light = new THREE.PointLight(0x72f2a3, 0.16, 1.45);
   light.position.set(0.48, 0.42, 0.42);
   group.add(grass, signPlate, sign, label, light);
   group.scale.setScalar(0.8);
@@ -858,7 +858,7 @@ function createVismaLandmark(THREE: typeof Three, materials: Materials, labelTex
   sign.position.set(0, 0.22, 0.405);
   const label = createTextLabel(THREE, labelText, '#b7f4d6', 0.68);
   label.position.set(0, 1.0, 0.24);
-  const lobbyLight = new THREE.PointLight(0x77d8f7, 0.34, 1.3);
+  const lobbyLight = new THREE.PointLight(0x77d8f7, 0.16, 1.15);
   lobbyLight.position.set(0, 0.22, 0.42);
   group.add(sign, label, lobbyLight);
   group.add(createTree(THREE, materials, -0.92, 0.35, 0.42, 1), createTree(THREE, materials, 0.92, 0.35, 0.42, 2));
@@ -945,7 +945,7 @@ function createFilmstadenLandmark(THREE: typeof Three, materials: Materials, lab
   wordmark.position.set(0.18, 0.29, 0.305);
   const label = createTextLabel(THREE, labelText, '#f1d48d', 0.9);
   label.position.set(0, 0.9, 0.22);
-  const marqueeLight = new THREE.PointLight(0xf1d48d, 0.58, 1.7);
+  const marqueeLight = new THREE.PointLight(0xf1d48d, 0.24, 1.45);
   marqueeLight.position.set(0.05, -0.02, 0.48);
   for (let index = 0; index < 6; index += 1) {
     const bulb = new THREE.Mesh(new THREE.SphereGeometry(0.018, 8, 8), materials.warmWindow);
@@ -1043,7 +1043,7 @@ function createEducationBuildingLandmark(THREE: typeof Three, materials: Materia
   accent.position.set(0.28, 0.54, 0.22);
   const label = createTextLabel(THREE, labelText, '#c4a5ff', 0.78);
   label.position.set(0.02, 1.0, 0.22);
-  const entranceLight = new THREE.PointLight(0xe6c885, 0.42, 1.3);
+  const entranceLight = new THREE.PointLight(0xe6c885, 0.18, 1.15);
   entranceLight.position.set(0, -0.04, 0.4);
   group.add(centerCrown, path, accent, label, entranceLight);
   group.add(createTree(THREE, materials, -0.98, 0.38, 0.44, 2), createTree(THREE, materials, 0.98, 0.38, 0.42, 1));
@@ -1083,7 +1083,7 @@ function createHotspot(
     new THREE.MeshBasicMaterial({
       color: item.accent,
       transparent: true,
-      opacity: 0.22,
+      opacity: 0.14,
       side: THREE.DoubleSide,
       depthWrite: false,
     }),
@@ -1097,7 +1097,7 @@ function createHotspot(
     new THREE.MeshBasicMaterial({
       color: item.accent,
       transparent: true,
-      opacity: 0.82,
+      opacity: 0.58,
     }),
   );
   beacon.position.y = 0.95;
@@ -1108,7 +1108,7 @@ function createHotspot(
     new THREE.MeshBasicMaterial({
       color: item.accent,
       transparent: true,
-      opacity: 0.12,
+      opacity: 0.07,
       side: THREE.DoubleSide,
       depthWrite: false,
     }),

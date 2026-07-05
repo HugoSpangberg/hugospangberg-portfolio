@@ -12,6 +12,13 @@ describe('recruiter-ready portfolio content', () => {
     expect(content.en.nav.some((item) => item.href === '#local-ai')).toBe(true);
   });
 
+  it('surfaces AI and Linux as technical focus areas', () => {
+    expect(content.sv.skills.coreFocus).toEqual(expect.arrayContaining(['AI', 'Linux']));
+    expect(content.en.skills.coreFocus).toEqual(expect.arrayContaining(['AI', 'Linux']));
+    expect(content.sv.skills.items.some((item) => item.title === 'AI & Linux')).toBe(true);
+    expect(content.en.skills.items.some((item) => item.title === 'AI & Linux')).toBe(true);
+  });
+
   it('renders the Local AI section text and fallback scene shell', async () => {
     render(<LocalAiSection content={content.en.localAi} />);
 
@@ -54,20 +61,28 @@ describe('recruiter-ready portfolio content', () => {
   });
 
   it('keeps hover images free of visible reference captions', () => {
-    const hoverImages = careerMapItems
-      .map((item) => item.hoverVisual)
-      .filter((hoverVisual) => hoverVisual?.kind === 'image');
-
-    expect(hoverImages.length).toBeGreaterThan(0);
-    hoverImages.forEach((hoverVisual) => {
-      if (hoverVisual?.kind !== 'image') {
-        return;
+    const hoverImages = careerMapItems.flatMap((item) => {
+      if (!item.hoverVisual) {
+        return [];
       }
 
-      expect('caption' in hoverVisual).toBe(false);
-      expect(hoverVisual.alt.toLowerCase()).not.toContain('reference');
-      expect(hoverVisual.alt.toLowerCase()).not.toContain('referens');
-      expect(hoverVisual.src.startsWith('/')).toBe(false);
+      if (item.hoverVisual.kind === 'image') {
+        return [{ src: item.hoverVisual.src, alt: item.hoverVisual.alt }];
+      }
+
+      return item.hoverVisual.images;
+    });
+
+    expect(hoverImages.length).toBeGreaterThan(0);
+    careerMapItems.forEach((item) => {
+      if (item.hoverVisual && item.hoverVisual.kind === 'image') {
+        expect('caption' in item.hoverVisual).toBe(false);
+      }
+    });
+    hoverImages.forEach((hoverImage) => {
+      expect(hoverImage.alt.toLowerCase()).not.toContain('reference');
+      expect(hoverImage.alt.toLowerCase()).not.toContain('referens');
+      expect(hoverImage.src.startsWith('/')).toBe(false);
     });
   });
 });

@@ -142,7 +142,7 @@ export const content = {
       kicker: 'Kompetenser',
       title: 'Teknikområden',
       coreFocusLabel: 'Core focus',
-      coreFocus: ['.NET', 'C#', 'React', 'TypeScript', 'SQL', 'Automation', 'IoT'],
+      coreFocus: ['.NET', 'C#', 'React', 'TypeScript', 'SQL', 'Automation', 'IoT', 'AI', 'Linux'],
       items: [
         {
           title: 'Backend',
@@ -185,6 +185,12 @@ export const content = {
           description:
             'Jag har erfarenhet av CMS, agila arbetssätt och AI-assisterad utveckling som stöd i moderna utvecklingsprocesser.',
           tags: ['Umbraco', 'Scrum', 'AI-assisterad utveckling'],
+        },
+        {
+          title: 'AI & Linux',
+          description:
+            'Jag utforskar lokala AI-miljöer på Linux med fokus på modeller, agenter, Docker och praktiska automationer där kontroll och mänskligt godkännande är centralt.',
+          tags: ['Linux', 'Docker', 'Ollama', 'lokala språkmodeller', 'AI-agenter', 'automation'],
         },
       ] satisfies Skill[],
     },
@@ -525,7 +531,7 @@ export const content = {
       kicker: 'Skills',
       title: 'Technical areas',
       coreFocusLabel: 'Core focus',
-      coreFocus: ['.NET', 'C#', 'React', 'TypeScript', 'SQL', 'Automation', 'IoT'],
+      coreFocus: ['.NET', 'C#', 'React', 'TypeScript', 'SQL', 'Automation', 'IoT', 'AI', 'Linux'],
       items: [
         {
           title: 'Backend',
@@ -568,6 +574,12 @@ export const content = {
           description:
             'I have experience with CMS platforms, agile workflows and AI-assisted development as support in modern development processes.',
           tags: ['Umbraco', 'Scrum', 'AI-assisted development'],
+        },
+        {
+          title: 'AI & Linux',
+          description:
+            'I explore local AI environments on Linux with a focus on models, agents, Docker and practical automations where control and human approval stay central.',
+          tags: ['Linux', 'Docker', 'Ollama', 'local language models', 'AI agents', 'automation'],
         },
       ] satisfies Skill[],
     },

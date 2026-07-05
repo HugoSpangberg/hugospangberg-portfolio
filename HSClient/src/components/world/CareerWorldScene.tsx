@@ -88,16 +88,17 @@ function HoverVisual({ item }: { item?: CareerMapItem }) {
     return null;
   }
 
-  if (item.hoverVisual.kind === 'educationLogos') {
+  if (item.hoverVisual.kind === 'imageGrid') {
     return (
-      <div className="hero-demo__tooltip-logos world-tooltip__logos" aria-hidden="true">
-        {item.hoverVisual.logos.map((logo) => (
-          <span
-            key={logo.label}
-            className={`hero-demo__tooltip-logo hero-demo__tooltip-logo--${logo.tone}`}
-          >
-            {logo.label}
-          </span>
+      <div className="hero-demo__tooltip-image-grid world-tooltip__logos">
+        {item.hoverVisual.images.map((image) => (
+          <img
+            key={image.src}
+            src={publicAssetUrl(image.src)}
+            alt={image.alt}
+            loading="lazy"
+            decoding="async"
+          />
         ))}
       </div>
     );
@@ -228,11 +229,11 @@ function CareerWorldScene({
         const pointer = new THREE.Vector2(8, 8);
         const raycaster = new THREE.Raycaster();
         const scene = new THREE.Scene();
-        scene.fog = new THREE.FogExp2(0x10251f, compact ? 0.052 : 0.058);
+        scene.fog = new THREE.FogExp2(0x0b211c, compact ? 0.066 : 0.072);
 
-        const ambientFill = new THREE.AmbientLight(0x8fb7ad, compact ? 0.16 : 0.13);
-        const moonFill = new THREE.HemisphereLight(0x9fd0dc, 0x07120f, compact ? 0.44 : 0.36);
-        const moonKey = new THREE.DirectionalLight(0xbfd9e7, compact ? 1.08 : 0.98);
+        const ambientFill = new THREE.AmbientLight(0x8fb7ad, compact ? 0.12 : 0.1);
+        const moonFill = new THREE.HemisphereLight(0x9fd0dc, 0x07120f, compact ? 0.34 : 0.3);
+        const moonKey = new THREE.DirectionalLight(0xbfd9e7, compact ? 0.64 : 0.58);
         moonKey.position.set(-6.2, 4.4, 5.8);
         moonKey.castShadow = true;
         moonKey.shadow.mapSize.set(compact ? 768 : 1024, compact ? 768 : 1024);
@@ -243,11 +244,11 @@ function CareerWorldScene({
         moonKey.shadow.camera.top = 7;
         moonKey.shadow.camera.bottom = -7;
         const facadeFillTarget = new THREE.Object3D();
-        facadeFillTarget.position.set(0.1, -0.2, 0.0);
-        const facadeFill = new THREE.SpotLight(0xbde8e5, compact ? 2.85 : 2.55, 14, Math.PI * 0.38, 0.82, 1.2);
-        facadeFill.position.set(0.8, 2.05, 7.2);
+        facadeFillTarget.position.set(0.1, 0.0, 0.0);
+        const facadeFill = new THREE.SpotLight(0xbde8e5, compact ? 0.68 : 0.58, 15, Math.PI * 0.48, 0.94, 2.0);
+        facadeFill.position.set(0.35, 2.7, 7.6);
         facadeFill.target = facadeFillTarget;
-        const cyanRim = new THREE.DirectionalLight(0x74d7ff, compact ? 0.98 : 0.9);
+        const cyanRim = new THREE.DirectionalLight(0x74d7ff, compact ? 0.56 : 0.5);
         cyanRim.position.set(5.4, 3.0, -6.4);
         const lowForestFill = new THREE.DirectionalLight(0x6fa886, compact ? 0.2 : 0.17);
         lowForestFill.position.set(-3.2, 0.95, -2.6);
@@ -269,7 +270,7 @@ function CareerWorldScene({
         renderer.setClearColor(0x000000, 0);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, initialCamera.pixelRatio));
         renderer.toneMapping = THREE.ACESFilmicToneMapping;
-        renderer.toneMappingExposure = compact ? 0.94 : 0.9;
+        renderer.toneMappingExposure = compact ? 0.72 : 0.68;
         renderer.outputColorSpace = THREE.SRGBColorSpace;
         renderer.shadowMap.enabled = true;
         renderer.shadowMap.type = THREE.PCFSoftShadowMap;
@@ -300,14 +301,14 @@ function CareerWorldScene({
         world.hotspots.forEach((hotspot) => {
           const accentLight =
             hotspot.item.id === 'filmstaden'
-              ? new THREE.PointLight(0xffb16d, compact ? 1.35 : 1.15, 2.0, 2.2)
+              ? new THREE.PointLight(0xffb16d, compact ? 0.34 : 0.28, 1.8, 2.6)
               : hotspot.item.id === 'education'
-                ? new THREE.PointLight(0xffcf86, compact ? 0.72 : 0.58, 1.65, 2.2)
+                ? new THREE.PointLight(0xffcf86, compact ? 0.22 : 0.18, 1.5, 2.6)
                 : hotspot.item.id === 'dasa'
-                  ? new THREE.PointLight(0x65d9ff, compact ? 0.72 : 0.58, 1.8, 2.2)
+                  ? new THREE.PointLight(0x65d9ff, compact ? 0.28 : 0.24, 1.65, 2.6)
                   : hotspot.item.id === 'sodra'
-                    ? new THREE.PointLight(0x8cf2b1, compact ? 0.72 : 0.58, 1.9, 2.2)
-                    : new THREE.PointLight(0xa8f4ff, compact ? 0.68 : 0.54, 1.75, 2.2);
+                    ? new THREE.PointLight(0x8cf2b1, compact ? 0.24 : 0.2, 1.7, 2.6)
+                    : new THREE.PointLight(0xa8f4ff, compact ? 0.22 : 0.18, 1.55, 2.6);
 
           accentLight.name = `Runtime_${hotspot.item.id}_NightAccent`;
           accentLight.position.set(0, 0.34, hotspot.item.id === 'filmstaden' ? 0.78 : 0.62);
@@ -392,7 +393,7 @@ function CareerWorldScene({
           const cameraConfig = getCameraConfig(width, expanded);
           renderer.setSize(width, height, false);
           renderer.setPixelRatio(Math.min(window.devicePixelRatio, cameraConfig.pixelRatio));
-          renderer.toneMappingExposure = width < 720 ? 0.94 : 0.9;
+          renderer.toneMappingExposure = width < 720 ? 0.72 : 0.68;
           renderer.domElement.style.touchAction = expanded && width < 720 ? 'none' : 'pan-y';
           camera.aspect = width / Math.max(height, 1);
           camera.fov = cameraConfig.fov;
@@ -527,15 +528,15 @@ function CareerWorldScene({
             const haloMaterial = hotspot.hoverHalo.material as Three.MeshBasicMaterial;
 
             hotspot.marker.scale.setScalar(isFocused ? 1.22 * softPulse : 1.02 * softPulse);
-            markerMaterial.opacity = isFocused ? 0.92 : 0.5;
-            beaconMaterial.opacity = isFocused ? 1 : 0.68;
-            hotspot.beacon.scale.setScalar(isFocused ? 1.38 * softPulse : 1.02 * softPulse);
-            hotspot.hoverHalo.scale.setScalar(isFocused ? 1.08 + Math.sin(time * 2.2 + index) * 0.06 : 0.72);
-            haloMaterial.opacity = isFocused ? 0.24 : 0.055;
+            markerMaterial.opacity = isFocused ? 0.74 : 0.42;
+            beaconMaterial.opacity = isFocused ? 0.72 : 0.5;
+            hotspot.beacon.scale.setScalar(isFocused ? 1.2 * softPulse : 0.96 * softPulse);
+            hotspot.hoverHalo.scale.setScalar(isFocused ? 1.02 + Math.sin(time * 2.2 + index) * 0.045 : 0.7);
+            haloMaterial.opacity = isFocused ? 0.14 : 0.04;
             hotspot.pulseRing.scale.setScalar(0.78 + outwardPulse * (isFocused ? 0.9 : 0.54));
             pulseMaterial.opacity = isFocused
-              ? 0.42 * (1 - outwardPulse)
-              : 0.2 * (1 - outwardPulse);
+              ? 0.2 * (1 - outwardPulse)
+              : 0.1 * (1 - outwardPulse);
             hotspot.group.position.y +=
               (hotspot.basePosition.y + itemFloat(time, index, isFocused) - hotspot.group.position.y) * 0.025;
           });
@@ -543,7 +544,7 @@ function CareerWorldScene({
           if (world.focusRing.visible && targetHotspot) {
             const focusMaterial = world.focusRing.material as Three.MeshBasicMaterial;
             world.focusRing.scale.setScalar(1.04 + Math.sin(time * 2.5) * 0.09);
-            focusMaterial.opacity = 0.72 + Math.sin(time * 3.1) * 0.12;
+            focusMaterial.opacity = 0.46 + Math.sin(time * 3.1) * 0.08;
             world.focusRing.position.x += (targetHotspot.group.position.x - world.focusRing.position.x) * 0.09;
             world.focusRing.position.z += (targetHotspot.group.position.z - world.focusRing.position.z) * 0.09;
           }

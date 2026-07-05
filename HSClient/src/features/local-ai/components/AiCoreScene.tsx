@@ -63,13 +63,16 @@ function AiCoreScene({ sceneLabel, loadingLabel, fallbackLabel, active }: AiCore
           PointLight,
           Scene,
           SRGBColorSpace,
+          TOUCH,
           Vector3,
           WebGLRenderer,
         },
         { GLTFLoader },
+        { OrbitControls },
       ] = await Promise.all([
         import('three'),
         import('three/examples/jsm/loaders/GLTFLoader.js'),
+        import('three/examples/jsm/controls/OrbitControls.js'),
       ]);
 
       if (disposed || !mountRef.current) {
@@ -80,8 +83,8 @@ function AiCoreScene({ sceneLabel, loadingLabel, fallbackLabel, active }: AiCore
       const scene = new Scene();
       scene.background = new Color(0x07120f);
 
-      const camera = new PerspectiveCamera(34, 1, 0.1, 100);
-      camera.position.set(2.8, 1.65, 4.2);
+      const camera = new PerspectiveCamera(32, 1, 0.1, 100);
+      camera.position.set(0.18, 1.6, 4.65);
 
       const renderer = new WebGLRenderer({
         alpha: false,
@@ -97,6 +100,23 @@ function AiCoreScene({ sceneLabel, loadingLabel, fallbackLabel, active }: AiCore
 
       const root = new Group();
       scene.add(root);
+
+      const controls = new OrbitControls(camera, renderer.domElement);
+      controls.enableDamping = true;
+      controls.enablePan = false;
+      controls.enableRotate = true;
+      controls.enableZoom = true;
+      controls.rotateSpeed = 0.42;
+      controls.zoomSpeed = 0.48;
+      controls.minDistance = 3.25;
+      controls.maxDistance = 5.35;
+      controls.minPolarAngle = Math.PI * 0.22;
+      controls.maxPolarAngle = Math.PI * 0.47;
+      controls.minAzimuthAngle = -Math.PI * 0.26;
+      controls.maxAzimuthAngle = Math.PI * 0.26;
+      controls.touches.ONE = TOUCH.ROTATE;
+      controls.touches.TWO = TOUCH.DOLLY_ROTATE;
+      controls.target.set(0, 0.38, 0);
 
       const key = new DirectionalLight(0xd8fff0, 2.5);
       key.position.set(3.2, 4.4, 4.2);
@@ -134,10 +154,11 @@ function AiCoreScene({ sceneLabel, loadingLabel, fallbackLabel, active }: AiCore
       const size = bounds.getSize(new Vector3());
       const center = bounds.getCenter(new Vector3());
       const maxAxis = Math.max(size.x, size.y, size.z) || 1;
-      const scale = 2.25 / maxAxis;
+      const scale = 2.42 / maxAxis;
 
       model.position.sub(center);
       model.scale.setScalar(scale);
+      root.position.set(0, 0.78, 0);
       root.add(model);
 
       const clock = new Clock();
@@ -185,17 +206,14 @@ function AiCoreScene({ sceneLabel, loadingLabel, fallbackLabel, active }: AiCore
           mixer?.update(prefersReducedMotion ? delta * 0.15 : delta);
 
           if (!prefersReducedMotion) {
-            root.rotation.y = Math.sin(elapsed * 0.22) * 0.18;
+            root.rotation.y = Math.sin(elapsed * 0.16) * 0.08;
             root.rotation.x = Math.sin(elapsed * 0.16) * 0.035;
             coreGlow.intensity = 1.05 + Math.sin(elapsed * 1.25) * 0.18;
           }
 
-          camera.position.x = MathUtils.lerp(
-            camera.position.x,
-            prefersReducedMotion ? 2.8 : 2.8 + Math.sin(elapsed * 0.12) * 0.12,
-            0.02,
-          );
-          camera.lookAt(0, 0.2, 0);
+          controls.target.x = MathUtils.lerp(controls.target.x, 0, 0.04);
+          controls.target.y = MathUtils.lerp(controls.target.y, 0.38, 0.04);
+          controls.update();
           renderer.render(scene, camera);
         }
 
@@ -207,6 +225,7 @@ function AiCoreScene({ sceneLabel, loadingLabel, fallbackLabel, active }: AiCore
 
       cleanups.push(() => {
         window.cancelAnimationFrame(animationFrame);
+        controls.dispose();
         renderer.dispose();
         renderer.domElement.remove();
         scene.traverse((object) => {

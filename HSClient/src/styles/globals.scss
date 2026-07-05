@@ -380,9 +380,9 @@ p {
   overflow: hidden;
   pointer-events: none;
   background:
-    radial-gradient(ellipse at 50% 46%, rgba(132, 217, 205, 0.24), transparent 24rem),
-    radial-gradient(ellipse at 50% 73%, rgba(91, 139, 108, 0.24), transparent 38rem),
-    linear-gradient(180deg, #1b3a34 0%, #112b25 42%, #0a1d18 100%);
+    radial-gradient(ellipse at 50% 34%, rgba(132, 217, 205, 0.14), transparent 26rem),
+    radial-gradient(ellipse at 50% 66%, rgba(91, 139, 108, 0.18), transparent 42rem),
+    linear-gradient(180deg, #0d2823 0%, #0a1d19 48%, #04110e 100%);
 }
 
 .scene-backdrop::before {
@@ -390,12 +390,13 @@ p {
   inset: 0;
   content: '';
   background:
-    radial-gradient(ellipse at 50% 42%, rgba(185, 230, 213, 0.1), transparent 30%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.025), transparent 38%, rgba(4, 12, 10, 0.48));
+    radial-gradient(ellipse at 50% 42%, rgba(185, 230, 213, 0.07), transparent 30%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.012), transparent 32%, rgba(4, 12, 10, 0.58));
 }
 
 .scene-backdrop__stars,
 .scene-backdrop__haze,
+.scene-backdrop__fog,
 .scene-backdrop__forest,
 .scene-backdrop__ground {
   position: absolute;
@@ -438,17 +439,54 @@ p {
   left: -8%;
   height: 31%;
   background:
-    radial-gradient(ellipse at 48% 42%, rgba(188, 238, 218, 0.2), transparent 44%),
-    linear-gradient(180deg, transparent, rgba(113, 160, 135, 0.13) 42%, transparent 82%);
-  filter: blur(12px);
-  opacity: 0.84;
+    radial-gradient(ellipse at 48% 42%, rgba(188, 238, 218, 0.12), transparent 46%),
+    linear-gradient(180deg, transparent, rgba(113, 160, 135, 0.1) 42%, transparent 82%);
+  filter: blur(18px);
+  opacity: 0.76;
+}
+
+.scene-backdrop__fog {
+  right: -18%;
+  left: -18%;
+  border-radius: 50%;
+  mix-blend-mode: screen;
+  opacity: 0.44;
+}
+
+.scene-backdrop__fog--far {
+  top: 18%;
+  height: 32%;
+  background:
+    radial-gradient(ellipse at 24% 52%, rgba(173, 229, 211, 0.1), transparent 34%),
+    radial-gradient(ellipse at 72% 46%, rgba(119, 216, 247, 0.07), transparent 36%);
+  filter: blur(34px);
+}
+
+.scene-backdrop__fog--mid {
+  top: 38%;
+  height: 38%;
+  background:
+    radial-gradient(ellipse at 46% 55%, rgba(168, 221, 200, 0.16), transparent 42%),
+    linear-gradient(90deg, transparent, rgba(116, 171, 145, 0.1), transparent);
+  filter: blur(28px);
+  opacity: 0.52;
+}
+
+.scene-backdrop__fog--near {
+  bottom: 18%;
+  height: 32%;
+  background:
+    radial-gradient(ellipse at 58% 48%, rgba(199, 242, 224, 0.12), transparent 42%),
+    linear-gradient(180deg, transparent, rgba(170, 220, 192, 0.08), transparent);
+  filter: blur(22px);
+  opacity: 0.42;
 }
 
 .scene-backdrop__forest {
   right: -10%;
   left: -10%;
   bottom: 0;
-  background: linear-gradient(180deg, rgba(38, 85, 72, 0.34), rgba(8, 25, 20, 0.94));
+  background: linear-gradient(180deg, rgba(30, 73, 62, 0.24), rgba(8, 25, 20, 0.9));
   transform-origin: 50% 100%;
 }
 
@@ -473,8 +511,8 @@ p {
     100% 100%,
     0 100%
   );
-  filter: blur(2.4px);
-  opacity: 0.5;
+  filter: blur(3.6px);
+  opacity: 0.34;
 }
 
 .scene-backdrop__forest--mid {
@@ -500,14 +538,14 @@ p {
     100% 100%,
     0 100%
   );
-  filter: blur(1px);
-  opacity: 0.68;
+  filter: blur(1.8px);
+  opacity: 0.46;
 }
 
 .scene-backdrop__forest--near {
   bottom: 27%;
   height: 28%;
-  background: linear-gradient(180deg, rgba(18, 50, 41, 0.66), rgba(4, 14, 11, 0.96));
+  background: linear-gradient(180deg, rgba(18, 50, 41, 0.48), rgba(4, 14, 11, 0.94));
   clip-path: polygon(
     0 90%,
     4% 63%,
@@ -529,7 +567,7 @@ p {
     100% 100%,
     0 100%
   );
-  opacity: 0.74;
+  opacity: 0.58;
 }
 
 .scene-backdrop__ground {
@@ -538,11 +576,11 @@ p {
   left: -10%;
   height: 39%;
   background:
-    radial-gradient(ellipse at 24% 48%, rgba(55, 126, 128, 0.35) 0 8%, transparent 24%),
-    radial-gradient(ellipse at 78% 44%, rgba(48, 108, 104, 0.24) 0 7%, transparent 22%),
+    radial-gradient(ellipse at 24% 48%, rgba(55, 126, 128, 0.22) 0 8%, transparent 24%),
+    radial-gradient(ellipse at 78% 44%, rgba(48, 108, 104, 0.18) 0 7%, transparent 22%),
     linear-gradient(180deg, transparent 0%, rgba(42, 78, 61, 0.38) 24%, rgba(16, 43, 33, 0.76) 58%, rgba(4, 13, 10, 0.92) 100%);
-  filter: blur(4px);
-  opacity: 0.92;
+  filter: blur(8px);
+  opacity: 0.82;
 }
 
 @keyframes career-stars-breathe {
@@ -1197,9 +1235,9 @@ p {
   overflow: hidden;
   min-height: min(47rem, calc(100svh - 7rem));
   background:
-    radial-gradient(circle at 54% 48%, rgba(119, 216, 247, 0.12), transparent 18rem),
-    radial-gradient(ellipse at 50% 86%, rgba(114, 242, 163, 0.12), transparent 28rem),
-    linear-gradient(180deg, rgba(30, 65, 58, 0.72), rgba(10, 27, 23, 0.78) 54%, rgba(5, 14, 12, 0.9));
+    radial-gradient(circle at 52% 44%, rgba(119, 216, 247, 0.08), transparent 20rem),
+    radial-gradient(ellipse at 50% 82%, rgba(114, 242, 163, 0.08), transparent 30rem),
+    linear-gradient(180deg, rgba(14, 42, 36, 0.74), rgba(7, 23, 19, 0.82) 54%, rgba(3, 12, 10, 0.94));
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-soft);
@@ -1212,13 +1250,12 @@ p {
   pointer-events: none;
   content: '';
   background:
-    radial-gradient(ellipse at 12% 78%, rgba(18, 51, 42, 0.72) 0 7rem, transparent 7.2rem),
-    radial-gradient(ellipse at 27% 76%, rgba(17, 47, 39, 0.82) 0 8.5rem, transparent 8.7rem),
-    radial-gradient(ellipse at 43% 79%, rgba(20, 55, 46, 0.7) 0 6.8rem, transparent 7rem),
-    radial-gradient(ellipse at 67% 76%, rgba(17, 47, 39, 0.82) 0 9rem, transparent 9.2rem),
-    radial-gradient(ellipse at 88% 78%, rgba(18, 51, 42, 0.72) 0 7.6rem, transparent 7.8rem),
-    linear-gradient(180deg, transparent 0 54%, rgba(9, 27, 22, 0.4) 73%, rgba(4, 13, 11, 0.82) 100%);
-  opacity: 0.72;
+    radial-gradient(ellipse at 16% 74%, rgba(155, 216, 193, 0.08) 0 8rem, transparent 12rem),
+    radial-gradient(ellipse at 48% 70%, rgba(115, 176, 151, 0.1) 0 10rem, transparent 16rem),
+    radial-gradient(ellipse at 78% 76%, rgba(97, 153, 140, 0.08) 0 9rem, transparent 14rem),
+    linear-gradient(180deg, transparent 0 46%, rgba(116, 164, 140, 0.09) 62%, rgba(4, 13, 11, 0.82) 100%);
+  filter: blur(10px);
+  opacity: 0.78;
 }
 
 .hero-demo::after {
@@ -1228,8 +1265,8 @@ p {
   pointer-events: none;
   content: '';
   background:
-    radial-gradient(ellipse at 50% 57%, transparent 0 38%, rgba(6, 17, 14, 0.22) 76%, rgba(6, 17, 14, 0.54)),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.035), transparent 28%, rgba(6, 17, 14, 0.34));
+    radial-gradient(ellipse at 50% 56%, transparent 0 36%, rgba(6, 17, 14, 0.28) 76%, rgba(6, 17, 14, 0.6)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.018), transparent 28%, rgba(6, 17, 14, 0.4));
 }
 
 .hero-demo__scene {
@@ -1335,33 +1372,22 @@ p {
   text-transform: uppercase;
 }
 
-.hero-demo__tooltip-logos {
+.hero-demo__tooltip-image-grid {
   display: grid;
   width: 13rem;
   max-width: 100%;
   gap: 0.45rem;
 }
 
-.hero-demo__tooltip-logo {
+.hero-demo__tooltip-image-grid img {
   display: grid;
+  width: 100%;
   min-height: 3.1rem;
-  place-items: center;
-  padding: 0.55rem 0.75rem;
+  padding: 0.55rem;
+  object-fit: contain;
+  background: rgba(238, 248, 243, 0.94);
   border-radius: calc(var(--radius-sm) - 0.15rem);
-  font-size: 1rem;
-  font-weight: 900;
-  letter-spacing: -0.02em;
-}
-
-.hero-demo__tooltip-logo--forest {
-  color: #10231f;
-  background: linear-gradient(135deg, #cfeee1, #76d89b);
-}
-
-.hero-demo__tooltip-logo--mono {
-  color: #f4f8f6;
-  background: linear-gradient(135deg, #171f1d, #31413d);
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .hero-demo__tooltip span {
