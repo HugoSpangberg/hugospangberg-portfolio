@@ -79,6 +79,11 @@ function PortfolioPage({ locale, onLocaleChange }: PortfolioPageProps) {
       return undefined;
     }
 
+    const shouldRevealImmediately = (item: HTMLElement) => {
+      const bounds = item.getBoundingClientRect();
+      return bounds.top < window.innerHeight * 0.92;
+    };
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -91,10 +96,17 @@ function PortfolioPage({ locale, onLocaleChange }: PortfolioPageProps) {
       { rootMargin: '0px 0px -12% 0px', threshold: 0.12 },
     );
 
-    revealItems.forEach((item) => observer.observe(item));
+    revealItems.forEach((item) => {
+      if (shouldRevealImmediately(item)) {
+        item.classList.add('is-visible');
+        return;
+      }
+
+      observer.observe(item);
+    });
 
     return () => observer.disconnect();
-  }, [locale]);
+  }, [locale, page]);
 
   return (
     <>

@@ -81,3 +81,23 @@ test('recruiter release homepage exposes verified content and no unfinished demo
   expect(backendOfficeStateRequests).toEqual([]);
   expect(consoleErrors).toEqual([]);
 });
+
+test('experience cards stay visible when switching languages from the experience section', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  await page.locator('#erfarenhet').scrollIntoViewIfNeeded();
+  await expect(page.getByRole('heading', { name: 'Arbete och uppdrag' })).toBeVisible();
+  await expect(page.locator('.timeline-card').filter({ hasText: 'Dasa Control System' }).first()).toBeVisible();
+
+  await page.getByRole('button', { name: 'English' }).click();
+  await expect(page.getByRole('heading', { name: 'Work and assignments' })).toBeVisible();
+  await expect(page.locator('.timeline-card').filter({ hasText: 'Dasa Control System' }).first()).toBeVisible();
+  await expect(page.locator('.timeline-card').filter({ hasText: 'Södra Skogsägarna' }).first()).toBeVisible();
+
+  await page.getByRole('button', { name: 'SV' }).click();
+  await expect(page.getByRole('heading', { name: 'Arbete och uppdrag' })).toBeVisible();
+  await expect(page.locator('.timeline-card').filter({ hasText: 'Dasa Control System' }).first()).toBeVisible();
+  await expect(page.locator('.timeline-card').filter({ hasText: 'Södra Skogsägarna' }).first()).toBeVisible();
+});
