@@ -3,7 +3,7 @@ name: Deploy portfolio to GitHub Pages
 on:
   push:
     branches:
-      - production
+      - main
   workflow_dispatch:
 
 permissions:
@@ -43,6 +43,7 @@ jobs:
         env:
           VITE_BASE_PATH: /hugospangberg-portfolio/
           VITE_API_ENABLED: 'false'
+          VITE_ADMIN_ENABLED: 'false'
           VITE_SAY_HI_ENABLED: 'false'
 
       - name: Upload Pages artifact
