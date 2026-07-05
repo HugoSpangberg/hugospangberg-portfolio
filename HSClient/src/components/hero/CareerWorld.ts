@@ -357,7 +357,7 @@ function createPresentationFloor(THREE: typeof Three) {
     return disc;
   };
 
-  const darkLake = makeDisc(4.95, 0x082a27, 0.62, 0.68, -0.555);
+  const darkLake = makeDisc(4.95, 0x071f1d, 0.44, 0.68, -0.64);
   darkLake.name = 'Runtime_PresentationGroundingFloor_DarkLake';
   darkLake.renderOrder = -6;
   const lakeSheen = new THREE.Mesh(
@@ -365,33 +365,31 @@ function createPresentationFloor(THREE: typeof Three) {
     new THREE.MeshBasicMaterial({
       color: 0x4f9f95,
       transparent: true,
-      opacity: 0.085,
+      opacity: 0.035,
       depthWrite: false,
-      depthTest: false,
       side: THREE.DoubleSide,
     }),
   );
   lakeSheen.name = 'Runtime_PresentationGroundingFloor_LakeSheen';
   lakeSheen.rotation.x = -Math.PI / 2;
-  lakeSheen.position.y = -0.545;
+  lakeSheen.position.y = -0.625;
   lakeSheen.scale.y = 0.68;
-  lakeSheen.renderOrder = 6;
+  lakeSheen.renderOrder = -5;
   const shorelineFog = new THREE.Mesh(
     new THREE.RingGeometry(3.05, 4.05, 128),
     new THREE.MeshBasicMaterial({
       color: 0x9fcfc0,
       transparent: true,
-      opacity: 0.075,
+      opacity: 0.028,
       depthWrite: false,
-      depthTest: false,
       side: THREE.DoubleSide,
     }),
   );
   shorelineFog.name = 'Runtime_PresentationGroundingFloor_ShorelineFog';
   shorelineFog.rotation.x = -Math.PI / 2;
-  shorelineFog.position.y = -0.51;
+  shorelineFog.position.y = -0.59;
   shorelineFog.scale.y = 0.62;
-  shorelineFog.renderOrder = 7;
+  shorelineFog.renderOrder = -4;
 
   const leftLake = makeDisc(0.72, 0x2a6c72, 0.08, 0.34, -0.948);
   leftLake.name = 'Runtime_PresentationGroundingFloor_LeftLake';
