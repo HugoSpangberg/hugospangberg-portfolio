@@ -404,7 +404,7 @@ p {
     radial-gradient(ellipse at 50% 82%, rgba(71, 151, 138, 0.12), transparent 52%),
     linear-gradient(180deg, transparent, rgba(113, 160, 135, 0.09) 42%, transparent 84%);
   filter: blur(22px);
-  opacity: 0.82;
+  opacity: 0.52;
 }
 
 .scene-backdrop__fog {
@@ -431,7 +431,7 @@ p {
     radial-gradient(ellipse at 46% 55%, rgba(168, 221, 200, 0.14), transparent 42%),
     linear-gradient(90deg, transparent, rgba(116, 171, 145, 0.11), transparent);
   filter: blur(30px);
-  opacity: 0.56;
+  opacity: 0.38;
 }
 
 .scene-backdrop__fog--near {
@@ -442,7 +442,7 @@ p {
     radial-gradient(ellipse at 50% 92%, rgba(77, 156, 145, 0.13), transparent 48%),
     linear-gradient(180deg, transparent, rgba(170, 220, 192, 0.075), transparent);
   filter: blur(24px);
-  opacity: 0.5;
+  opacity: 0.34;
 }
 
 .scene-backdrop__forest {
@@ -510,7 +510,7 @@ p {
     radial-gradient(ellipse at 76% 54%, rgba(34, 86, 82, 0.16) 0 9%, transparent 30%),
     linear-gradient(180deg, transparent 0%, rgba(21, 57, 49, 0.34) 28%, rgba(6, 25, 22, 0.8) 66%, rgba(3, 10, 8, 0.96) 100%);
   filter: blur(10px);
-  opacity: 0.9;
+  opacity: 0.66;
 }
 
 @keyframes career-stars-breathe {
@@ -559,7 +559,7 @@ p {
     radial-gradient(ellipse at 50% 68%, rgba(5, 15, 12, 0), rgba(5, 15, 12, 0.24) 72%),
     radial-gradient(ellipse at 50% 86%, rgba(52, 124, 113, 0.1), transparent 36%),
     linear-gradient(180deg, rgba(255, 255, 255, 0.014), transparent 30%, rgba(5, 15, 12, 0.2));
-  opacity: 0.82;
+  opacity: 0.48;
 }
 
 .world-scene__canvas {
@@ -576,13 +576,13 @@ p {
 .world-scene__shade {
   position: absolute;
   inset: 0;
-  z-index: 3;
+  z-index: 1;
   pointer-events: none;
   background:
-    radial-gradient(ellipse at 50% 58%, transparent 0 44%, rgba(6, 17, 14, 0.055) 68%, rgba(5, 14, 12, 0.32)),
-    radial-gradient(ellipse at 50% 76%, rgba(81, 154, 140, 0.16) 0 18%, rgba(7, 26, 23, 0.2) 38%, transparent 58%),
-    radial-gradient(ellipse at 50% 88%, rgba(3, 10, 8, 0.54), transparent 44%),
-    linear-gradient(180deg, rgba(183, 244, 214, 0.024), transparent 34%, rgba(7, 18, 15, 0.36));
+    radial-gradient(ellipse at 50% 58%, transparent 0 50%, rgba(6, 17, 14, 0.04) 74%, rgba(5, 14, 12, 0.16)),
+    radial-gradient(ellipse at 50% 82%, rgba(81, 154, 140, 0.08) 0 15%, transparent 48%),
+    radial-gradient(ellipse at 50% 90%, rgba(3, 10, 8, 0.24), transparent 48%),
+    linear-gradient(180deg, rgba(183, 244, 214, 0.012), transparent 38%, rgba(7, 18, 15, 0.14));
 }
 
 .world-loading {

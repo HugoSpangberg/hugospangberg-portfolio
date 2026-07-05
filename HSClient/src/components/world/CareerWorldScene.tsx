@@ -229,11 +229,11 @@ function CareerWorldScene({
         const pointer = new THREE.Vector2(8, 8);
         const raycaster = new THREE.Raycaster();
         const scene = new THREE.Scene();
-        scene.fog = new THREE.FogExp2(0x071a17, compact ? 0.078 : 0.084);
+        scene.fog = new THREE.FogExp2(0x071a17, compact ? 0.06 : 0.064);
 
-        const ambientFill = new THREE.AmbientLight(0x8fb7ad, compact ? 0.1 : 0.09);
-        const moonFill = new THREE.HemisphereLight(0x9fd0dc, 0x07120f, compact ? 0.29 : 0.26);
-        const moonKey = new THREE.DirectionalLight(0xbfd9e7, compact ? 0.52 : 0.46);
+        const ambientFill = new THREE.AmbientLight(0x8fb7ad, compact ? 0.15 : 0.13);
+        const moonFill = new THREE.HemisphereLight(0x9fd0dc, 0x07120f, compact ? 0.38 : 0.34);
+        const moonKey = new THREE.DirectionalLight(0xbfd9e7, compact ? 0.58 : 0.52);
         moonKey.position.set(-6.2, 4.4, 5.8);
         moonKey.castShadow = true;
         moonKey.shadow.mapSize.set(compact ? 768 : 1024, compact ? 768 : 1024);
@@ -243,13 +243,13 @@ function CareerWorldScene({
         moonKey.shadow.camera.right = 7;
         moonKey.shadow.camera.top = 7;
         moonKey.shadow.camera.bottom = -7;
-        const broadFrontFill = new THREE.DirectionalLight(0x9cc6bd, compact ? 0.22 : 0.18);
+        const broadFrontFill = new THREE.DirectionalLight(0x9cc6bd, compact ? 0.28 : 0.24);
         broadFrontFill.position.set(0.4, 1.9, 5.8);
-        const lowWaterFill = new THREE.DirectionalLight(0x3b8d82, compact ? 0.14 : 0.1);
+        const lowWaterFill = new THREE.DirectionalLight(0x3b8d82, compact ? 0.12 : 0.09);
         lowWaterFill.position.set(-3.2, 0.8, 2.8);
-        const cyanRim = new THREE.DirectionalLight(0x74d7ff, compact ? 0.38 : 0.32);
+        const cyanRim = new THREE.DirectionalLight(0x74d7ff, compact ? 0.4 : 0.34);
         cyanRim.position.set(5.4, 3.0, -6.4);
-        const lowForestFill = new THREE.DirectionalLight(0x6fa886, compact ? 0.14 : 0.11);
+        const lowForestFill = new THREE.DirectionalLight(0x6fa886, compact ? 0.18 : 0.15);
         lowForestFill.position.set(-3.2, 0.95, -2.6);
         scene.add(ambientFill, moonFill, moonKey, broadFrontFill, lowWaterFill, cyanRim, lowForestFill);
 
@@ -269,7 +269,7 @@ function CareerWorldScene({
         renderer.setClearColor(0x000000, 0);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, initialCamera.pixelRatio));
         renderer.toneMapping = THREE.ACESFilmicToneMapping;
-        renderer.toneMappingExposure = compact ? 0.66 : 0.62;
+        renderer.toneMappingExposure = compact ? 0.78 : 0.74;
         renderer.outputColorSpace = THREE.SRGBColorSpace;
         renderer.shadowMap.enabled = true;
         renderer.shadowMap.type = THREE.PCFSoftShadowMap;
@@ -376,7 +376,7 @@ function CareerWorldScene({
           const cameraConfig = getCameraConfig(width, expanded);
           renderer.setSize(width, height, false);
           renderer.setPixelRatio(Math.min(window.devicePixelRatio, cameraConfig.pixelRatio));
-          renderer.toneMappingExposure = width < 720 ? 0.66 : 0.62;
+          renderer.toneMappingExposure = width < 720 ? 0.78 : 0.74;
           renderer.domElement.style.touchAction = expanded && width < 720 ? 'none' : 'pan-y';
           camera.aspect = width / Math.max(height, 1);
           camera.fov = cameraConfig.fov;
