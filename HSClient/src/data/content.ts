@@ -132,10 +132,13 @@ export const content = {
           external: true,
         },
       ] satisfies HeroAction[],
-      availability: 'Öppen för roller inom webbutveckling, systemutveckling och backend.',
+      availability:
+        'Öppen för roller inom webbutveckling, systemutveckling och backend.',
       stack: '.NET / C# / React / Automation',
-      sceneLabel: 'Interaktiv karriärkarta med nordisk skog, IoT och systemutveckling',
-      fallbackLabel: 'Statisk karriärkarta med skog, IoT och erfarenhetspunkter',
+      sceneLabel:
+        'Interaktiv karriärkarta med nordisk skog, IoT och systemutveckling',
+      fallbackLabel:
+        'Statisk karriärkarta med skog, IoT och erfarenhetspunkter',
     },
     about: {
       kicker: 'Om mig',
@@ -151,25 +154,56 @@ export const content = {
         'Jag söker roller inom webbutveckling och systemutveckling där jag får arbeta med moderna tekniker, långsiktiga lösningar och team som värdesätter samarbete, kvalitet och lärande.',
         'Mitt främsta fokus ligger inom .NET, backend, webbapplikationer och systemutveckling, men jag trivs även i gränslandet mellan automation, test, frontend och verksamhetsnära problemlösning.',
       ],
-      highlights: ['.NET', 'Backend', 'Webbutveckling', 'Automation', 'Test', 'IoT'],
+      highlights: [
+        '.NET',
+        'Backend',
+        'Webbutveckling',
+        'Automation',
+        'Test',
+        'IoT',
+      ],
     },
     skills: {
       kicker: 'Kompetenser',
       title: 'Teknikområden',
       coreFocusLabel: 'Core focus',
-      coreFocus: ['.NET', 'C#', 'React', 'TypeScript', 'SQL', 'Automation', 'IoT', 'AI', 'Linux'],
+      coreFocus: [
+        '.NET',
+        'C#',
+        'React',
+        'TypeScript',
+        'SQL',
+        'Automation',
+        'IoT',
+        'AI',
+        'Linux',
+      ],
       items: [
         {
           title: 'Backend',
           description:
             'Jag har främst arbetat med .NET och C#, men har även erfarenhet av Java och Kotlin. Jag tycker om att bygga tydliga, stabila och underhållbara backendlösningar med fokus på verkliga behov.',
-          tags: ['C#', '.NET', 'ASP.NET Core', 'Entity Framework Core', 'Java', 'Kotlin'],
+          tags: [
+            'C#',
+            '.NET',
+            'ASP.NET Core',
+            'Entity Framework Core',
+            'Java',
+            'Kotlin',
+          ],
         },
         {
           title: 'Frontend',
           description:
             'Jag bygger gärna moderna gränssnitt med React, TypeScript och välstrukturerad CSS. Min bakgrund inom design gör att jag uppskattar tydliga användarflöden, bra struktur och genomtänkta visuella detaljer.',
-          tags: ['React', 'TypeScript', 'JavaScript', 'HTML', 'CSS/SCSS', 'Blazor'],
+          tags: [
+            'React',
+            'TypeScript',
+            'JavaScript',
+            'HTML',
+            'CSS/SCSS',
+            'Blazor',
+          ],
         },
         {
           title: 'Databaser',
@@ -193,7 +227,14 @@ export const content = {
           title: 'Automation & Kvalitet',
           description:
             'Automation och kvalitet har varit en viktig del av min utvecklarresa. Jag har byggt automatiserade flöden, arbetat med testautomation och förbättrat processer med hjälp av programmering.',
-          tags: ['RPA', 'PowerShell', 'testautomation', 'kvalitetssäkring', 'GUI-verktyg', 'processförbättring'],
+          tags: [
+            'RPA',
+            'PowerShell',
+            'testautomation',
+            'kvalitetssäkring',
+            'GUI-verktyg',
+            'processförbättring',
+          ],
         },
         {
           title: 'CMS & Arbetssätt',
@@ -205,15 +246,21 @@ export const content = {
           title: 'AI & Linux',
           description:
             'Jag utforskar lokala AI-miljöer på Linux med fokus på modeller, agenter, Docker och praktiska automationer där kontroll och mänskligt godkännande är centralt.',
-          tags: ['Linux', 'Docker', 'Ollama', 'lokala språkmodeller', 'AI-agenter', 'automation'],
+          tags: [
+            'Linux',
+            'Docker',
+            'Ollama',
+            'lokala språkmodeller',
+            'AI-agenter',
+            'automation',
+          ],
         },
       ] satisfies Skill[],
     },
     systemThinking: {
       kicker: 'Systemtänk',
       title: 'Systemtänk i praktiken',
-      body:
-        'Jag gillar att förstå hur saker hänger ihop: människor, processer, data, system och användarflöden. Min erfarenhet från automation, IoT, test och verksamhetsnära utveckling gör att jag ofta tänker på hela kedjan, från behov och analys till implementation, kvalitet och långsiktig förvaltning.',
+      body: 'Jag gillar att förstå hur saker hänger ihop: människor, processer, data, system och användarflöden. Min erfarenhet från automation, IoT, test och verksamhetsnära utveckling gör att jag ofta tänker på hela kedjan, från behov och analys till implementation, kvalitet och långsiktig förvaltning.',
       cards: [
         {
           title: 'Förstå behovet',
@@ -242,7 +289,16 @@ export const content = {
           period: 'Mars 2026 - Maj 2026',
           description:
             'På Dasa Control System arbetar jag med utveckling och underhåll av företagets produkter och IoT-tjänster, med fokus på backend i .NET och viss frontend. Rollen innebär arbete genom hela utvecklingsprocessen, från analys och implementation till test och förbättring av befintliga system. Jag bidrar även till förbättringar av arkitektur, arbetssätt och tekniska lösningar.',
-          focus: ['.NET', 'backend', 'IoT', 'frontend', 'systemutveckling', 'arkitektur', 'test', 'förbättringsarbete'],
+          focus: [
+            '.NET',
+            'backend',
+            'IoT',
+            'frontend',
+            'systemutveckling',
+            'arkitektur',
+            'test',
+            'förbättringsarbete',
+          ],
           impact: [
             'Utvecklade och underhöll IoT-tjänster med .NET.',
             'Bidrog till förbättringar av system, arkitektur och arbetssätt.',
@@ -254,7 +310,14 @@ export const content = {
           period: 'Maj 2025 - Februari 2026',
           description:
             'På Södra arbetade jag med att automatisera och förbättra affärsprocesser genom RPA och programmering. Rollen kombinerade teknisk utveckling med nära samarbete med verksamheten. Jag identifierade behov, byggde lösningar och kvalitetssäkrade automatiserade flöden med fokus på att skapa nytta, minska manuellt arbete och förbättra processer.',
-          focus: ['.NET', 'PowerShell', 'RPA', 'automation', 'processförbättring', 'verksamhetsnära utveckling'],
+          focus: [
+            '.NET',
+            'PowerShell',
+            'RPA',
+            'automation',
+            'processförbättring',
+            'verksamhetsnära utveckling',
+          ],
           impact: [
             'Automatiserade affärsprocesser med .NET, PowerShell och RPA.',
             'Arbetade nära verksamheten för att minska manuellt arbete och förbättra flöden.',
@@ -266,7 +329,14 @@ export const content = {
           period: 'November 2024 - Maj 2025',
           description:
             'På Visma arbetade jag med automatiserade tester för HR-plus lönesystem. Jag byggde testautomation i C# och .NET, arbetade i CI-miljö och kvalitetssäkrade funktionalitet och prestanda. Jag utvecklade även ett GUI för testautomationsverktyg, vilket gav mig erfarenhet av att kombinera teknisk kvalitetssäkring med användarvänliga verktyg.',
-          focus: ['C#', '.NET', 'testautomation', 'CI/CD', 'kvalitetssäkring', 'GUI-utveckling'],
+          focus: [
+            'C#',
+            '.NET',
+            'testautomation',
+            'CI/CD',
+            'kvalitetssäkring',
+            'GUI-utveckling',
+          ],
           impact: [
             'Byggde testautomation i C# och .NET.',
             'Utvecklade GUI för testautomationsverktyg.',
@@ -279,9 +349,7 @@ export const content = {
           description:
             'Som Deputy Cinema Manager ansvarade jag för fakturering, schemaläggning, premiärer, service och arbetsmiljö. Rollen gav mig erfarenhet av ansvar, planering och ledarskap i en miljö med högt tempo.',
           focus: ['Ledarskap', 'planering', 'service', 'ansvar', 'arbetsmiljö'],
-          impact: [
-            'Tog ansvar för planering, arbetsmiljö och operativ drift.',
-          ],
+          impact: ['Tog ansvar för planering, arbetsmiljö och operativ drift.'],
         },
         {
           company: 'Filmstaden Växjö AB',
@@ -289,7 +357,14 @@ export const content = {
           period: 'Oktober 2012 - November 2024',
           description:
             'Under min tid på Filmstaden arbetade jag med personalansvar, kundupplevelse, rekrytering, utbildning, drift och servicekvalitet. Erfarenheten har gett mig en stark grund i kommunikation, ansvarstagande och samarbete. Det är erfarenheter jag tar med mig in i utvecklarrollen, särskilt när det gäller teamarbete, användarfokus och förståelse för verksamhetens behov.',
-          focus: ['Teamledning', 'service', 'rekrytering', 'utbildning', 'drift', 'kundupplevelse'],
+          focus: [
+            'Teamledning',
+            'service',
+            'rekrytering',
+            'utbildning',
+            'drift',
+            'kundupplevelse',
+          ],
           impact: [
             'Byggde erfarenhet av teamledning, kommunikation och användarfokus.',
           ],
@@ -300,7 +375,12 @@ export const content = {
           period: 'Mars 2021 - Juni 2021',
           description:
             'Jag skapade engagerande GIF:ar av Fredric Henric af Chapman för att väcka intresse hos skolelever inför ett jubileumsår.',
-          focus: ['Grafisk formgivning', 'animation', 'kommunikation', 'målgruppsanpassning'],
+          focus: [
+            'Grafisk formgivning',
+            'animation',
+            'kommunikation',
+            'målgruppsanpassning',
+          ],
         },
         {
           company: 'Gagnat',
@@ -308,7 +388,12 @@ export const content = {
           period: 'Februari 2021 - Mars 2021',
           description:
             'Jag arbetade i team med att producera en enminutsvideo som presenterade företagets verksamhet för nya klienter.',
-          focus: ['Motion design', 'video', 'teamarbete', 'visuell kommunikation'],
+          focus: [
+            'Motion design',
+            'video',
+            'teamarbete',
+            'visuell kommunikation',
+          ],
         },
       ] satisfies Experience[],
     },
@@ -348,7 +433,13 @@ export const content = {
           title: 'Lokal AI-station',
           description:
             'Mitt hemmalabb för lokala modeller, agenter och små automationer. Det är ett praktiskt sätt att testa Linux, Docker och AI med kontroll över miljön.',
-          technologies: ['Linux', 'Docker', 'Ollama', 'Lokala modeller', 'Automation'],
+          technologies: [
+            'Linux',
+            'Docker',
+            'Ollama',
+            'Lokala modeller',
+            'Automation',
+          ],
         },
         {
           title: 'Interaktiv karriärvärld',
@@ -366,7 +457,14 @@ export const content = {
         'Fokus ligger på praktisk nytta, kontroll och att inte automatisera bort hjärnan ur processen.',
       ],
       technologiesLabel: 'Tekniker i labbet',
-      technologies: ['Linux', 'Docker', 'Ollama', 'Lokala språkmodeller', 'AI-agenter', 'Automation'],
+      technologies: [
+        'Linux',
+        'Docker',
+        'Ollama',
+        'Lokala språkmodeller',
+        'AI-agenter',
+        'Automation',
+      ],
       modules: [],
       sceneLabel: '3D-visualisering av Hugos lokala AI-station',
       loadingLabel: 'Laddar AI-station',
@@ -395,48 +493,49 @@ export const content = {
       ],
       keyPointsLabel: 'HSAB fokusområden',
       keyPoints: [],
-      sceneLabel: 'Sanerad portfolioförhandsvisning av HSAB:s Phaser-baserade agentkontor.',
+      sceneLabel:
+        'Sanerad portfolioförhandsvisning av HSAB:s Phaser-baserade agentkontor.',
       loadingLabel: 'Laddar HSAB',
       fallbackLabel: 'Statisk förhandsvisning av HSAB:s agentkontor',
     } satisfies HsabSection,
     sayHi: {
       kicker: 'Nyfiken?',
-      title: 'Säg hej till mig',
+      title: 'Tänd lampan och säg hej',
       description: '',
-      curiosity: 'Nyfiken?',
-      buttonLabel: 'Klicka på mig',
+      curiosity: 'Ett litet portfolio-hej som faktiskt når fram till mig.',
+      buttonLabel: 'Klicka på lampan och säg hej',
       loadingLabel: 'Skickar...',
-      cooldownLabel: 'Någon har precis sagt hej',
-      cooldownHint: 'Försök igen om en liten stund.',
+      cooldownLabel: 'Lampan vilar lite',
+      cooldownHint: 'Lampan behöver vila lite innan nästa hej.',
       resetLabel: 'Försök igen',
-      panelTitle: 'Kontroller för Say hi',
+      panelTitle: 'Kontroller för att säga hej',
       comingSoon:
-        'Funktionen är avstängd i den här miljön och kan aktiveras med VITE_SAY_HI_ENABLED.',
+        'Lampan är avstängd i den här miljön, men den går att aktivera med VITE_SAY_HI_ENABLED.',
       canvasLabel: 'Interaktiv 3D-lampa.',
       fallback: '3D-lampan laddas.',
       successDialog: {
         title: 'Du har sagt hej till mig 👋',
-        body: 'En av mina lampor hemma har precis ändrat färg till rött.',
+        body: 'Tack! Nu plingade det till hos mig.',
         localBody:
-          'Lokalt testläge: signalen simulerades eftersom Cloudflare Worker inte körs i den här Vite-sessionen.',
+          'Lokalt testläge: hälsningen simulerades eftersom Cloudflare Worker inte körs i den här Vite-sessionen.',
         privacy:
-          'Jag vet inte vem du är. Jag får inte ditt namn, din e-postadress eller någon profilinformation. Jag ser bara att någon har skickat ett hej.',
+          'Jag vet inte vem du är. Jag får inte ditt namn, din e-postadress eller någon profilinformation. Jag ser bara att någon klickade på lampan.',
         technicalPrivacy:
           'Teknisk information kan behandlas tillfälligt för att skydda funktionen mot spam och missbruk, men den används inte för att identifiera dig.',
         closeLabel: 'Stäng',
       },
       errorDialog: {
         title: 'Det gick inte den här gången',
-        body: 'Signalen kunde inte skickas till mitt smarta hem just nu. Försök gärna igen senare.',
+        body: 'Det gick inte att skicka just nu. Lampan är lite blyg.',
         closeLabel: 'Stäng',
       },
       statuses: {
         idle: '',
-        sending: 'Skickar signal till Hugos smarta hem...',
-        success: 'Signalen skickades till mitt smarta hem.',
-        cooldown: 'Försök igen om en liten stund.',
-        unavailable: 'Signalen kunde inte skickas just nu.',
-        error: 'Signalen kunde inte skickas just nu.',
+        sending: 'Skickar ett hej...',
+        success: 'Tack! Nu plingade det till hos mig.',
+        cooldown: 'Lampan behöver vila lite innan nästa hej.',
+        unavailable: 'Det gick inte att skicka just nu. Lampan är lite blyg.',
+        error: 'Det gick inte att skicka just nu. Lampan är lite blyg.',
       },
     },
     builtWith: {
@@ -447,10 +546,22 @@ export const content = {
       ],
       sections: [
         { title: 'Frontend', items: ['React', 'TypeScript', 'SCSS'] },
-        { title: 'Interactive layer', items: ['Three.js', 'sensor nodes', 'data pulses'] },
-        { title: 'Backend mindset', items: ['.NET', 'API-tänk', 'systemstruktur'] },
-        { title: 'Design', items: ['Nordic Forest Tech', 'motion design', 'tillgänglighet'] },
-        { title: 'Performance', items: ['Responsive design', 'reduced motion', 'optimized scene'] },
+        {
+          title: 'Interactive layer',
+          items: ['Three.js', 'sensor nodes', 'data pulses'],
+        },
+        {
+          title: 'Backend mindset',
+          items: ['.NET', 'API-tänk', 'systemstruktur'],
+        },
+        {
+          title: 'Design',
+          items: ['Nordic Forest Tech', 'motion design', 'tillgänglighet'],
+        },
+        {
+          title: 'Performance',
+          items: ['Responsive design', 'reduced motion', 'optimized scene'],
+        },
       ] satisfies BuiltWithSection[],
     },
     contact: {
@@ -528,9 +639,11 @@ export const content = {
           external: true,
         },
       ] satisfies HeroAction[],
-      availability: 'Open to roles in web development, software development and backend.',
+      availability:
+        'Open to roles in web development, software development and backend.',
       stack: '.NET / C# / React / Automation',
-      sceneLabel: 'Interactive career map with Nordic forest, IoT and software development',
+      sceneLabel:
+        'Interactive career map with Nordic forest, IoT and software development',
       fallbackLabel: 'Static career map with forest, IoT and experience points',
     },
     about: {
@@ -547,25 +660,56 @@ export const content = {
         'I am looking for roles in web development and software development where I can work with modern technologies, long-term solutions and teams that value collaboration, quality and learning.',
         'My main focus is .NET, backend, web applications and software development, but I also enjoy working where automation, testing, frontend and business-focused problem solving meet.',
       ],
-      highlights: ['.NET', 'Backend', 'Web development', 'Automation', 'Testing', 'IoT'],
+      highlights: [
+        '.NET',
+        'Backend',
+        'Web development',
+        'Automation',
+        'Testing',
+        'IoT',
+      ],
     },
     skills: {
       kicker: 'Skills',
       title: 'Technical areas',
       coreFocusLabel: 'Core focus',
-      coreFocus: ['.NET', 'C#', 'React', 'TypeScript', 'SQL', 'Automation', 'IoT', 'AI', 'Linux'],
+      coreFocus: [
+        '.NET',
+        'C#',
+        'React',
+        'TypeScript',
+        'SQL',
+        'Automation',
+        'IoT',
+        'AI',
+        'Linux',
+      ],
       items: [
         {
           title: 'Backend',
           description:
             'I have mainly worked with .NET and C#, and I also have experience with Java and Kotlin. I enjoy building clear, stable and maintainable backend solutions focused on real needs.',
-          tags: ['C#', '.NET', 'ASP.NET Core', 'Entity Framework Core', 'Java', 'Kotlin'],
+          tags: [
+            'C#',
+            '.NET',
+            'ASP.NET Core',
+            'Entity Framework Core',
+            'Java',
+            'Kotlin',
+          ],
         },
         {
           title: 'Frontend',
           description:
             'I enjoy building modern interfaces with React, TypeScript and well-structured CSS. My design background makes me value clear user flows, solid structure and thoughtful visual details.',
-          tags: ['React', 'TypeScript', 'JavaScript', 'HTML', 'CSS/SCSS', 'Blazor'],
+          tags: [
+            'React',
+            'TypeScript',
+            'JavaScript',
+            'HTML',
+            'CSS/SCSS',
+            'Blazor',
+          ],
         },
         {
           title: 'Databases',
@@ -589,7 +733,14 @@ export const content = {
           title: 'Automation & Quality',
           description:
             'Automation and quality have been important parts of my developer journey. I have built automated flows, worked with test automation and improved processes through programming.',
-          tags: ['RPA', 'PowerShell', 'test automation', 'quality assurance', 'GUI tools', 'process improvement'],
+          tags: [
+            'RPA',
+            'PowerShell',
+            'test automation',
+            'quality assurance',
+            'GUI tools',
+            'process improvement',
+          ],
         },
         {
           title: 'CMS & Ways of Working',
@@ -601,15 +752,21 @@ export const content = {
           title: 'AI & Linux',
           description:
             'I explore local AI environments on Linux with a focus on models, agents, Docker and practical automations where control and human approval stay central.',
-          tags: ['Linux', 'Docker', 'Ollama', 'local language models', 'AI agents', 'automation'],
+          tags: [
+            'Linux',
+            'Docker',
+            'Ollama',
+            'local language models',
+            'AI agents',
+            'automation',
+          ],
         },
       ] satisfies Skill[],
     },
     systemThinking: {
       kicker: 'System thinking',
       title: 'System thinking in practice',
-      body:
-        'I enjoy understanding how things connect: people, processes, data, systems and user flows. My experience from automation, IoT, testing and business-oriented development helps me think across the full chain, from needs and analysis to implementation, quality and long-term maintainability.',
+      body: 'I enjoy understanding how things connect: people, processes, data, systems and user flows. My experience from automation, IoT, testing and business-oriented development helps me think across the full chain, from needs and analysis to implementation, quality and long-term maintainability.',
       cards: [
         {
           title: 'Understand the need',
@@ -638,7 +795,16 @@ export const content = {
           period: 'March 2026 - May 2026',
           description:
             "At Dasa Control System, I work with development and maintenance of the company's products and IoT services, with a focus on backend in .NET and some frontend. The role involves the full development process, from analysis and implementation to testing and improving existing systems. I also contribute to improvements in architecture, ways of working and technical solutions.",
-          focus: ['.NET', 'backend', 'IoT', 'frontend', 'software development', 'architecture', 'testing', 'improvement work'],
+          focus: [
+            '.NET',
+            'backend',
+            'IoT',
+            'frontend',
+            'software development',
+            'architecture',
+            'testing',
+            'improvement work',
+          ],
           impact: [
             'Developed and maintained IoT services with .NET.',
             'Contributed to improvements in systems, architecture and ways of working.',
@@ -650,7 +816,14 @@ export const content = {
           period: 'May 2025 - February 2026',
           description:
             'At Södra, I worked on automating and improving business processes through RPA and programming. The role combined technical development with close collaboration with the business. I identified needs, built solutions and quality-assured automated flows with a focus on creating value, reducing manual work and improving processes.',
-          focus: ['.NET', 'PowerShell', 'RPA', 'automation', 'process improvement', 'business-focused development'],
+          focus: [
+            '.NET',
+            'PowerShell',
+            'RPA',
+            'automation',
+            'process improvement',
+            'business-focused development',
+          ],
           impact: [
             'Automated business processes with .NET, PowerShell and RPA.',
             'Worked close to the business to reduce manual work and improve flows.',
@@ -662,7 +835,14 @@ export const content = {
           period: 'November 2024 - May 2025',
           description:
             'At Visma, I worked with automated tests for the HR-plus payroll system. I built test automation in C# and .NET, worked in a CI environment and quality-assured functionality and performance. I also developed a GUI for test automation tools, which gave me experience combining technical quality assurance with user-friendly tooling.',
-          focus: ['C#', '.NET', 'test automation', 'CI/CD', 'quality assurance', 'GUI development'],
+          focus: [
+            'C#',
+            '.NET',
+            'test automation',
+            'CI/CD',
+            'quality assurance',
+            'GUI development',
+          ],
           impact: [
             'Built test automation in C# and .NET.',
             'Developed a GUI for test automation tooling.',
@@ -674,7 +854,13 @@ export const content = {
           period: 'Summers: 2019-2022',
           description:
             'As Deputy Cinema Manager, I was responsible for invoicing, scheduling, premieres, service and work environment. The role gave me experience with responsibility, planning and leadership in a fast-paced environment.',
-          focus: ['Leadership', 'planning', 'service', 'responsibility', 'work environment'],
+          focus: [
+            'Leadership',
+            'planning',
+            'service',
+            'responsibility',
+            'work environment',
+          ],
           impact: [
             'Handled planning, work environment and operational responsibility.',
           ],
@@ -685,7 +871,14 @@ export const content = {
           period: 'October 2012 - November 2024',
           description:
             'During my time at Filmstaden, I worked with staff responsibility, guest experience, recruitment, training, operations and service quality. This experience gave me a strong foundation in communication, responsibility and collaboration. I bring those experiences into my developer role, especially in teamwork, user focus and understanding business needs.',
-          focus: ['Team leadership', 'service', 'recruitment', 'training', 'operations', 'guest experience'],
+          focus: [
+            'Team leadership',
+            'service',
+            'recruitment',
+            'training',
+            'operations',
+            'guest experience',
+          ],
           impact: [
             'Built experience in team leadership, communication and user focus.',
           ],
@@ -696,7 +889,12 @@ export const content = {
           period: 'March 2021 - June 2021',
           description:
             'I created engaging GIFs of Fredric Henric af Chapman to spark interest among school students ahead of an anniversary year.',
-          focus: ['Graphic design', 'animation', 'communication', 'audience adaptation'],
+          focus: [
+            'Graphic design',
+            'animation',
+            'communication',
+            'audience adaptation',
+          ],
         },
         {
           company: 'Gagnat',
@@ -744,7 +942,13 @@ export const content = {
           title: 'Home AI Station',
           description:
             'My home lab for local models, agents and small automations. It is a practical way to explore Linux, Docker and AI while keeping control over the environment.',
-          technologies: ['Linux', 'Docker', 'Ollama', 'Local models', 'Automation'],
+          technologies: [
+            'Linux',
+            'Docker',
+            'Ollama',
+            'Local models',
+            'Automation',
+          ],
         },
         {
           title: 'Interactive career world',
@@ -762,7 +966,14 @@ export const content = {
         'The focus is practical usefulness, control and not automating the human out of the process.',
       ],
       technologiesLabel: 'Technologies in the lab',
-      technologies: ['Linux', 'Docker', 'Ollama', 'Local language models', 'AI agents', 'Automation'],
+      technologies: [
+        'Linux',
+        'Docker',
+        'Ollama',
+        'Local language models',
+        'AI agents',
+        'Automation',
+      ],
       modules: [],
       sceneLabel: "3D visualization of Hugo's local AI station",
       loadingLabel: 'Loading AI station',
@@ -791,48 +1002,50 @@ export const content = {
       ],
       keyPointsLabel: 'HSAB focus areas',
       keyPoints: [],
-      sceneLabel: 'Sanitized portfolio preview of the HSAB Phaser-based agent office.',
+      sceneLabel:
+        'Sanitized portfolio preview of the HSAB Phaser-based agent office.',
       loadingLabel: 'Loading HSAB',
       fallbackLabel: 'Static preview of the HSAB agent office',
     } satisfies HsabSection,
     sayHi: {
       kicker: 'Curious?',
-      title: 'Say hi to me',
+      title: 'Click the lamp and say hi',
       description: '',
-      curiosity: 'Curious?',
-      buttonLabel: 'Click me',
+      curiosity: 'A small portfolio hello that actually reaches me.',
+      buttonLabel: 'Click the lamp and say hi',
       loadingLabel: 'Sending...',
-      cooldownLabel: 'Someone just said hi',
-      cooldownHint: 'Try again in a moment.',
+      cooldownLabel: 'The lamp is resting',
+      cooldownHint: 'The lamp needs a short break before the next hello.',
       resetLabel: 'Try again',
       panelTitle: 'Say hi controls',
       comingSoon:
-        'This feature is disabled in this environment and can be enabled with VITE_SAY_HI_ENABLED.',
+        'The lamp is disabled in this environment, but it can be enabled with VITE_SAY_HI_ENABLED.',
       canvasLabel: 'Interactive 3D lamp.',
       fallback: 'The 3D lamp is loading.',
       successDialog: {
         title: 'You just said hi to me 👋',
-        body: 'One of my lights at home just changed color to red.',
+        body: 'Thanks! I just got your hello.',
         localBody:
-          'Local test mode: the signal was simulated because the Cloudflare Worker is not running in this Vite session.',
+          'Local test mode: the hello was simulated because the Cloudflare Worker is not running in this Vite session.',
         privacy:
-          'I do not know who you are. I do not receive your name, email address, or profile information. I only know that someone sent a hello.',
+          'I do not know who you are. I do not receive your name, email address or profile information. I only know that someone clicked the lamp.',
         technicalPrivacy:
           'Technical request data may be processed temporarily to protect the feature from spam and abuse, but it is not used to identify you.',
         closeLabel: 'Close',
       },
       errorDialog: {
         title: 'It did not work this time',
-        body: 'The signal could not reach my smart home right now. Please try again later.',
+        body: 'Could not send it right now. The lamp is being a bit shy.',
         closeLabel: 'Close',
       },
       statuses: {
         idle: '',
-        sending: "Sending a signal to Hugo's smart home...",
-        success: 'The signal was sent to my smart home.',
-        cooldown: 'Try again in a moment.',
-        unavailable: 'The signal could not be sent right now.',
-        error: 'The signal could not be sent right now.',
+        sending: 'Sending a hello...',
+        success: 'Thanks! I just got your hello.',
+        cooldown: 'The lamp needs a short break before the next hello.',
+        unavailable:
+          'Could not send it right now. The lamp is being a bit shy.',
+        error: 'Could not send it right now. The lamp is being a bit shy.',
       },
     },
     builtWith: {
@@ -843,10 +1056,22 @@ export const content = {
       ],
       sections: [
         { title: 'Frontend', items: ['React', 'TypeScript', 'SCSS'] },
-        { title: 'Interactive layer', items: ['Three.js', 'sensor nodes', 'data pulses'] },
-        { title: 'Backend mindset', items: ['.NET', 'API thinking', 'system structure'] },
-        { title: 'Design', items: ['Nordic Forest Tech', 'motion design', 'accessibility'] },
-        { title: 'Performance', items: ['Responsive design', 'reduced motion', 'optimized scene'] },
+        {
+          title: 'Interactive layer',
+          items: ['Three.js', 'sensor nodes', 'data pulses'],
+        },
+        {
+          title: 'Backend mindset',
+          items: ['.NET', 'API thinking', 'system structure'],
+        },
+        {
+          title: 'Design',
+          items: ['Nordic Forest Tech', 'motion design', 'accessibility'],
+        },
+        {
+          title: 'Performance',
+          items: ['Responsive design', 'reduced motion', 'optimized scene'],
+        },
       ] satisfies BuiltWithSection[],
     },
     contact: {

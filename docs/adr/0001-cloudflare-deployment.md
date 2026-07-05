@@ -6,11 +6,11 @@ The portfolio needs static hosting, security headers, a small backend endpoint, 
 
 ## Decision
 
-Use Cloudflare Pages/Workers with static assets from Vite and a Worker route for `/api/say-hi`.
+Use GitHub Pages for the static Vite build and a Cloudflare Worker route for `/api/v1/greetings`. The older `/api/say-hi` route remains as a compatibility alias.
 
 ## Alternatives
 
-- Static-only hosting: simpler, but cannot safely contact Home Assistant.
+- Static-only hosting: simpler, but cannot safely contact Telegram or Home Assistant.
 - Traditional server: flexible, but more operational overhead for a small portfolio.
 
 ## Consequences

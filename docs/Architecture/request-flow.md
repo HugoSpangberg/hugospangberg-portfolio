@@ -24,15 +24,14 @@ If HSCms is unavailable, HSApi serves the latest valid snapshot. If no snapshot 
 ```mermaid
 sequenceDiagram
   participant C as HSClient
-  participant A as HSApi
+  participant W as Cloudflare Worker
   participant T as Turnstile
-  participant H as Home Assistant
-  participant D as API DB
+  participant G as Telegram Bot API
+  participant D as Cooldown Durable Object
 
-  C->>A: POST /api/v1/greetings
-  A->>D: Check duplicate and cooldown
-  A->>T: Verify token
-  A->>H: Send protected command
-  A->>D: Store minimal outcome
-  A-->>C: accepted, cooldown, unavailable or error
+  C->>W: POST /api/v1/greetings
+  W->>T: Verify token
+  W->>D: Reserve global cooldown
+  W->>G: Send concise lamp notification
+  W-->>C: accepted, cooldown, unavailable or error
 ```

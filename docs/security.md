@@ -3,12 +3,15 @@
 Security boundaries:
 
 - HSClient contains only public configuration.
-- HSApi owns Turnstile verification, greeting cooldown, idempotency and Home Assistant calls.
+- The Say Hi Worker owns Turnstile verification, greeting cooldown, rate limiting and provider calls.
+- HSApi owns portfolio API/admin behavior when it is hosted.
 - HSCms owns editorial backoffice and published content.
 
 Do not put these in HSClient or HSCms content:
 
 - Turnstile secret
+- Telegram bot token
+- Telegram chat ID
 - Home Assistant URL
 - Home Assistant tokens
 - Cloudflare Access service tokens
