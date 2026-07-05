@@ -1,10 +1,13 @@
 # Production Deployment
 
-Recommended hostnames:
+Current public frontend:
 
-- `www.example.com` -> HSClient static hosting/CDN
-- `api.example.com` -> HSApi container or managed .NET hosting
-- `cms.example.com` -> HSCms persistent .NET hosting
+- `https://hugospangberg.github.io/hugospangberg-portfolio/` -> GitHub Pages static HSClient build
+
+Future hosted service hostnames:
+
+- `api.<production-domain>` -> HSApi container or managed .NET hosting
+- `cms.<production-domain>` -> HSCms persistent .NET hosting
 
 Production requirements:
 

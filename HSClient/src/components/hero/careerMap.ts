@@ -11,7 +11,7 @@ export type CareerMapItem = {
         kind: 'image';
         src: string;
         alt: string;
-        caption: string;
+        caption?: string;
       }
     | {
         kind: 'educationLogos';
@@ -33,9 +33,8 @@ export const careerMapItems = [
     position: [-3.18, -0.4, 1.72],
     hoverVisual: {
       kind: 'image',
-      src: '/images/career-world/hover/sodra-reference.jpg',
-      alt: 'Södra headquarters reference',
-      caption: 'Södra reference',
+      src: 'images/career-world/hover/sodra-reference.jpg',
+      alt: 'Södra headquarters building',
     },
   },
   {
@@ -48,9 +47,8 @@ export const careerMapItems = [
     position: [3.18, -0.4, 1.86],
     hoverVisual: {
       kind: 'image',
-      src: '/images/career-world/hover/rottne-harvester.svg',
+      src: 'images/career-world/hover/rottne-harvester.svg',
       alt: 'Rottne forestry harvester illustration',
-      caption: 'Rottne skördare',
     },
   },
   {
@@ -63,9 +61,8 @@ export const careerMapItems = [
     position: [-3.22, -0.4, -1.86],
     hoverVisual: {
       kind: 'image',
-      src: '/images/career-world/hover/visma-reference.jpg',
-      alt: 'Visma office reference',
-      caption: 'Visma reference',
+      src: 'images/career-world/hover/visma-reference.jpg',
+      alt: 'Visma office building',
     },
   },
   {
@@ -78,9 +75,8 @@ export const careerMapItems = [
     position: [0.02, -0.4, -1.96],
     hoverVisual: {
       kind: 'image',
-      src: '/images/career-world/hover/filmstaden-reference.jpg',
-      alt: 'Filmstaden cinema reference',
-      caption: 'Filmstaden reference',
+      src: 'images/career-world/hover/filmstaden-reference.jpg',
+      alt: 'Filmstaden cinema building',
     },
   },
   {

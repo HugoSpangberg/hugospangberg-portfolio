@@ -1,4 +1,5 @@
 import SectionHeading from './SectionHeading';
+import { publicAssetUrl } from '../utils/publicAssetUrl';
 
 type ContactProps = {
   content: {
@@ -12,9 +13,18 @@ type ContactProps = {
       label: string;
       value: string;
       href?: string;
+      download?: string;
     }[];
   };
 };
+
+function getContactHref(href: string | undefined, download: string | undefined) {
+  if (!href) {
+    return undefined;
+  }
+
+  return download ? publicAssetUrl(href) : href;
+}
 
 function Contact({ content }: ContactProps) {
   return (
@@ -53,9 +63,11 @@ function Contact({ content }: ContactProps) {
                 <span>{link.label}</span>
                 {link.href ? (
                   <a
-                    href={link.href}
+                    href={getContactHref(link.href, link.download)}
                     target={link.href.startsWith('http') ? '_blank' : undefined}
                     rel={link.href.startsWith('http') ? 'noreferrer' : undefined}
+                    download={link.download}
+                    aria-label={link.download ? `${link.value} PDF` : undefined}
                   >
                     {link.value}
                   </a>

@@ -12,6 +12,7 @@ import { loadCareerWorldAssets } from '../../features/career-world';
 import WorldFallback from './WorldFallback';
 import type { Locale } from '../../data/content';
 import type { CareerWorldLocation } from './careerLocations';
+import { publicAssetUrl } from '../../utils/publicAssetUrl';
 
 type CareerWorldSceneProps = {
   label: string;
@@ -104,8 +105,12 @@ function HoverVisual({ item }: { item?: CareerMapItem }) {
 
   return (
     <figure className="hero-demo__tooltip-media world-tooltip__media">
-      <img src={item.hoverVisual.src} alt={item.hoverVisual.alt} loading="lazy" decoding="async" />
-      <figcaption>{item.hoverVisual.caption}</figcaption>
+      <img
+        src={publicAssetUrl(item.hoverVisual.src)}
+        alt={item.hoverVisual.alt}
+        loading="lazy"
+        decoding="async"
+      />
     </figure>
   );
 }

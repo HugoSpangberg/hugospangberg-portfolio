@@ -3,6 +3,7 @@ export type HeroAction = {
   href: string;
   variant: 'primary' | 'ghost';
   external?: boolean;
+  download?: string;
 };
 
 export type SensorReading = {

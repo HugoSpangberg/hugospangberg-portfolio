@@ -1,4 +1,5 @@
 import type { HeroContentData } from './hero/types';
+import { publicAssetUrl } from '../utils/publicAssetUrl';
 
 type ProfileHeroSectionProps = {
   content: HeroContentData;
@@ -19,9 +20,11 @@ function ProfileHeroSection({ content }: ProfileHeroSectionProps) {
               <a
                 key={`${action.label}-${action.href}`}
                 className={`button button--${action.variant}`}
-                href={action.href}
+                href={action.download ? publicAssetUrl(action.href) : action.href}
                 target={action.external ? '_blank' : undefined}
                 rel={action.external ? 'noreferrer' : undefined}
+                download={action.download}
+                aria-label={action.download ? `${action.label} PDF` : undefined}
               >
                 {action.label}
               </a>

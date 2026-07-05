@@ -5,6 +5,7 @@ import { updateDataPulses } from './DataPulse';
 import HeroFallback from './HeroFallback';
 import { SceneBackdrop } from './SceneBackdrop';
 import { careerMapItems, getCareerMapItem, type CareerMapItem } from './careerMap';
+import { publicAssetUrl } from '../../utils/publicAssetUrl';
 
 type HeroSceneProps = {
   label: string;
@@ -65,8 +66,12 @@ function HoverVisual({ item }: { item?: CareerMapItem }) {
 
   return (
     <figure className="hero-demo__tooltip-media">
-      <img src={item.hoverVisual.src} alt={item.hoverVisual.alt} loading="lazy" decoding="async" />
-      <figcaption>{item.hoverVisual.caption}</figcaption>
+      <img
+        src={publicAssetUrl(item.hoverVisual.src)}
+        alt={item.hoverVisual.alt}
+        loading="lazy"
+        decoding="async"
+      />
     </figure>
   );
 }
