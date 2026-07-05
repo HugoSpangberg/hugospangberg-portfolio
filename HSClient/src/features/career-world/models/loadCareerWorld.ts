@@ -27,7 +27,7 @@ function setEmissive(material: Three.Material, color: number, intensity: number)
   }
 
   candidate.emissive.setHex(color);
-  candidate.emissiveIntensity = Math.max(candidate.emissiveIntensity ?? 0, intensity);
+  candidate.emissiveIntensity = intensity;
   material.needsUpdate = true;
 }
 
@@ -57,13 +57,13 @@ function polishImportedMaterials(root: Three.Object3D, landmarkId: string) {
           (name.includes('window') && hashString(`${landmarkId}:${object.name}`) % 7 === 0);
 
         if (shouldWarmWindow) {
-          setEmissive(material, 0xffc27a, landmarkId === 'filmstaden' ? 0.34 : 0.22);
+          setEmissive(material, 0xffc27a, landmarkId === 'filmstaden' ? 0.18 : 0.12);
         } else {
-          setEmissive(material, 0x214d56, 0.035);
+          setEmissive(material, 0x214d56, 0.022);
         }
 
         if (landmarkId === 'sodra') {
-          setEmissive(material, 0x4f9c8e, 0.04);
+          setEmissive(material, 0x4f9c8e, 0.025);
         }
       }
 
@@ -74,11 +74,11 @@ function polishImportedMaterials(root: Three.Object3D, landmarkId: string) {
           name.includes('filmstaden_red') ||
           name.includes('neon'))
       ) {
-        setEmissive(material, 0xff6a42, name.includes('sign') ? 1.15 : 0.58);
+        setEmissive(material, 0xff6a42, name.includes('sign') ? 0.42 : 0.24);
       }
 
       if (landmarkId === 'education' && (name.includes('door') || name.includes('entrance'))) {
-        setEmissive(material, 0xffcf86, 0.28);
+        setEmissive(material, 0xffcf86, 0.14);
       }
     });
   });
