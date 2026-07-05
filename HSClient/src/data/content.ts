@@ -334,27 +334,27 @@ export const content = {
     },
     labs: {
       kicker: 'Projekt',
-      title: 'Utvalda projekt',
+      title: 'Projekt som visar hur jag jobbar',
       description:
-        'Projekt som visar hur jag kombinerar frontend, backend-tänk, 3D, innehållsstruktur och praktisk systemutveckling. Jag visar bara delar som är relevanta och färdiga nog för en offentlig portfolio.',
+        'Här visar jag projekt som säger mer om hur jag tänker och bygger än en vanlig lista med tekniker. Det handlar om AI, automation, 3D på webben och att göra idéer begripliga.',
       items: [
+        {
+          title: 'HSAB',
+          description:
+            'Ett privat AI-agentkontor där agenter får roller, status och rörelse i en Phaser-baserad arbetsmiljö. Fokus ligger på att göra AI-flöden lättare att förstå.',
+          technologies: ['React', 'Vite', 'Phaser', 'TypeScript', 'AI-agenter'],
+        },
+        {
+          title: 'Lokal AI-station',
+          description:
+            'Mitt hemmalabb för lokala modeller, agenter och små automationer. Det är ett praktiskt sätt att testa Linux, Docker och AI med kontroll över miljön.',
+          technologies: ['Linux', 'Docker', 'Ollama', 'Lokala modeller', 'Automation'],
+        },
         {
           title: 'Interaktiv karriärvärld',
           description:
-            'En Three.js-baserad introduktion där Blender-exporterade modeller visualiserar arbetsliv, utbildning och teknisk riktning i en sammanhållen scen.',
+            'En 3D-visualisering av erfarenhet, utbildning och teknisk riktning. Byggd med Three.js, React och Blender-exporterade modeller för att göra portfolion mer minnesvärd.',
           technologies: ['React', 'TypeScript', 'Three.js', 'Blender', 'GLB'],
-        },
-        {
-          title: 'Portfolio BFF och CMS-grund',
-          description:
-            'En .NET-baserad backend-for-frontend och Umbraco-grund som är byggd för att kunna äga, validera och exponera portfolioinnehåll utan att låsa frontend till CMS-detaljer.',
-          technologies: ['ASP.NET Core', 'Umbraco', 'TypeScript', 'API-design'],
-        },
-        {
-          title: 'Statisk portfolio med robust fallback',
-          description:
-            'En GitHub Pages-kompatibel frontend där publikt innehåll fungerar utan driftad backend, men är förberedd för att hämta publicerat innehåll via API när infrastrukturen finns på plats.',
-          technologies: ['Vite', 'React', 'SCSS', 'GitHub Pages'],
         },
       ] satisfies Lab[],
     },
@@ -362,33 +362,12 @@ export const content = {
       kicker: 'Pågående personligt projekt',
       title: 'Lokal AI-station & personlig automation',
       description: [
-        'Jag bygger en Linux-baserad AI-miljö hemma för att köra lokala AI-modeller och agenter. Miljön används för att utforska hur lokala modeller, verktyg och automationer kan förenkla återkommande vardagsuppgifter.',
-        'Projektet kombinerar praktisk problemlösning med ett tydligt fokus på integritet, lokal kontroll och mänskligt godkännande. Målet är inte att automatisera allt, utan att skapa användbara arbetsflöden där AI fungerar som ett kontrollerat stöd.',
+        'Det här är mitt hemmalabb för lokal AI. Jag kör modeller, testar agenter och bygger små automationer som kan hjälpa till med saker jag annars hade gjort manuellt.',
+        'Fokus ligger på praktisk nytta, kontroll och att inte automatisera bort hjärnan ur processen.',
       ],
       technologiesLabel: 'Tekniker i labbet',
       technologies: ['Linux', 'Docker', 'Ollama', 'Lokala språkmodeller', 'AI-agenter', 'Automation'],
-      modules: [
-        {
-          title: 'Local-first',
-          description:
-            'Modeller och verktyg kan köras lokalt på Linux-baserad hårdvara, med fokus på kontroll över miljö och data.',
-        },
-        {
-          title: 'Agentflöden',
-          description:
-            'Agenter används för att samordna avgränsade verktyg och återkommande uppgifter där mänskligt godkännande fortfarande är centralt.',
-        },
-        {
-          title: 'Automation',
-          description:
-            'Miljön används för att minska repetitivt manuellt arbete och utforska praktiska arbetsflöden som går att lita på.',
-        },
-        {
-          title: 'Integritet och kontroll',
-          description:
-            'Lokal bearbetning, tydliga gränser och aktivt godkännande är viktiga principer i hur systemet utformas.',
-        },
-      ],
+      modules: [],
       sceneLabel: '3D-visualisering av Hugos lokala AI-station',
       loadingLabel: 'Laddar AI-station',
       fallbackLabel: 'Statisk visualisering av lokal AI-station',
@@ -397,10 +376,11 @@ export const content = {
       kicker: 'Pågående AI-projekt',
       title: 'HSAB – AI-agenter i en lokal arbetsmiljö',
       shortDescription:
-        'Ett personligt AI-projekt där flera agenter visualiseras i en digital kontorsmiljö och kan kopplas till uppgifter, status och arbetsflöden.',
+        'Mitt lilla AI-kontor där flera agenter visualiseras i en digital arbetsmiljö.',
       description: [
-        'HSAB är ett pågående projekt där jag utforskar hur AI-agenter kan organiseras i en visuell arbetsmiljö. Projektet använder en Phaser-baserad kontorsscen där agenter kan representera olika roller, röra sig i miljön och reagera på uppgifter eller mockad arbetsstatus.',
-        'Syftet är att undersöka hur en lokal AI-agentmiljö kan bli mer begriplig, kontrollerbar och praktiskt användbar. I stället för att bara visa en chattbot fokuserar projektet på hur flera specialiserade agenter kan visualiseras, samordnas och kopplas till tydliga arbetsflöden.',
+        'HSAB är mitt lilla AI-kontor. Tanken är enkel: om flera AI-agenter ska hjälpa till med saker behöver man också kunna förstå vad de gör, vem som gör vad och när människan ska kliva in.',
+        'I projektet visualiserar jag agenter i en digital kontorsmiljö. De har roller, status och rörelse i scenen, vilket gör ett ganska abstrakt AI-flöde lättare att förstå.',
+        'Portfolio-versionen körs i mock/offline-läge, så den visar idén utan att koppla upp mot privat GitHub-data.',
       ],
       technologiesLabel: 'Tekniker i HSAB',
       technologies: [
@@ -414,13 +394,7 @@ export const content = {
         'Automation',
       ],
       keyPointsLabel: 'HSAB fokusområden',
-      keyPoints: [
-        'Visuell kontorsmiljö byggd med React, Vite och Phaser.',
-        'Agenter med roller, status och rörelse i scenen.',
-        'Mock/offline-läge för säker portfolio-visning.',
-        'Backend-stöd för GitHub Issues finns i projektet men är inte aktiverat publikt.',
-        'Fokus på tydliga arbetsflöden, lokal kontroll och praktisk automation.',
-      ],
+      keyPoints: [],
       sceneLabel: 'Sanerad portfolioförhandsvisning av HSAB:s Phaser-baserade agentkontor.',
       loadingLabel: 'Laddar HSAB',
       fallbackLabel: 'Statisk förhandsvisning av HSAB:s agentkontor',
@@ -756,27 +730,27 @@ export const content = {
     },
     labs: {
       kicker: 'Projects',
-      title: 'Selected projects',
+      title: 'Projects that show how I work',
       description:
-        'Projects that show how I combine frontend, backend thinking, 3D, content structure and practical system development. I only show work that is relevant and ready enough for a public portfolio.',
+        'These projects say more about how I think and build than a normal list of technologies. They are about AI, automation, 3D on the web and making ideas easier to understand.',
       items: [
+        {
+          title: 'HSAB',
+          description:
+            'A private AI-agent office where agents have roles, status and movement inside a Phaser-based workspace. The focus is making AI workflows easier to understand.',
+          technologies: ['React', 'Vite', 'Phaser', 'TypeScript', 'AI agents'],
+        },
+        {
+          title: 'Home AI Station',
+          description:
+            'My home lab for local models, agents and small automations. It is a practical way to explore Linux, Docker and AI while keeping control over the environment.',
+          technologies: ['Linux', 'Docker', 'Ollama', 'Local models', 'Automation'],
+        },
         {
           title: 'Interactive career world',
           description:
-            'A Three.js-based introduction where Blender-exported models visualize work experience, education and technical direction in one coherent scene.',
+            'A 3D visualization of experience, education and technical direction. Built with Three.js, React and Blender-exported models to make the portfolio more memorable.',
           technologies: ['React', 'TypeScript', 'Three.js', 'Blender', 'GLB'],
-        },
-        {
-          title: 'Portfolio BFF and CMS foundation',
-          description:
-            'A .NET backend-for-frontend and Umbraco foundation designed to own, validate and expose portfolio content without tying the frontend to CMS-specific details.',
-          technologies: ['ASP.NET Core', 'Umbraco', 'TypeScript', 'API design'],
-        },
-        {
-          title: 'Static portfolio with resilient fallback',
-          description:
-            'A GitHub Pages-compatible frontend where public content works without a hosted backend, while remaining ready to fetch published content through the API when infrastructure is available.',
-          technologies: ['Vite', 'React', 'SCSS', 'GitHub Pages'],
         },
       ] satisfies Lab[],
     },
@@ -784,33 +758,12 @@ export const content = {
       kicker: 'Ongoing personal project',
       title: 'Home AI Station & Personal Automation',
       description: [
-        'I am building a Linux-based home AI environment for running local AI models and agents. The environment is used to explore how local models, tools and automations can simplify recurring everyday tasks.',
-        'The project combines practical problem solving with a strong focus on privacy, local control and human approval. The goal is not to automate everything, but to create useful workflows where AI acts as a controlled assistant.',
+        'This is my home lab for local AI. I run models, test agents and build small automations that can help with things I would otherwise do manually.',
+        'The focus is practical usefulness, control and not automating the human out of the process.',
       ],
       technologiesLabel: 'Technologies in the lab',
       technologies: ['Linux', 'Docker', 'Ollama', 'Local language models', 'AI agents', 'Automation'],
-      modules: [
-        {
-          title: 'Local-first',
-          description:
-            'Models and tools can run locally on Linux hardware, with a focus on control over the environment and data.',
-        },
-        {
-          title: 'Agent workflows',
-          description:
-            'Agents are used to coordinate focused tools and recurring tasks where human approval remains central.',
-        },
-        {
-          title: 'Automation',
-          description:
-            'The environment is intended to reduce repetitive manual work and explore practical workflows that can be trusted.',
-        },
-        {
-          title: 'Privacy and control',
-          description:
-            'Local processing, clear boundaries and active approval are important design principles for how the system is shaped.',
-        },
-      ],
+      modules: [],
       sceneLabel: "3D visualization of Hugo's local AI station",
       loadingLabel: 'Loading AI station',
       fallbackLabel: 'Static visualization of the local AI station',
@@ -819,10 +772,11 @@ export const content = {
       kicker: 'Ongoing AI project',
       title: 'HSAB – AI Agents in a Local Workspace',
       shortDescription:
-        'A personal AI project where multiple agents are visualized inside a digital office environment and can be connected to tasks, status and workflows.',
+        'My small AI office where multiple agents are visualized inside a digital workspace.',
       description: [
-        'HSAB is an ongoing project where I explore how AI agents can be organized inside a visual workspace. The project uses a Phaser-based office scene where agents can represent different roles, move through the environment and react to tasks or mocked work status.',
-        'The goal is to explore how a local AI-agent environment can become more understandable, controllable and practically useful. Instead of only showing a chatbot, the project focuses on how multiple specialized agents can be visualized, coordinated and connected to clear workflows.',
+        'HSAB is my small AI office. The idea is simple: if several AI agents are going to help with tasks, I also want to understand what they are doing, who is doing what and when a human should step in.',
+        'The project visualizes agents inside a digital office. They have roles, status and movement, which makes an otherwise abstract AI workflow easier to understand.',
+        'The portfolio version runs in mock/offline mode, so it shows the idea without connecting to private GitHub data.',
       ],
       technologiesLabel: 'HSAB technologies',
       technologies: [
@@ -836,13 +790,7 @@ export const content = {
         'Automation',
       ],
       keyPointsLabel: 'HSAB focus areas',
-      keyPoints: [
-        'Visual office workspace built with React, Vite and Phaser.',
-        'Agents with roles, status and movement inside the scene.',
-        'Mock/offline mode for safe portfolio display.',
-        'Backend support for GitHub Issues exists in the project but is not enabled publicly.',
-        'Focus on clear workflows, local control and practical automation.',
-      ],
+      keyPoints: [],
       sceneLabel: 'Sanitized portfolio preview of the HSAB Phaser-based agent office.',
       loadingLabel: 'Loading HSAB',
       fallbackLabel: 'Static preview of the HSAB agent office',

@@ -65,14 +65,6 @@ function LocalAiSection({ content }: LocalAiSectionProps) {
         />
       </div>
 
-      <div className="container local-ai__modules" aria-label={content.title}>
-        {content.modules.map((module) => (
-          <article className="local-ai-module" key={module.title}>
-            <h3>{module.title}</h3>
-            <p>{module.description}</p>
-          </article>
-        ))}
-      </div>
     </section>
   );
 }

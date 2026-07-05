@@ -37,7 +37,8 @@ describe('HSAB portfolio showcase', () => {
     ).toBeInTheDocument();
     expect(screen.getByText('Ongoing AI project')).toBeInTheDocument();
     expect(screen.getByText('GitHub Issues API')).toBeInTheDocument();
-    expect(screen.getByText(/not enabled publicly/i)).toBeInTheDocument();
+    expect(screen.getByText(/mock\/offline mode/i)).toBeInTheDocument();
+    expect(screen.queryByText(/visual office workspace built/i)).not.toBeInTheDocument();
   });
 
   it('does not expose a public HSAB GitHub link', () => {
