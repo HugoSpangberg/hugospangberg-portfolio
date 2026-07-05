@@ -113,27 +113,27 @@ function makeMaterials(THREE: typeof Three): Materials {
     dark: standard(THREE, 0x10251f, { roughness: 0.68 }),
     roof: standard(THREE, 0x1d433b, { roughness: 0.74 }),
     glass: standard(THREE, 0x224d48, { roughness: 0.36, metalness: 0.12 }),
-    window: standard(THREE, 0x7fdcf3, {
-      roughness: 0.34,
+    window: standard(THREE, 0x5fb4c5, {
+      roughness: 0.48,
       metalness: 0.08,
-      emissive: 0x3aa9bd,
-      emissiveIntensity: 0.52,
+      emissive: 0x1b6570,
+      emissiveIntensity: 0.18,
     }),
     cyan: standard(THREE, 0x77d8f7, {
-      roughness: 0.42,
+      roughness: 0.54,
       metalness: 0.18,
       emissive: 0x226d83,
-      emissiveIntensity: 0.58,
+      emissiveIntensity: 0.32,
     }),
     aurora: standard(THREE, 0x72f2a3, {
       roughness: 0.45,
       emissive: 0x2ca767,
-      emissiveIntensity: 0.52,
+      emissiveIntensity: 0.28,
     }),
     warm: standard(THREE, 0xf1d48d, {
       roughness: 0.48,
       emissive: 0x8d6424,
-      emissiveIntensity: 0.46,
+      emissiveIntensity: 0.22,
     }),
     violet: standard(THREE, 0xbda5ff, {
       roughness: 0.5,
@@ -144,7 +144,7 @@ function makeMaterials(THREE: typeof Three): Materials {
     line: new THREE.LineBasicMaterial({ color: 0x77d8f7, transparent: true, opacity: 0.24 }),
     dot: standard(THREE, 0x72f2a3, {
       emissive: 0x36b36e,
-      emissiveIntensity: 0.72,
+      emissiveIntensity: 0.36,
     }),
     invisible: new THREE.MeshBasicMaterial({ transparent: true, opacity: 0, depthWrite: false }),
     marker: new THREE.MeshBasicMaterial({
@@ -178,31 +178,31 @@ function makeMaterials(THREE: typeof Three): Materials {
     forestMid: new THREE.MeshBasicMaterial({ color: 0x2c6759, transparent: true, opacity: 0.38, depthWrite: false }),
     brick: standard(THREE, 0x7b3f34, { roughness: 0.88 }),
     brickDark: standard(THREE, 0x65372f, { roughness: 0.9 }),
-    stoneLight: standard(THREE, 0xb7b1a8, { roughness: 0.9 }),
-    stoneDark: standard(THREE, 0x747872, { roughness: 0.9 }),
-    whiteFacade: standard(THREE, 0xb5c2bd, { roughness: 0.86 }),
-    orangeFacade: standard(THREE, 0xa95b38, { roughness: 0.86 }),
+    stoneLight: standard(THREE, 0x9d9990, { roughness: 0.92 }),
+    stoneDark: standard(THREE, 0x686d68, { roughness: 0.92 }),
+    whiteFacade: standard(THREE, 0x90aaa2, { roughness: 0.92 }),
+    orangeFacade: standard(THREE, 0x8f4f34, { roughness: 0.9 }),
     redMarquee: standard(THREE, 0xb8322a, {
       roughness: 0.58,
       emissive: 0x4c0c0a,
       emissiveIntensity: 0.2,
     }),
     darkGlass: standard(THREE, 0x102c2b, {
-      roughness: 0.28,
-      metalness: 0.16,
+      roughness: 0.46,
+      metalness: 0.08,
       emissive: 0x092a2b,
-      emissiveIntensity: 0.16,
+      emissiveIntensity: 0.06,
     }),
     coolGlass: standard(THREE, 0x244a4c, {
-      roughness: 0.32,
-      metalness: 0.12,
-      emissive: 0x123d46,
-      emissiveIntensity: 0.2,
+      roughness: 0.5,
+      metalness: 0.08,
+      emissive: 0x0b2c32,
+      emissiveIntensity: 0.08,
     }),
     warmWindow: standard(THREE, 0xc9aa6d, {
-      roughness: 0.36,
-      emissive: 0x8b6427,
-      emissiveIntensity: 0.28,
+      roughness: 0.5,
+      emissive: 0x72511f,
+      emissiveIntensity: 0.14,
     }),
     forestMachineGreen: standard(THREE, 0x2e6a57, { roughness: 0.62, metalness: 0.08 }),
     forestMachineDark: standard(THREE, 0x121a18, { roughness: 0.54, metalness: 0.24 }),
@@ -211,12 +211,12 @@ function makeMaterials(THREE: typeof Three): Materials {
     sodraGreen: standard(THREE, 0x4ea66f, {
       roughness: 0.5,
       emissive: 0x1c5c38,
-      emissiveIntensity: 0.28,
+      emissiveIntensity: 0.14,
     }),
     educationAccent: standard(THREE, 0xbda5ff, {
       roughness: 0.5,
       emissive: 0x46307f,
-      emissiveIntensity: 0.2,
+      emissiveIntensity: 0.1,
     }),
   };
 }
@@ -250,34 +250,87 @@ function createIsland(THREE: typeof Three, materials: Materials) {
   const [firstX, firstZ] = points[0];
   shape.quadraticCurveTo(lastX, lastZ, firstX, firstZ);
 
+  const water = new THREE.Mesh(
+    new THREE.CircleGeometry(4.85, 128),
+    new THREE.MeshBasicMaterial({
+      color: 0x071f1d,
+      transparent: true,
+      opacity: 0.46,
+      depthWrite: false,
+      side: THREE.DoubleSide,
+    }),
+  );
+  water.name = 'Runtime_Island_DarkLake';
+  water.rotation.x = Math.PI / 2;
+  water.position.y = -0.97;
+  water.scale.y = 0.68;
+  water.renderOrder = -5;
+  group.add(water);
+
+  const waterSheen = new THREE.Mesh(
+    new THREE.RingGeometry(3.18, 4.5, 128),
+    new THREE.MeshBasicMaterial({
+      color: 0x4f9f95,
+      transparent: true,
+      opacity: 0.055,
+      depthWrite: false,
+      side: THREE.DoubleSide,
+    }),
+  );
+  waterSheen.name = 'Runtime_Island_WaterSheen';
+  waterSheen.rotation.x = Math.PI / 2;
+  waterSheen.position.y = -0.955;
+  waterSheen.scale.y = 0.7;
+  waterSheen.renderOrder = -4;
+  group.add(waterSheen);
+
+  const shoreline = new THREE.Mesh(
+    new THREE.ShapeGeometry(shape),
+    new THREE.MeshBasicMaterial({
+      color: 0x8bb9a1,
+      transparent: true,
+      opacity: 0.14,
+      depthWrite: false,
+      side: THREE.DoubleSide,
+    }),
+  );
+  shoreline.name = 'Runtime_Island_ShorelineGlow';
+  shoreline.rotation.x = Math.PI / 2;
+  shoreline.position.y = -0.795;
+  shoreline.position.z = 0.08;
+  shoreline.scale.set(1.055, 1.055, 1);
+  shoreline.renderOrder = -3;
+  group.add(shoreline);
+
   const terrain = new THREE.Mesh(
     new THREE.ExtrudeGeometry(shape, {
-      depth: 0.32,
+      depth: 0.2,
       bevelEnabled: true,
-      bevelSize: 0.12,
-      bevelThickness: 0.08,
+      bevelSize: 0.1,
+      bevelThickness: 0.055,
       bevelSegments: 3,
       steps: 1,
     }),
     [materials.terrain, materials.terrainEdge],
   );
   terrain.rotation.x = Math.PI / 2;
-  terrain.position.y = -0.86;
+  terrain.position.y = -0.78;
   terrain.position.z = 0.08;
   group.add(terrain);
 
   const mist = new THREE.Mesh(
-    new THREE.RingGeometry(2.95, 3.65, 80),
+    new THREE.RingGeometry(3.18, 3.95, 96),
     new THREE.MeshBasicMaterial({
-      color: 0x77d8f7,
+      color: 0x9fcfc0,
       transparent: true,
-      opacity: 0.045,
+      opacity: 0.038,
       depthWrite: false,
       side: THREE.DoubleSide,
     }),
   );
   mist.rotation.x = Math.PI / 2;
-  mist.position.y = -0.66;
+  mist.position.y = -0.7;
+  mist.scale.y = 0.74;
   group.add(mist);
 
   return group;
@@ -300,9 +353,45 @@ function createPresentationFloor(THREE: typeof Three) {
     );
     disc.rotation.x = -Math.PI / 2;
     disc.position.y = y;
-    disc.scale.z = scaleZ;
+    disc.scale.y = scaleZ;
     return disc;
   };
+
+  const darkLake = makeDisc(4.95, 0x082a27, 0.62, 0.68, -0.555);
+  darkLake.name = 'Runtime_PresentationGroundingFloor_DarkLake';
+  darkLake.renderOrder = -6;
+  const lakeSheen = new THREE.Mesh(
+    new THREE.RingGeometry(3.1, 4.55, 128),
+    new THREE.MeshBasicMaterial({
+      color: 0x4f9f95,
+      transparent: true,
+      opacity: 0.085,
+      depthWrite: false,
+      depthTest: false,
+      side: THREE.DoubleSide,
+    }),
+  );
+  lakeSheen.name = 'Runtime_PresentationGroundingFloor_LakeSheen';
+  lakeSheen.rotation.x = -Math.PI / 2;
+  lakeSheen.position.y = -0.545;
+  lakeSheen.scale.y = 0.68;
+  lakeSheen.renderOrder = 6;
+  const shorelineFog = new THREE.Mesh(
+    new THREE.RingGeometry(3.05, 4.05, 128),
+    new THREE.MeshBasicMaterial({
+      color: 0x9fcfc0,
+      transparent: true,
+      opacity: 0.075,
+      depthWrite: false,
+      depthTest: false,
+      side: THREE.DoubleSide,
+    }),
+  );
+  shorelineFog.name = 'Runtime_PresentationGroundingFloor_ShorelineFog';
+  shorelineFog.rotation.x = -Math.PI / 2;
+  shorelineFog.position.y = -0.51;
+  shorelineFog.scale.y = 0.62;
+  shorelineFog.renderOrder = 7;
 
   const leftLake = makeDisc(0.72, 0x2a6c72, 0.08, 0.34, -0.948);
   leftLake.name = 'Runtime_PresentationGroundingFloor_LeftLake';
@@ -323,9 +412,9 @@ function createPresentationFloor(THREE: typeof Three) {
   horizonMist.name = 'Runtime_PresentationGroundingFloor_HorizonMist';
   horizonMist.rotation.x = -Math.PI / 2;
   horizonMist.position.y = -0.94;
-  horizonMist.scale.z = 0.44;
+  horizonMist.scale.y = 0.44;
 
-  group.add(leftLake, rightLake, horizonMist);
+  group.add(darkLake, lakeSheen, shorelineFog, leftLake, rightLake, horizonMist);
   return group;
 }
 
@@ -728,9 +817,7 @@ function createDasaForestryLandmark(THREE: typeof Three, materials: Materials, l
 
   const label = createTextLabel(THREE, labelText, '#77d8f7', 0.72);
   label.position.set(0.22, 0.98, 0.12);
-  const forestLight = new THREE.PointLight(0x77d8f7, 0.22, 1.55);
-  forestLight.position.set(0.16, 0.32, 0.26);
-  group.add(machine, stump, stumpTop, label, forestLight);
+  group.add(machine, stump, stumpTop, label);
   return group;
 }
 
@@ -790,9 +877,7 @@ function createSodraHeadquartersLandmark(THREE: typeof Three, materials: Materia
   sign.position.set(0.58, 0.42, 0.374);
   const label = createTextLabel(THREE, labelText, '#72f2a3', 0.7);
   label.position.set(-0.1, 1.1, 0.16);
-  const light = new THREE.PointLight(0x72f2a3, 0.16, 1.45);
-  light.position.set(0.48, 0.42, 0.42);
-  group.add(grass, signPlate, sign, label, light);
+  group.add(grass, signPlate, sign, label);
   group.scale.setScalar(0.8);
   return group;
 }
@@ -858,9 +943,7 @@ function createVismaLandmark(THREE: typeof Three, materials: Materials, labelTex
   sign.position.set(0, 0.22, 0.405);
   const label = createTextLabel(THREE, labelText, '#b7f4d6', 0.68);
   label.position.set(0, 1.0, 0.24);
-  const lobbyLight = new THREE.PointLight(0x77d8f7, 0.16, 1.15);
-  lobbyLight.position.set(0, 0.22, 0.42);
-  group.add(sign, label, lobbyLight);
+  group.add(sign, label);
   group.add(createTree(THREE, materials, -0.92, 0.35, 0.42, 1), createTree(THREE, materials, 0.92, 0.35, 0.42, 2));
   group.scale.setScalar(0.78);
   return group;
@@ -945,14 +1028,12 @@ function createFilmstadenLandmark(THREE: typeof Three, materials: Materials, lab
   wordmark.position.set(0.18, 0.29, 0.305);
   const label = createTextLabel(THREE, labelText, '#f1d48d', 0.9);
   label.position.set(0, 0.9, 0.22);
-  const marqueeLight = new THREE.PointLight(0xf1d48d, 0.24, 1.45);
-  marqueeLight.position.set(0.05, -0.02, 0.48);
   for (let index = 0; index < 6; index += 1) {
     const bulb = new THREE.Mesh(new THREE.SphereGeometry(0.018, 8, 8), materials.warmWindow);
     bulb.position.set(-0.45 + index * 0.18, -0.11, 0.32);
     group.add(bulb);
   }
-  group.add(wordmark, label, marqueeLight);
+  group.add(wordmark, label);
   group.scale.setScalar(0.78);
   return group;
 }
@@ -1043,9 +1124,7 @@ function createEducationBuildingLandmark(THREE: typeof Three, materials: Materia
   accent.position.set(0.28, 0.54, 0.22);
   const label = createTextLabel(THREE, labelText, '#c4a5ff', 0.78);
   label.position.set(0.02, 1.0, 0.22);
-  const entranceLight = new THREE.PointLight(0xe6c885, 0.18, 1.15);
-  entranceLight.position.set(0, -0.04, 0.4);
-  group.add(centerCrown, path, accent, label, entranceLight);
+  group.add(centerCrown, path, accent, label);
   group.add(createTree(THREE, materials, -0.98, 0.38, 0.44, 2), createTree(THREE, materials, 0.98, 0.38, 0.42, 1));
   group.scale.setScalar(0.7);
   return group;

@@ -149,25 +149,20 @@ function HeroScene({ label, fallbackLabel }: HeroSceneProps) {
         const pointer = new THREE.Vector2(8, 8);
         const raycaster = new THREE.Raycaster();
         const scene = new THREE.Scene();
-        scene.fog = new THREE.FogExp2(0x0b211c, compact ? 0.108 : 0.092);
-        const moonFill = new THREE.HemisphereLight(0x9fc7c0, 0x06110f, compact ? 0.32 : 0.28);
-        const moonKey = new THREE.DirectionalLight(0xb9d4da, compact ? 0.58 : 0.52);
+        scene.fog = new THREE.FogExp2(0x071a17, compact ? 0.12 : 0.105);
+        const moonFill = new THREE.HemisphereLight(0x9fc7c0, 0x06110f, compact ? 0.26 : 0.23);
+        const moonKey = new THREE.DirectionalLight(0xb9d4da, compact ? 0.5 : 0.46);
         moonKey.position.set(-4.8, 4.8, 5.2);
-        const facadeFillTarget = new THREE.Object3D();
-        facadeFillTarget.position.set(0.04, 0.0, -0.1);
-        const facadeFill = new THREE.SpotLight(0xb7ddd7, compact ? 0.48 : 0.42, 12, Math.PI * 0.48, 0.94, 2.0);
-        facadeFill.position.set(0.15, 2.5, 6.9);
-        facadeFill.target = facadeFillTarget;
-        const cyanRim = new THREE.DirectionalLight(0x74d7ff, compact ? 0.48 : 0.42);
+        const frontFill = new THREE.DirectionalLight(0x9cc6bd, compact ? 0.24 : 0.2);
+        frontFill.position.set(0.3, 1.8, 4.8);
+        const lowWaterFill = new THREE.DirectionalLight(0x3b8d82, compact ? 0.16 : 0.12);
+        lowWaterFill.position.set(-2.4, 0.7, 2.6);
+        const cyanRim = new THREE.DirectionalLight(0x74d7ff, compact ? 0.36 : 0.32);
         cyanRim.position.set(4.8, 2.8, -5.6);
-        const warmCinemaFill = new THREE.PointLight(0xffb16d, compact ? 0.22 : 0.18, 3.2, 2.6);
-        warmCinemaFill.position.set(0.05, 0.35, -1.24);
-        const forestFill = new THREE.PointLight(0x72f2a3, compact ? 0.16 : 0.12, 4.0, 2.6);
-        forestFill.position.set(-2.2, 0.42, -1.85);
-        scene.add(moonFill, moonKey, facadeFillTarget, facadeFill, cyanRim, warmCinemaFill, forestFill);
+        scene.add(moonFill, moonKey, frontFill, lowWaterFill, cyanRim);
 
-        const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 38);
-        camera.position.set(compact ? 0.35 : 0.25, compact ? 2.3 : 2.05, compact ? 6.7 : 5.6);
+        const camera = new THREE.PerspectiveCamera(compact ? 42 : 39, 1, 0.1, 38);
+        camera.position.set(compact ? 0.35 : 0.18, compact ? 2.26 : 1.98, compact ? 6.55 : 5.05);
 
         const renderer = new THREE.WebGLRenderer({
           antialias: false,
@@ -178,7 +173,7 @@ function HeroScene({ label, fallbackLabel }: HeroSceneProps) {
         renderer.setClearColor(0x000000, 0);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, compact ? 1.2 : 1.55));
         renderer.toneMapping = THREE.ACESFilmicToneMapping;
-        renderer.toneMappingExposure = compact ? 0.72 : 0.68;
+        renderer.toneMappingExposure = compact ? 0.66 : 0.62;
         renderer.outputColorSpace = THREE.SRGBColorSpace;
         mount.appendChild(renderer.domElement);
 
@@ -186,8 +181,8 @@ function HeroScene({ label, fallbackLabel }: HeroSceneProps) {
         controls.enableDamping = true;
         controls.enablePan = false;
         controls.enableZoom = !compact;
-        controls.minDistance = 4.8;
-        controls.maxDistance = 6.7;
+        controls.minDistance = compact ? 4.8 : 4.35;
+        controls.maxDistance = compact ? 6.7 : 6;
         controls.minPolarAngle = Math.PI * 0.24;
         controls.maxPolarAngle = Math.PI * 0.44;
         controls.minAzimuthAngle = -Math.PI * 0.22;
@@ -204,7 +199,7 @@ function HeroScene({ label, fallbackLabel }: HeroSceneProps) {
             education: 'Learning',
           },
         });
-        world.group.scale.setScalar(compact ? 0.92 : 1.06);
+        world.group.scale.setScalar(compact ? 0.94 : 1.14);
         world.group.rotation.x = -0.05;
         scene.add(world.group);
         activeHotspot = world.hotspots[0];
