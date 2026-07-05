@@ -1,0 +1,26 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      frontend-tooling:
+        patterns:
+          - eslint
+          - '@eslint/*'
+          - typescript-eslint
+          - prettier
+          - vitest
+          - '@testing-library/*'
+          - '@playwright/*'
+  - package-ecosystem: nuget
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      cms:
+        patterns:
+          - Umbraco.*
+          - uSync
+          - Microsoft.*

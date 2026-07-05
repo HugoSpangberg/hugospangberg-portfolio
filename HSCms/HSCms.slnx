@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="../Tests/HSCms.Tests/HSCms.Tests.csproj" />
+  <Project Path="HSCms.csproj" />
+</Solution>

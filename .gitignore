@@ -1,1 +1,89 @@
 node_modules/
+HSClient/node_modules/
+
+# Build output
+dist/
+HSClient/dist/
+build/
+
+# Test output
+coverage/
+HSClient/coverage/
+test-results/
+HSClient/test-results/
+playwright-report/
+HSClient/playwright-report/
+blob-report/
+
+# Local deployment/runtime state
+.wrangler/
+.dev.vars
+
+# Local environment
+.env
+.env.local
+.env.*.local
+
+# Local AI and agent tooling
+.local/
+.codex/
+codex-local/
+codex-prompts/
+codex-sessions/
+codex-output/
+*.codex.local.*
+
+# Logs and temporary files
+*.log
+tmp/
+temp/
+.cache/
+
+# CMS local state
+HSCms/umbraco/Data/
+HSCms/umbraco/Logs/
+HSCms/umbraco/mediacache/
+HSCms/wwwroot/media/
+HSCms/appsettings.Local.json
+HSCms/**/appsettings-schema*.json
+HSCms/**/umbraco-package-schema.json
+Tests/**/appsettings-schema*.json
+Tests/**/umbraco-package-schema.json
+HSCms/**/bin/
+HSCms/**/obj/
+HSCms/**/*.sqlite
+HSCms/**/*.sqlite.db
+HSCms/**/*.db
+HSApi/**/bin/
+HSApi/**/obj/
+Tests/**/bin/
+Tests/**/obj/
+*.tsbuildinfo
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# IDE user settings
+.idea/
+*.user
+*.suo
+
+# Private references
+Assets/CareerWorldReferences/Private/
+
+# Blender local and generated review artifacts
+*.blend1
+*.blend2
+*.blend@
+*.autosave
+Assets/Blender/Sources/*-update.blend
+Assets/Blender/Sources/*-Update.blend
+!Assets/Blender/Sources/*-update.blend
+!Assets/Blender/Sources/*-Update.blend
+Assets/Blender/Sources/career-world-master.blend
+Assets/Blender/Exports/*.glb
+Assets/Blender/Exports/**/*.glb
+Assets/Blender/Previews/**/*.png
+Assets/Blender/Reports/*

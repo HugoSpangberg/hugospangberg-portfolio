@@ -1,0 +1,63 @@
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: ${MSSQL_SA_PASSWORD:-Replace_with_a_strong_local_password_123}
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver-data:/var/opt/mssql
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P \"$${MSSQL_SA_PASSWORD}\" -C -Q \"SELECT 1\" || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+
+  hsapi:
+    build:
+      context: .
+      dockerfile: HSApi/Dockerfile
+    ports:
+      - "5181:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__HSPortfolioApi: ${HSAPI_CONNECTION_STRING:-}
+      Cms__Enabled: "false"
+      Cors__FrontendOrigins__0: http://localhost:5173
+      Cors__FrontendOrigins__1: http://127.0.0.1:5173
+      Turnstile__Enabled: "false"
+      HomeAssistant__Enabled: "false"
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8080/health/live"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  hscms:
+    build:
+      context: .
+      dockerfile: HSCms/Dockerfile
+    ports:
+      - "5174:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      Umbraco__CMS__Global__UseHttps: "false"
+      Umbraco__CMS__Runtime__Mode: Development
+      ConnectionStrings__umbracoDbDSN: "Data Source=/app/umbraco/Data/Umbraco.sqlite.db;Cache=Shared;Foreign Keys=True;Pooling=True"
+      ConnectionStrings__umbracoDbDSN_ProviderName: Microsoft.Data.Sqlite
+      Portfolio__FrontendOrigins__0: http://localhost:5173
+      Portfolio__FrontendOrigins__1: http://127.0.0.1:5173
+    volumes:
+      - cms-data:/app/umbraco/Data
+      - cms-media:/app/wwwroot/media
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8080/health/live"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  sqlserver-data:
+  cms-data:
+  cms-media:

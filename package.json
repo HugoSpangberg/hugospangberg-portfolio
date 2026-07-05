@@ -3,24 +3,39 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
+  "workspaces": [
+    "HSClient"
+  ],
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "@vitejs/plugin-react": "^5.0.4",
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1",
-    "three": "^0.180.0",
-    "vite": "^7.1.9"
+    "dev": "npm run dev:client",
+    "dev:client": "npm --workspace HSClient run dev --",
+    "dev:api": "dotnet run --project HSApi/HSApi.csproj",
+    "dev:cms": "dotnet run --project HSCms/HSCms.csproj",
+    "dev:full": "bash scripts/dev.sh",
+    "build": "npm run build:client && npm run build:api && npm run build:cms",
+    "build:client": "npm --workspace HSClient run build",
+    "build:api": "dotnet build HSApi/HSApi.csproj --configuration Release",
+    "build:cms": "dotnet build HSCms/HSCms.csproj --configuration Release",
+    "test": "npm run test:client && dotnet test HugoSpangberg.Portfolio.sln --configuration Release",
+    "test:client": "npm --workspace HSClient run test",
+    "test:admin": "npm --workspace HSClient run test -- --run src/features/admin",
+    "test:crud": "dotnet test HugoSpangberg.Portfolio.sln --configuration Release --filter \"FullyQualifiedName~Admin\"",
+    "lint": "npm --workspace HSClient run lint",
+    "typecheck": "npm --workspace HSClient run typecheck",
+    "e2e": "npm --workspace HSClient run e2e",
+    "api:generate": "npm --workspace HSClient run api:generate",
+    "models:export": "bash scripts/export-models.sh",
+    "models:export-ai-core": "bash scripts/export-ai-core.sh",
+    "models:assemble": "bash scripts/assemble-world.sh",
+    "models:open-master": "bash scripts/open-master-world.sh",
+    "models:export-master": "bash scripts/export-master-world.sh",
+    "models:preview": "bash scripts/render-model-previews.sh",
+    "models:preview-master": "bash scripts/render-master-world.sh",
+    "models:validate": "npm --workspace HSClient run models:validate",
+    "format": "prettier --check .",
+    "format:write": "prettier --write ."
   },
   "devDependencies": {
-    "@types/react": "^19.1.16",
-    "@types/react-dom": "^19.1.9",
-    "@types/three": "^0.180.0",
-    "playwright": "^1.59.1",
-    "sass": "^1.93.2",
-    "typescript": "~5.9.3"
+    "prettier": "^3.8.4"
   }
 }

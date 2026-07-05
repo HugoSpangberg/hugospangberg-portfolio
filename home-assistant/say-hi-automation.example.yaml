@@ -1,0 +1,53 @@
+alias: Portfolio Say Hi lamp
+description: Temporarily turns a selected light red when the portfolio backend sends a verified hello.
+mode: single
+max_exceeded: silent
+
+trigger:
+  - platform: webhook
+    webhook_id: REPLACE_WITH_RANDOM_WEBHOOK_ID
+    allowed_methods:
+      - POST
+    local_only: false
+
+condition:
+  - condition: template
+    value_template: "{{ trigger.json.requestId is string and trigger.json.timestamp is string }}"
+  - condition: not
+    conditions:
+      - condition: state
+        entity_id: light.REPLACE_WITH_LIGHT_ENTITY_ID
+        state: unavailable
+
+action:
+  - variables:
+      target_light: light.REPLACE_WITH_LIGHT_ENTITY_ID
+      previous_state: "{{ states(target_light) }}"
+      previous_brightness: "{{ state_attr(target_light, 'brightness') }}"
+      previous_rgb_color: "{{ state_attr(target_light, 'rgb_color') }}"
+
+  - service: light.turn_on
+    target:
+      entity_id: "{{ target_light }}"
+    data:
+      rgb_color: [255, 0, 0]
+      brightness_pct: 100
+
+  - delay:
+      seconds: 10
+
+  - choose:
+      - conditions:
+          - condition: template
+            value_template: "{{ previous_state == 'on' }}"
+        sequence:
+          - service: light.turn_on
+            target:
+              entity_id: "{{ target_light }}"
+            data:
+              brightness: "{{ previous_brightness | default(180) }}"
+              rgb_color: "{{ previous_rgb_color | default([255, 255, 255]) }}"
+    default:
+      - service: light.turn_off
+        target:
+          entity_id: "{{ target_light }}"

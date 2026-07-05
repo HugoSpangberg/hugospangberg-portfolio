@@ -1,0 +1,214 @@
+{
+  "version": 1,
+  "purpose": "Visual reference contract for procedural, stylized Three.js career-world landmarks.",
+  "globalStyle": {
+    "rendering": "procedural low-poly miniature diorama",
+    "matchExistingWorld": true,
+    "photorealism": false,
+    "referenceImagesAre": "silhouette, proportion, facade rhythm, color and signature-feature references",
+    "preserveExisting": [
+      "hotspot ids",
+      "hotspot positions",
+      "click and hover behavior",
+      "localized labels",
+      "mobile framing",
+      "Nordic Forest Tech palette",
+      "WebGL fallback"
+    ],
+    "preferredGeometry": [
+      "BoxGeometry",
+      "CylinderGeometry",
+      "ConeGeometry",
+      "PlaneGeometry",
+      "ExtrudeGeometry",
+      "ShapeGeometry",
+      "TorusGeometry"
+    ],
+    "avoid": [
+      "photo textures",
+      "full photogrammetry",
+      "heavy GLB assets",
+      "one mesh per tiny window when instancing or repetition is possible",
+      "exact architectural reconstruction",
+      "unrelated scene platforms"
+    ],
+    "performance": {
+      "target": "smooth portfolio experience on desktop and mobile",
+      "reuseSharedMaterials": true,
+      "reuseSharedGeometries": true,
+      "useInstancedMeshWhenHelpful": true,
+      "keepDrawCallsLow": true
+    }
+  },
+  "locations": [
+    {
+      "id": "filmstaden",
+      "referenceImage": "images/filmstaden-reference.png",
+      "suggestedBuilder": "createFilmstadenLandmark",
+      "preserveExistingHotspotPosition": true,
+      "recognitionFeatures": [
+        "warm red-brown brick facade",
+        "three-to-four storey urban cinema facade",
+        "large curved red marquee canopy",
+        "central round red F emblem",
+        "red Filmstaden wordmark or simplified sign",
+        "poster display cases",
+        "dark red glass entrance doors",
+        "warm marquee lights"
+      ],
+      "geometryPlan": [
+        "wide brick box facade with shallow depth",
+        "repeated window grid using shared geometry or instancing",
+        "curved canopy built from Shape/ExtrudeGeometry or segmented boxes",
+        "round sign using cylinders and simple F glyph made from boxes",
+        "poster frames as shallow emissive planes",
+        "small entrance recess and columns"
+      ],
+      "palette": {
+        "brick": "#7b3f34",
+        "marqueeRed": "#b8322a",
+        "warmLight": "#f1d48d",
+        "window": "#183a36",
+        "trim": "#d7d2c8"
+      },
+      "lighting": "warm points under marquee; subtle red sign emission",
+      "animation": "very gentle marquee shimmer only"
+    },
+    {
+      "id": "visma",
+      "referenceImage": "images/visma-reference.png",
+      "suggestedBuilder": "createVismaLandmark",
+      "preserveExistingHotspotPosition": true,
+      "recognitionFeatures": [
+        "modern symmetrical office block",
+        "white left and right wings",
+        "orange central vertical facade",
+        "large central glass entrance",
+        "flat dark roofline",
+        "repeated office-window grid",
+        "small Visma sign above entrance"
+      ],
+      "geometryPlan": [
+        "three connected box volumes",
+        "central orange core slightly forward",
+        "glass entrance atrium",
+        "window rows using instancing or cloned shared panes",
+        "simple entrance stairs and canopy",
+        "two small stylized trees at front"
+      ],
+      "palette": {
+        "whiteFacade": "#d8ddd9",
+        "orangeCore": "#c66d3e",
+        "glass": "#244a4c",
+        "windowGlow": "#77d8f7",
+        "sign": "#d8ddd9"
+      },
+      "lighting": "cool lobby light and subtle cyan office-window emission",
+      "animation": "one or two slow data pulses from entrance to career hub"
+    },
+    {
+      "id": "sodra",
+      "referenceImage": "images/sodra-reference.png",
+      "suggestedBuilder": "createSodraHeadquartersLandmark",
+      "preserveExistingHotspotPosition": true,
+      "recognitionFeatures": [
+        "large sweeping curved office facade",
+        "white structural frame and vertical fins",
+        "dark glass bands",
+        "asymmetric upper glass pavilion",
+        "strong overhanging roof",
+        "green Sodra accent/sign",
+        "open grass foreground"
+      ],
+      "geometryPlan": [
+        "curved footprint from Shape plus ExtrudeGeometry",
+        "layered dark glass facade bands",
+        "white vertical fins around the curve",
+        "upper pavilion as offset glass boxes",
+        "thin overhanging roof slabs",
+        "small green sign plate"
+      ],
+      "palette": {
+        "structure": "#d5dad5",
+        "glass": "#173b3a",
+        "darkGlass": "#102c2b",
+        "sodraGreen": "#4ea66f",
+        "grass": "#315e47"
+      },
+      "lighting": "soft green accent and cool interior glass glow",
+      "animation": "subtle green data node near sign"
+    },
+    {
+      "id": "dasa",
+      "referenceImage": "images/dasa-forestry-reference.png",
+      "suggestedBuilder": "createDasaForestryLandmark",
+      "preserveExistingHotspotPosition": true,
+      "replaceCurrentTechHub": true,
+      "recognitionFeatures": [
+        "dense Nordic pine and birch forest",
+        "green forestry harvester",
+        "large articulated black boom",
+        "glass operator cabin",
+        "six or eight rugged wheels",
+        "harvester head near ground",
+        "logs, stump and forest floor",
+        "small IoT sensor accent rather than a building"
+      ],
+      "geometryPlan": [
+        "reuse and improve existing procedural forest-machine builder",
+        "long articulated boom with two or three segments",
+        "detailed harvester head with rollers and claw shapes",
+        "larger cabin with transparent dark glass",
+        "chunky wheels with deep-looking tire profile",
+        "mixed pine and birch silhouettes",
+        "cut logs and stump around machine",
+        "small cyan sensor node and signal arcs"
+      ],
+      "palette": {
+        "machineGreen": "#2e6a57",
+        "machineDark": "#121a18",
+        "boom": "#151a19",
+        "wheel": "#171817",
+        "hydraulicYellow": "#d5aa3d",
+        "sensorCyan": "#77d8f7",
+        "forestGreen": "#2f745f"
+      },
+      "lighting": "forest-green fill with small cyan IoT accent",
+      "animation": "slow sensor pulse; optional tiny boom idle motion, reduced-motion safe"
+    },
+    {
+      "id": "education",
+      "referenceImage": "images/education-reference.png",
+      "suggestedBuilder": "createEducationBuildingLandmark",
+      "preserveExistingHotspotPosition": true,
+      "recognitionFeatures": [
+        "historic red-brick school facade",
+        "symmetrical multi-storey structure",
+        "stone base",
+        "central arched entrance",
+        "repeated tall windows",
+        "decorative central roofline and brick details",
+        "institutional but warm character"
+      ],
+      "geometryPlan": [
+        "wide brick facade with shallow side wings",
+        "stone plinth",
+        "central entrance bay projected slightly forward",
+        "arched entrance approximated with Shape/ExtrudeGeometry",
+        "repeated windows using shared geometry",
+        "simple decorative brick crowns and roof blocks",
+        "small path and two minimal trees"
+      ],
+      "palette": {
+        "brick": "#8b4d3c",
+        "darkBrick": "#65372f",
+        "stone": "#8b8d88",
+        "window": "#27434a",
+        "warmInterior": "#e6c885",
+        "learningAccent": "#bda5ff"
+      },
+      "lighting": "warm entrance light with restrained violet learning accent",
+      "animation": "small learning node or book/data pulse, not a floating abstract building"
+    }
+  ]
+}
