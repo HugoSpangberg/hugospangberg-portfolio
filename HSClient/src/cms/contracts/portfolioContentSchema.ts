@@ -5,6 +5,7 @@ const heroActionSchema = z.object({
   href: z.string().min(1),
   variant: z.enum(['primary', 'ghost']),
   external: z.boolean().optional(),
+  download: z.string().min(1).optional(),
 });
 
 const textListSchema = z.array(z.string().min(1));
@@ -61,6 +62,23 @@ export const portfolioContentSchema = z
     experience: z.object({ items: z.array(experienceItemSchema) }).passthrough(),
     education: z.object({ items: z.array(z.unknown()) }).passthrough(),
     labs: z.object({ items: z.array(z.unknown()) }).passthrough(),
+    localAi: z
+      .object({
+        kicker: z.string().min(1),
+        title: z.string().min(1),
+        description: textListSchema,
+        technologies: textListSchema,
+        modules: z.array(
+          z.object({
+            title: z.string().min(1),
+            description: z.string().min(1),
+          }),
+        ),
+        sceneLabel: z.string().min(1),
+        loadingLabel: z.string().min(1),
+        fallbackLabel: z.string().min(1),
+      })
+      .passthrough(),
     sayHi: z
       .object({
         title: z.string().min(1),

@@ -14,7 +14,7 @@ import WorldIntroSection from './components/world/WorldIntroSection';
 import { PortfolioContentProvider, usePortfolioContent } from './cms';
 import type { Locale } from './data/content';
 import AdminApp from './features/admin/AdminApp';
-import { SayHiSection } from './features/say-hi';
+import { LocalAiSection } from './features/local-ai';
 
 const defaultLocale: Locale = 'sv';
 const storageKey = 'hugo-portfolio-locale';
@@ -111,7 +111,7 @@ function PortfolioPage({ locale, onLocaleChange }: PortfolioPageProps) {
         <Experience content={page.experience} />
         <Education content={page.education} />
         <Labs content={page.labs} />
-        <SayHiSection locale={locale} copy={page.sayHi} />
+        <LocalAiSection content={page.localAi} />
         <BuiltWith content={page.builtWith} />
         <Contact content={page.contact} />
       </main>

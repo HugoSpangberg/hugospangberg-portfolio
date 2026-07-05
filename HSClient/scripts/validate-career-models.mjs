@@ -2,6 +2,8 @@ import { access, readFile, stat } from 'node:fs/promises';
 import path from 'node:path';
 
 const manifestPath = path.resolve('public/models/career-world/manifest.json');
+const aiCoreGlbPath = path.resolve('public/models/ai-core/ai-core.glb');
+const aiCorePosterPath = path.resolve('public/images/ai-core/ai-core-poster.png');
 const manifest = JSON.parse(await readFile(manifestPath, 'utf8'));
 const errors = [];
 
@@ -70,9 +72,31 @@ for (const landmark of manifest.landmarks ?? []) {
   }
 }
 
+try {
+  const aiCoreFile = await readFile(aiCoreGlbPath);
+  const aiCoreStat = await stat(aiCoreGlbPath);
+  const magic = aiCoreFile.subarray(0, 4).toString('utf8');
+
+  if (magic !== 'glTF') {
+    errors.push('ai-core.glb does not have a valid GLB header.');
+  }
+
+  if (aiCoreStat.size > 10_000_000) {
+    errors.push(`ai-core.glb is ${aiCoreStat.size} bytes, above the preferred 10 MB budget.`);
+  }
+} catch {
+  errors.push('ai-core.glb is missing.');
+}
+
+try {
+  await access(aiCorePosterPath);
+} catch {
+  errors.push('ai-core poster fallback is missing.');
+}
+
 if (errors.length > 0) {
   console.error(errors.join('\n'));
   process.exit(1);
 }
 
-console.log('Career world model manifest is valid. Missing GLBs are allowed while procedural fallback is active.');
+console.log('Career world and AI-core runtime assets are valid.');

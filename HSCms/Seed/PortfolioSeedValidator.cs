@@ -34,6 +34,7 @@ public static class PortfolioSeedValidator
         RequireString(content, locale, "seo", "title");
         RequireString(content, locale, "seo", "description");
         RequireString(content, locale, "hero", "title");
+        RequireString(content, locale, "localAi", "title");
         RequireString(content, locale, "sayHi", "buttonLabel");
         RequireString(content, locale, "sayHi", "successDialog", "privacy");
     }

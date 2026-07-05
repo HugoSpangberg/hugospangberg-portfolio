@@ -10,6 +10,7 @@ export type HeroAction = {
   href: string;
   variant: 'primary' | 'ghost';
   external?: boolean;
+  download?: string;
 };
 
 export type Skill = {
@@ -44,6 +45,24 @@ export type ContactLink = {
   label: string;
   value: string;
   href?: string;
+  download?: string;
+};
+
+export type LocalAiModule = {
+  title: string;
+  description: string;
+};
+
+export type LocalAiSection = {
+  kicker: string;
+  title: string;
+  description: string[];
+  technologiesLabel: string;
+  technologies: string[];
+  modules: LocalAiModule[];
+  sceneLabel: string;
+  loadingLabel: string;
+  fallbackLabel: string;
 };
 
 export type SystemThinkingCard = {
@@ -69,7 +88,7 @@ export const content = {
       { label: 'Kompetenser', href: '#skills' },
       { label: 'Erfarenhet', href: '#erfarenhet' },
       { label: 'Projekt', href: '#projekt' },
-      { label: 'Säg hej', href: '#say-hi' },
+      { label: 'Lokalt AI-labb', href: '#local-ai' },
       { label: 'Kontakt', href: '#contact' },
     ] satisfies NavItem[],
     hero: {
@@ -84,6 +103,12 @@ export const content = {
       actions: [
         { label: 'Visa erfarenhet', href: '#erfarenhet', variant: 'primary' },
         { label: 'Se kompetenser', href: '#skills', variant: 'ghost' },
+        {
+          label: 'Ladda ner CV',
+          href: 'documents/Hugo-Spangberg-CV-2026.pdf',
+          variant: 'ghost',
+          download: 'Hugo-Spangberg-CV-2026.pdf',
+        },
         { label: 'Kontakta mig', href: '#contact', variant: 'ghost' },
         {
           label: 'LinkedIn',
@@ -122,8 +147,8 @@ export const content = {
         {
           title: 'Backend',
           description:
-            'Jag har främst arbetat med .NET och C#, men har även erfarenhet av Java, Kotlin och Spring Boot. Jag tycker om att bygga tydliga, stabila och underhållbara backendlösningar med fokus på verkliga behov.',
-          tags: ['C#', '.NET', 'ASP.NET Core', 'Entity Framework Core', 'Java', 'Kotlin', 'Spring Boot'],
+            'Jag har främst arbetat med .NET och C#, men har även erfarenhet av Java och Kotlin. Jag tycker om att bygga tydliga, stabila och underhållbara backendlösningar med fokus på verkliga behov.',
+          tags: ['C#', '.NET', 'ASP.NET Core', 'Entity Framework Core', 'Java', 'Kotlin'],
         },
         {
           title: 'Frontend',
@@ -249,13 +274,6 @@ export const content = {
           ],
         },
         {
-          company: 'Pacson',
-          role: 'Lagerarbetare',
-          period: 'Januari 2011 - November 2012',
-          description:
-            'På Pacson arbetade jag med orderplock, packning och leveranser. Rollen gav mig erfarenhet av struktur, ansvar och noggrannhet i det dagliga arbetet.',
-        },
-        {
           company: 'Karlskrona Kommun',
           role: 'Grafisk Formgivare, praktik',
           period: 'Mars 2021 - Juni 2021',
@@ -295,30 +313,65 @@ export const content = {
     },
     labs: {
       kicker: 'Projekt',
-      title: 'Projektsektionen är under uppbyggnad',
+      title: 'Utvalda projekt',
       description:
-        'Jag arbetar på egna projekt inom .NET, React, automation och IoT som kommer att publiceras här framöver. Målet är att visa lösningar som kombinerar backend, frontend, databas, automation och tydlig användarnytta.',
+        'Projekt som visar hur jag kombinerar frontend, backend-tänk, 3D, innehållsstruktur och praktisk systemutveckling. Jag visar bara delar som är relevanta och färdiga nog för en offentlig portfolio.',
       items: [
         {
-          title: 'IoT Dashboard',
+          title: 'Interaktiv karriärvärld',
           description:
-            'En dashboard för att visualisera sensordata, status och signaler i realtid.',
-          technologies: ['React', 'TypeScript', '.NET API', 'SQL', 'Three.js'],
+            'En Three.js-baserad introduktion där Blender-exporterade modeller visualiserar arbetsliv, utbildning och teknisk riktning i en sammanhållen scen.',
+          technologies: ['React', 'TypeScript', 'Three.js', 'Blender', 'GLB'],
         },
         {
-          title: 'Automation Toolkit',
+          title: 'Portfolio BFF och CMS-grund',
           description:
-            'Ett verktyg för att strukturera, köra och följa upp automatiserade flöden.',
-          technologies: ['.NET', 'PowerShell', 'React', 'TypeScript'],
+            'En .NET-baserad backend-for-frontend och Umbraco-grund som är byggd för att kunna äga, validera och exponera portfolioinnehåll utan att låsa frontend till CMS-detaljer.',
+          technologies: ['ASP.NET Core', 'Umbraco', 'TypeScript', 'API-design'],
         },
         {
-          title: 'Movie Explorer',
+          title: 'Statisk portfolio med robust fallback',
           description:
-            'En film- och serieinspirerad webbapp med API-integration, sökfunktion och personlig design.',
-          technologies: ['React', 'TypeScript', 'API-integration', 'CSS/SCSS'],
+            'En GitHub Pages-kompatibel frontend där publikt innehåll fungerar utan driftad backend, men är förberedd för att hämta publicerat innehåll via API när infrastrukturen finns på plats.',
+          technologies: ['Vite', 'React', 'SCSS', 'GitHub Pages'],
         },
       ] satisfies Lab[],
     },
+    localAi: {
+      kicker: 'Pågående personligt projekt',
+      title: 'Lokal AI-station & personlig automation',
+      description: [
+        'Jag bygger en Linux-baserad AI-miljö hemma för att köra lokala AI-modeller och agenter. Miljön används för att utforska hur lokala modeller, verktyg och automationer kan förenkla återkommande vardagsuppgifter.',
+        'Projektet kombinerar praktisk problemlösning med ett tydligt fokus på integritet, lokal kontroll och mänskligt godkännande. Målet är inte att automatisera allt, utan att skapa användbara arbetsflöden där AI fungerar som ett kontrollerat stöd.',
+      ],
+      technologiesLabel: 'Tekniker i labbet',
+      technologies: ['Linux', 'Docker', 'Ollama', 'Lokala språkmodeller', 'AI-agenter', 'Automation'],
+      modules: [
+        {
+          title: 'Local-first',
+          description:
+            'Modeller och verktyg kan köras lokalt på Linux-baserad hårdvara, med fokus på kontroll över miljö och data.',
+        },
+        {
+          title: 'Agentflöden',
+          description:
+            'Agenter används för att samordna avgränsade verktyg och återkommande uppgifter där mänskligt godkännande fortfarande är centralt.',
+        },
+        {
+          title: 'Automation',
+          description:
+            'Miljön används för att minska repetitivt manuellt arbete och utforska praktiska arbetsflöden som går att lita på.',
+        },
+        {
+          title: 'Integritet och kontroll',
+          description:
+            'Lokal bearbetning, tydliga gränser och aktivt godkännande är viktiga principer i hur systemet utformas.',
+        },
+      ],
+      sceneLabel: '3D-visualisering av Hugos lokala AI-station',
+      loadingLabel: 'Laddar AI-station',
+      fallbackLabel: 'Statisk visualisering av lokal AI-station',
+    } satisfies LocalAiSection,
     sayHi: {
       kicker: 'Nyfiken?',
       title: 'Säg hej till mig',
@@ -361,7 +414,7 @@ export const content = {
     },
     builtWith: {
       kicker: 'Byggd med',
-      title: 'Byggd som en liten systemdemo',
+      title: 'Byggd som en teknisk portfolio',
       paragraphs: [
         'Den här portfolion är inte bara en statisk presentation. Den är byggd för att spegla hur jag tänker som utvecklare: struktur, interaktion, system, dataflöden och användarupplevelse.',
       ],
@@ -395,11 +448,9 @@ export const content = {
         },
         {
           label: 'CV',
-          value: 'Tillgängligt som nedladdningsbar PDF senare.',
-        },
-        {
-          label: 'GitHub',
-          value: 'Läggs till senare.',
+          value: 'Ladda ner CV',
+          href: 'documents/Hugo-Spangberg-CV-2026.pdf',
+          download: 'Hugo-Spangberg-CV-2026.pdf',
         },
       ] satisfies ContactLink[],
     },
@@ -420,7 +471,7 @@ export const content = {
       { label: 'Skills', href: '#skills' },
       { label: 'Experience', href: '#erfarenhet' },
       { label: 'Projects', href: '#projekt' },
-      { label: 'Say hi', href: '#say-hi' },
+      { label: 'Local AI Lab', href: '#local-ai' },
       { label: 'Contact', href: '#contact' },
     ] satisfies NavItem[],
     hero: {
@@ -435,6 +486,12 @@ export const content = {
       actions: [
         { label: 'View experience', href: '#erfarenhet', variant: 'primary' },
         { label: 'View skills', href: '#skills', variant: 'ghost' },
+        {
+          label: 'Download CV',
+          href: 'documents/Hugo-Spangberg-CV-2026.pdf',
+          variant: 'ghost',
+          download: 'Hugo-Spangberg-CV-2026.pdf',
+        },
         { label: 'Contact me', href: '#contact', variant: 'ghost' },
         {
           label: 'LinkedIn',
@@ -473,8 +530,8 @@ export const content = {
         {
           title: 'Backend',
           description:
-            'I have mainly worked with .NET and C#, and I also have experience with Java, Kotlin and Spring Boot. I enjoy building clear, stable and maintainable backend solutions focused on real needs.',
-          tags: ['C#', '.NET', 'ASP.NET Core', 'Entity Framework Core', 'Java', 'Kotlin', 'Spring Boot'],
+            'I have mainly worked with .NET and C#, and I also have experience with Java and Kotlin. I enjoy building clear, stable and maintainable backend solutions focused on real needs.',
+          tags: ['C#', '.NET', 'ASP.NET Core', 'Entity Framework Core', 'Java', 'Kotlin'],
         },
         {
           title: 'Frontend',
@@ -600,13 +657,6 @@ export const content = {
           ],
         },
         {
-          company: 'Pacson',
-          role: 'Warehouse Worker',
-          period: 'January 2011 - November 2012',
-          description:
-            'At Pacson, I worked with order picking, packing and deliveries. The role gave me experience with structure, responsibility and accuracy in daily work.',
-        },
-        {
           company: 'Karlskrona Municipality',
           role: 'Graphic Designer, internship',
           period: 'March 2021 - June 2021',
@@ -646,30 +696,65 @@ export const content = {
     },
     labs: {
       kicker: 'Projects',
-      title: 'The project section is under construction',
+      title: 'Selected projects',
       description:
-        'I am working on personal projects in .NET, React, automation and IoT that will be published here over time. The goal is to show solutions that combine backend, frontend, database, automation and clear user value.',
+        'Projects that show how I combine frontend, backend thinking, 3D, content structure and practical system development. I only show work that is relevant and ready enough for a public portfolio.',
       items: [
         {
-          title: 'IoT Dashboard',
+          title: 'Interactive career world',
           description:
-            'A dashboard for visualizing sensor data, statuses and signals in real time.',
-          technologies: ['React', 'TypeScript', '.NET API', 'SQL', 'Three.js'],
+            'A Three.js-based introduction where Blender-exported models visualize work experience, education and technical direction in one coherent scene.',
+          technologies: ['React', 'TypeScript', 'Three.js', 'Blender', 'GLB'],
         },
         {
-          title: 'Automation Toolkit',
+          title: 'Portfolio BFF and CMS foundation',
           description:
-            'A tool for structuring, running and following up automated flows.',
-          technologies: ['.NET', 'PowerShell', 'React', 'TypeScript'],
+            'A .NET backend-for-frontend and Umbraco foundation designed to own, validate and expose portfolio content without tying the frontend to CMS-specific details.',
+          technologies: ['ASP.NET Core', 'Umbraco', 'TypeScript', 'API design'],
         },
         {
-          title: 'Movie Explorer',
+          title: 'Static portfolio with resilient fallback',
           description:
-            'A movie and series-inspired web app with API integration, search and a personal design.',
-          technologies: ['React', 'TypeScript', 'API integration', 'CSS/SCSS'],
+            'A GitHub Pages-compatible frontend where public content works without a hosted backend, while remaining ready to fetch published content through the API when infrastructure is available.',
+          technologies: ['Vite', 'React', 'SCSS', 'GitHub Pages'],
         },
       ] satisfies Lab[],
     },
+    localAi: {
+      kicker: 'Ongoing personal project',
+      title: 'Home AI Station & Personal Automation',
+      description: [
+        'I am building a Linux-based home AI environment for running local AI models and agents. The environment is used to explore how local models, tools and automations can simplify recurring everyday tasks.',
+        'The project combines practical problem solving with a strong focus on privacy, local control and human approval. The goal is not to automate everything, but to create useful workflows where AI acts as a controlled assistant.',
+      ],
+      technologiesLabel: 'Technologies in the lab',
+      technologies: ['Linux', 'Docker', 'Ollama', 'Local language models', 'AI agents', 'Automation'],
+      modules: [
+        {
+          title: 'Local-first',
+          description:
+            'Models and tools can run locally on Linux hardware, with a focus on control over the environment and data.',
+        },
+        {
+          title: 'Agent workflows',
+          description:
+            'Agents are used to coordinate focused tools and recurring tasks where human approval remains central.',
+        },
+        {
+          title: 'Automation',
+          description:
+            'The environment is intended to reduce repetitive manual work and explore practical workflows that can be trusted.',
+        },
+        {
+          title: 'Privacy and control',
+          description:
+            'Local processing, clear boundaries and active approval are important design principles for how the system is shaped.',
+        },
+      ],
+      sceneLabel: "3D visualization of Hugo's local AI station",
+      loadingLabel: 'Loading AI station',
+      fallbackLabel: 'Static visualization of the local AI station',
+    } satisfies LocalAiSection,
     sayHi: {
       kicker: 'Curious?',
       title: 'Say hi to me',
@@ -712,7 +797,7 @@ export const content = {
     },
     builtWith: {
       kicker: 'Built with',
-      title: 'Built as a small system demo',
+      title: 'Built as a technical portfolio',
       paragraphs: [
         'This portfolio is not just a static presentation. It is designed to reflect how I think as a developer: structure, interaction, systems, data flows and user experience.',
       ],
@@ -746,11 +831,9 @@ export const content = {
         },
         {
           label: 'CV',
-          value: 'Available as a downloadable PDF later.',
-        },
-        {
-          label: 'GitHub',
-          value: 'Coming later.',
+          value: 'Download CV',
+          href: 'documents/Hugo-Spangberg-CV-2026.pdf',
+          download: 'Hugo-Spangberg-CV-2026.pdf',
         },
       ] satisfies ContactLink[],
     },

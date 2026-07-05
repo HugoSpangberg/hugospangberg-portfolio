@@ -84,5 +84,6 @@ Assets/Blender/Sources/*-Update.blend
 !Assets/Blender/Sources/*-Update.blend
 Assets/Blender/Sources/career-world-master.blend
 Assets/Blender/Exports/*.glb
+Assets/Blender/Exports/**/*.glb
 Assets/Blender/Previews/**/*.png
 Assets/Blender/Reports/*

@@ -5,6 +5,7 @@ The export is reproducible from the repository root when Blender is installed.
 ```bash
 npm run models:export
 npm run models:preview
+npm run models:export-ai-core
 npm run models:validate
 ```
 
@@ -15,10 +16,22 @@ Tracked source/runtime assets:
 - `Assets/Blender/Sources/*.blend`
 - `HSClient/public/models/career-world/*.glb`
 - `HSClient/public/models/career-world/manifest.json`
+- `HSClient/public/models/ai-core/ai-core.glb`
+- `HSClient/public/images/ai-core/ai-core-poster.png`
+
+The Local AI model is exported from `Assets/Blender/Sources/ai-core.blend` with:
+
+```bash
+export BLENDER_EXECUTABLE="/Applications/Blender.app/Contents/MacOS/Blender"
+npm run models:export-ai-core
+```
+
+This writes the runtime GLB to `HSClient/public/models/ai-core/ai-core.glb`, renders `Assets/Blender/Previews/ai-core-desktop.png` and `Assets/Blender/Previews/ai-core-mobile.png`, and copies the desktop preview to the public poster fallback.
 
 Local generated review artifacts:
 
 - `Assets/Blender/Exports/*.glb`
+- `Assets/Blender/Exports/**/*.glb`
 - `Assets/Blender/Previews/**/*.png`
 - `Assets/Blender/Reports/*`
 

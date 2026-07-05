@@ -25,6 +25,7 @@
     "e2e": "npm --workspace HSClient run e2e",
     "api:generate": "npm --workspace HSClient run api:generate",
     "models:export": "bash scripts/export-models.sh",
+    "models:export-ai-core": "bash scripts/export-ai-core.sh",
     "models:assemble": "bash scripts/assemble-world.sh",
     "models:open-master": "bash scripts/open-master-world.sh",
     "models:export-master": "bash scripts/export-master-world.sh",
