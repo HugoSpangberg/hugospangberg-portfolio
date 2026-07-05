@@ -6,6 +6,7 @@ import {
   type CareerWorldLabels,
 } from '../hero/CareerWorld';
 import { updateDataPulses } from '../hero/DataPulse';
+import { SceneBackdrop } from '../hero/SceneBackdrop';
 import { careerMapItems, getCareerMapItem, type CareerMapItem } from '../hero/careerMap';
 import { loadCareerWorldAssets } from '../../features/career-world';
 import WorldFallback from './WorldFallback';
@@ -222,25 +223,30 @@ function CareerWorldScene({
         const pointer = new THREE.Vector2(8, 8);
         const raycaster = new THREE.Raycaster();
         const scene = new THREE.Scene();
-        scene.fog = new THREE.FogExp2(0x12342e, compact ? 0.045 : 0.052);
+        scene.fog = new THREE.FogExp2(0x10251f, compact ? 0.052 : 0.058);
 
-        const ambientFill = new THREE.AmbientLight(0xd9eee4, compact ? 0.5 : 0.44);
-        const skyFill = new THREE.HemisphereLight(0xe9fff7, 0x18372f, compact ? 0.86 : 0.78);
-        const keyLight = new THREE.DirectionalLight(0xf4fff6, compact ? 1.34 : 1.26);
-        keyLight.position.set(-4.8, 6.9, 4.2);
-        const rimLight = new THREE.DirectionalLight(0x99e7df, compact ? 0.94 : 0.88);
-        rimLight.position.set(4.8, 4.0, -5.8);
-        const forestGlow = new THREE.PointLight(0x72f2a3, compact ? 1.16 : 0.98, 4.6);
-        forestGlow.position.set(-3.1, 0.65, -1.65);
-        const warmGlow = new THREE.PointLight(0xf1b26f, compact ? 1.22 : 1.08, 3.9);
-        warmGlow.position.set(0.0, 0.58, -1.85);
-        const techGlow = new THREE.PointLight(0x77d8f7, compact ? 1.18 : 1.0, 4.2);
-        techGlow.position.set(3.1, 0.62, 1.68);
-        const officeGlow = new THREE.PointLight(0xb7f4d6, compact ? 0.78 : 0.64, 3.2);
-        officeGlow.position.set(-3.1, 0.5, 1.55);
-        const learningGlow = new THREE.PointLight(0xc4a5ff, compact ? 0.82 : 0.68, 3.0);
-        learningGlow.position.set(3.0, 0.52, -1.35);
-        scene.add(ambientFill, skyFill, keyLight, rimLight, forestGlow, warmGlow, techGlow, officeGlow, learningGlow);
+        const ambientFill = new THREE.AmbientLight(0x8fb7ad, compact ? 0.16 : 0.13);
+        const moonFill = new THREE.HemisphereLight(0x9fd0dc, 0x07120f, compact ? 0.44 : 0.36);
+        const moonKey = new THREE.DirectionalLight(0xbfd9e7, compact ? 1.08 : 0.98);
+        moonKey.position.set(-6.2, 4.4, 5.8);
+        moonKey.castShadow = true;
+        moonKey.shadow.mapSize.set(compact ? 768 : 1024, compact ? 768 : 1024);
+        moonKey.shadow.camera.near = 1;
+        moonKey.shadow.camera.far = 18;
+        moonKey.shadow.camera.left = -7;
+        moonKey.shadow.camera.right = 7;
+        moonKey.shadow.camera.top = 7;
+        moonKey.shadow.camera.bottom = -7;
+        const facadeFillTarget = new THREE.Object3D();
+        facadeFillTarget.position.set(0.1, -0.2, 0.0);
+        const facadeFill = new THREE.SpotLight(0xbde8e5, compact ? 2.85 : 2.55, 14, Math.PI * 0.38, 0.82, 1.2);
+        facadeFill.position.set(0.8, 2.05, 7.2);
+        facadeFill.target = facadeFillTarget;
+        const cyanRim = new THREE.DirectionalLight(0x74d7ff, compact ? 0.98 : 0.9);
+        cyanRim.position.set(5.4, 3.0, -6.4);
+        const lowForestFill = new THREE.DirectionalLight(0x6fa886, compact ? 0.2 : 0.17);
+        lowForestFill.position.set(-3.2, 0.95, -2.6);
+        scene.add(ambientFill, moonFill, moonKey, facadeFillTarget, facadeFill, cyanRim, lowForestFill);
 
         const camera = new THREE.PerspectiveCamera(initialCamera.fov, 1, 0.1, 48);
         camera.position.set(
@@ -258,8 +264,10 @@ function CareerWorldScene({
         renderer.setClearColor(0x000000, 0);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, initialCamera.pixelRatio));
         renderer.toneMapping = THREE.ACESFilmicToneMapping;
-        renderer.toneMappingExposure = compact ? 1.08 : 1.06;
+        renderer.toneMappingExposure = compact ? 0.94 : 0.9;
         renderer.outputColorSpace = THREE.SRGBColorSpace;
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         renderer.domElement.style.touchAction = isExpandedRef.current ? 'none' : 'pan-y';
         mount.appendChild(renderer.domElement);
 
@@ -284,6 +292,22 @@ function CareerWorldScene({
         renderer.domElement.style.touchAction = 'pan-y';
 
         const world = createCareerWorld(THREE, compact, worldLabelsRef.current);
+        world.hotspots.forEach((hotspot) => {
+          const accentLight =
+            hotspot.item.id === 'filmstaden'
+              ? new THREE.PointLight(0xffb16d, compact ? 1.35 : 1.15, 2.0, 2.2)
+              : hotspot.item.id === 'education'
+                ? new THREE.PointLight(0xffcf86, compact ? 0.72 : 0.58, 1.65, 2.2)
+                : hotspot.item.id === 'dasa'
+                  ? new THREE.PointLight(0x65d9ff, compact ? 0.72 : 0.58, 1.8, 2.2)
+                  : hotspot.item.id === 'sodra'
+                    ? new THREE.PointLight(0x8cf2b1, compact ? 0.72 : 0.58, 1.9, 2.2)
+                    : new THREE.PointLight(0xa8f4ff, compact ? 0.68 : 0.54, 1.75, 2.2);
+
+          accentLight.name = `Runtime_${hotspot.item.id}_NightAccent`;
+          accentLight.position.set(0, 0.34, hotspot.item.id === 'filmstaden' ? 0.78 : 0.62);
+          hotspot.group.add(accentLight);
+        });
         const abortController = new AbortController();
         let loadedAssets: Awaited<ReturnType<typeof loadCareerWorldAssets>> | undefined;
         world.group.scale.setScalar(initialCamera.worldScale);
@@ -363,7 +387,7 @@ function CareerWorldScene({
           const cameraConfig = getCameraConfig(width, expanded);
           renderer.setSize(width, height, false);
           renderer.setPixelRatio(Math.min(window.devicePixelRatio, cameraConfig.pixelRatio));
-          renderer.toneMappingExposure = width < 720 ? 1.08 : 1.06;
+          renderer.toneMappingExposure = width < 720 ? 0.94 : 0.9;
           renderer.domElement.style.touchAction = expanded && width < 720 ? 'none' : 'pan-y';
           camera.aspect = width / Math.max(height, 1);
           camera.fov = cameraConfig.fov;
@@ -508,7 +532,7 @@ function CareerWorldScene({
               ? 0.42 * (1 - outwardPulse)
               : 0.2 * (1 - outwardPulse);
             hotspot.group.position.y +=
-              (hotspot.item.position[1] + itemFloat(time, index, isFocused) - hotspot.group.position.y) * 0.025;
+              (hotspot.basePosition.y + itemFloat(time, index, isFocused) - hotspot.group.position.y) * 0.025;
           });
 
           if (world.focusRing.visible && targetHotspot) {
@@ -588,6 +612,7 @@ function CareerWorldScene({
 
   return (
     <div className={isExpanded ? 'world-scene is-expanded' : 'world-scene'} aria-label={label}>
+      <SceneBackdrop />
       <div className="world-scene__canvas" ref={mountRef} aria-label={label} role="img" />
       <div className="world-scene__shade" aria-hidden="true" />
       {sceneStatus !== 'ready' && (

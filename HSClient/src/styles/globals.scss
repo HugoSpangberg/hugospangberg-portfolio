@@ -373,6 +373,193 @@ p {
   z-index: 1;
 }
 
+.scene-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 50% 46%, rgba(132, 217, 205, 0.24), transparent 24rem),
+    radial-gradient(ellipse at 50% 73%, rgba(91, 139, 108, 0.24), transparent 38rem),
+    linear-gradient(180deg, #1b3a34 0%, #112b25 42%, #0a1d18 100%);
+}
+
+.scene-backdrop::before {
+  position: absolute;
+  inset: 0;
+  content: '';
+  background:
+    radial-gradient(ellipse at 50% 42%, rgba(185, 230, 213, 0.1), transparent 30%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.025), transparent 38%, rgba(4, 12, 10, 0.48));
+}
+
+.scene-backdrop__stars,
+.scene-backdrop__haze,
+.scene-backdrop__forest,
+.scene-backdrop__ground {
+  position: absolute;
+  pointer-events: none;
+}
+
+.scene-backdrop__stars {
+  inset: 0;
+  background-repeat: repeat;
+  mix-blend-mode: screen;
+  animation: career-stars-breathe 7.5s ease-in-out infinite;
+}
+
+.scene-backdrop__stars--far {
+  opacity: 0.28;
+  background-image:
+    radial-gradient(circle at 11% 17%, rgba(222, 247, 238, 0.72) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 31% 8%, rgba(202, 235, 229, 0.48) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 49% 19%, rgba(226, 250, 240, 0.54) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 68% 13%, rgba(212, 244, 237, 0.56) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 88% 24%, rgba(207, 235, 230, 0.46) 0 1px, transparent 1.5px);
+  background-size: 34rem 18rem;
+}
+
+.scene-backdrop__stars--near {
+  opacity: 0.42;
+  background-image:
+    radial-gradient(circle at 16% 25%, rgba(235, 255, 246, 0.8) 0 1.2px, transparent 1.8px),
+    radial-gradient(circle at 42% 14%, rgba(222, 255, 246, 0.58) 0 1px, transparent 1.7px),
+    radial-gradient(circle at 63% 31%, rgba(235, 255, 246, 0.74) 0 1.1px, transparent 1.9px),
+    radial-gradient(circle at 79% 18%, rgba(210, 245, 238, 0.62) 0 1px, transparent 1.7px),
+    radial-gradient(circle at 92% 34%, rgba(232, 255, 246, 0.58) 0 1px, transparent 1.8px);
+  background-size: 52rem 24rem;
+  animation-delay: -3.2s;
+}
+
+.scene-backdrop__haze {
+  right: -8%;
+  bottom: 21%;
+  left: -8%;
+  height: 31%;
+  background:
+    radial-gradient(ellipse at 48% 42%, rgba(188, 238, 218, 0.2), transparent 44%),
+    linear-gradient(180deg, transparent, rgba(113, 160, 135, 0.13) 42%, transparent 82%);
+  filter: blur(12px);
+  opacity: 0.84;
+}
+
+.scene-backdrop__forest {
+  right: -10%;
+  left: -10%;
+  bottom: 0;
+  background: linear-gradient(180deg, rgba(38, 85, 72, 0.34), rgba(8, 25, 20, 0.94));
+  transform-origin: 50% 100%;
+}
+
+.scene-backdrop__forest--far {
+  bottom: 51%;
+  height: 17%;
+  clip-path: polygon(
+    0 80%,
+    7% 61%,
+    13% 76%,
+    20% 50%,
+    27% 75%,
+    34% 56%,
+    42% 78%,
+    51% 47%,
+    60% 74%,
+    69% 54%,
+    77% 79%,
+    85% 58%,
+    93% 73%,
+    100% 54%,
+    100% 100%,
+    0 100%
+  );
+  filter: blur(2.4px);
+  opacity: 0.5;
+}
+
+.scene-backdrop__forest--mid {
+  bottom: 40%;
+  height: 25%;
+  clip-path: polygon(
+    0 86%,
+    5% 57%,
+    10% 80%,
+    16% 43%,
+    22% 79%,
+    29% 48%,
+    36% 83%,
+    43% 40%,
+    50% 81%,
+    57% 46%,
+    64% 83%,
+    71% 44%,
+    79% 82%,
+    87% 51%,
+    94% 79%,
+    100% 49%,
+    100% 100%,
+    0 100%
+  );
+  filter: blur(1px);
+  opacity: 0.68;
+}
+
+.scene-backdrop__forest--near {
+  bottom: 27%;
+  height: 28%;
+  background: linear-gradient(180deg, rgba(18, 50, 41, 0.66), rgba(4, 14, 11, 0.96));
+  clip-path: polygon(
+    0 90%,
+    4% 63%,
+    9% 88%,
+    14% 48%,
+    19% 91%,
+    25% 55%,
+    31% 90%,
+    38% 43%,
+    45% 90%,
+    51% 57%,
+    58% 91%,
+    65% 46%,
+    72% 90%,
+    79% 54%,
+    86% 89%,
+    93% 50%,
+    100% 88%,
+    100% 100%,
+    0 100%
+  );
+  opacity: 0.74;
+}
+
+.scene-backdrop__ground {
+  right: -10%;
+  bottom: -2%;
+  left: -10%;
+  height: 39%;
+  background:
+    radial-gradient(ellipse at 24% 48%, rgba(55, 126, 128, 0.35) 0 8%, transparent 24%),
+    radial-gradient(ellipse at 78% 44%, rgba(48, 108, 104, 0.24) 0 7%, transparent 22%),
+    linear-gradient(180deg, transparent 0%, rgba(42, 78, 61, 0.38) 24%, rgba(16, 43, 33, 0.76) 58%, rgba(4, 13, 10, 0.92) 100%);
+  filter: blur(4px);
+  opacity: 0.92;
+}
+
+@keyframes career-stars-breathe {
+  0%,
+  100% {
+    opacity: 0.22;
+  }
+
+  42% {
+    opacity: 0.54;
+  }
+
+  68% {
+    opacity: 0.32;
+  }
+}
+
 .world-scene::before,
 .world-scene::after {
   position: absolute;

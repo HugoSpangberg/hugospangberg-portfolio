@@ -3,6 +3,7 @@ import type * as Three from 'three';
 import { createCareerWorld, type CareerWorldHotspot } from './CareerWorld';
 import { updateDataPulses } from './DataPulse';
 import HeroFallback from './HeroFallback';
+import { SceneBackdrop } from './SceneBackdrop';
 import { careerMapItems, getCareerMapItem, type CareerMapItem } from './careerMap';
 
 type HeroSceneProps = {
@@ -142,15 +143,22 @@ function HeroScene({ label, fallbackLabel }: HeroSceneProps) {
         const pointer = new THREE.Vector2(8, 8);
         const raycaster = new THREE.Raycaster();
         const scene = new THREE.Scene();
-        scene.fog = new THREE.FogExp2(0x0d241f, compact ? 0.092 : 0.078);
-        const skyFill = new THREE.HemisphereLight(0xdaf7ee, 0x102720, compact ? 0.62 : 0.56);
-        const keyLight = new THREE.DirectionalLight(0xf2fff7, compact ? 1.05 : 0.98);
-        keyLight.position.set(-3.6, 5.2, 4.2);
-        const rimLight = new THREE.DirectionalLight(0x77d8f7, compact ? 0.46 : 0.42);
-        rimLight.position.set(4.4, 2.8, -4.8);
-        const forestFill = new THREE.PointLight(0x72f2a3, compact ? 0.64 : 0.56, 5.4);
-        forestFill.position.set(-2.2, 0.6, -2.4);
-        scene.add(skyFill, keyLight, rimLight, forestFill);
+        scene.fog = new THREE.FogExp2(0x10251f, compact ? 0.088 : 0.074);
+        const moonFill = new THREE.HemisphereLight(0x9fd0dc, 0x07120f, compact ? 0.4 : 0.34);
+        const moonKey = new THREE.DirectionalLight(0xbfd9e7, compact ? 0.98 : 0.9);
+        moonKey.position.set(-5.2, 4.2, 5.8);
+        const facadeFillTarget = new THREE.Object3D();
+        facadeFillTarget.position.set(0.04, -0.2, -0.1);
+        const facadeFill = new THREE.SpotLight(0xbde8e5, compact ? 1.75 : 1.52, 10, Math.PI * 0.38, 0.82, 1.2);
+        facadeFill.position.set(0.6, 1.8, 6.2);
+        facadeFill.target = facadeFillTarget;
+        const cyanRim = new THREE.DirectionalLight(0x74d7ff, compact ? 0.7 : 0.6);
+        cyanRim.position.set(4.8, 2.8, -5.6);
+        const warmCinemaFill = new THREE.PointLight(0xffb16d, compact ? 0.62 : 0.52, 3.2, 2.2);
+        warmCinemaFill.position.set(0.05, 0.35, -1.24);
+        const forestFill = new THREE.PointLight(0x72f2a3, compact ? 0.34 : 0.28, 4.0, 2.2);
+        forestFill.position.set(-2.2, 0.42, -1.85);
+        scene.add(moonFill, moonKey, facadeFillTarget, facadeFill, cyanRim, warmCinemaFill, forestFill);
 
         const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 38);
         camera.position.set(compact ? 0.35 : 0.25, compact ? 2.3 : 2.05, compact ? 6.7 : 5.6);
@@ -163,6 +171,9 @@ function HeroScene({ label, fallbackLabel }: HeroSceneProps) {
 
         renderer.setClearColor(0x000000, 0);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, compact ? 1.2 : 1.55));
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.toneMappingExposure = compact ? 0.96 : 0.92;
+        renderer.outputColorSpace = THREE.SRGBColorSpace;
         mount.appendChild(renderer.domElement);
 
         const controls = new controlsModule.OrbitControls(camera, renderer.domElement);
@@ -301,7 +312,7 @@ function HeroScene({ label, fallbackLabel }: HeroSceneProps) {
             hotspot.pulseRing.scale.setScalar(0.8 + outwardPulse * (isFocused ? 0.84 : 0.48));
             pulseMaterial.opacity = isFocused ? 0.28 * (1 - outwardPulse) : 0.12 * (1 - outwardPulse);
             hotspot.group.position.y +=
-              (hotspot.item.position[1] + itemFloat(time, index, isFocused) - hotspot.group.position.y) * 0.025;
+              (hotspot.basePosition.y + itemFloat(time, index, isFocused) - hotspot.group.position.y) * 0.025;
           });
 
           if (world.focusRing.visible && targetHotspot) {
@@ -354,6 +365,7 @@ function HeroScene({ label, fallbackLabel }: HeroSceneProps) {
 
   return (
     <div className="hero-demo" aria-label="Interactive career map">
+      <SceneBackdrop />
       <div className="hero-demo__scene" ref={mountRef} aria-label={label} role="img" />
       <div className="hero-demo__overlay" aria-hidden="true" />
       <p className="hero-demo__caption">Interactive career map</p>

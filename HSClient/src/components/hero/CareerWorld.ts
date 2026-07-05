@@ -4,6 +4,7 @@ import { careerMapItems, type CareerMapItem } from './careerMap';
 
 export type CareerWorldHotspot = {
   item: CareerMapItem;
+  basePosition: Three.Vector3;
   group: Three.Group;
   content: Three.Group;
   hitTarget: Three.Mesh;
@@ -303,18 +304,18 @@ function createPresentationFloor(THREE: typeof Three) {
     return disc;
   };
 
-  const mainGround = makeDisc(4.95, 0x132d27, 0.3, 0.64, -0.96);
-  mainGround.name = 'Runtime_PresentationGroundingFloor_Main';
-  const softShadow = makeDisc(5.65, 0x06110e, 0.28, 0.46, -0.985);
-  softShadow.name = 'Runtime_PresentationGroundingFloor_SoftShadow';
-  const nearMoss = makeDisc(3.2, 0x244c3f, 0.16, 0.54, -0.955);
-  nearMoss.name = 'Runtime_PresentationGroundingFloor_MossGlow';
+  const leftLake = makeDisc(0.72, 0x2a6c72, 0.08, 0.34, -0.948);
+  leftLake.name = 'Runtime_PresentationGroundingFloor_LeftLake';
+  leftLake.position.set(-2.65, -0.948, 1.55);
+  const rightLake = makeDisc(0.58, 0x245a61, 0.07, 0.38, -0.947);
+  rightLake.name = 'Runtime_PresentationGroundingFloor_RightLake';
+  rightLake.position.set(2.95, -0.947, 1.05);
   const horizonMist = new THREE.Mesh(
-    new THREE.RingGeometry(4.7, 5.75, 112),
+    new THREE.RingGeometry(5.8, 7.35, 128),
     new THREE.MeshBasicMaterial({
       color: 0x77d8f7,
       transparent: true,
-      opacity: 0.045,
+      opacity: 0.025,
       depthWrite: false,
       side: THREE.DoubleSide,
     }),
@@ -322,9 +323,9 @@ function createPresentationFloor(THREE: typeof Three) {
   horizonMist.name = 'Runtime_PresentationGroundingFloor_HorizonMist';
   horizonMist.rotation.x = -Math.PI / 2;
   horizonMist.position.y = -0.94;
-  horizonMist.scale.z = 0.5;
+  horizonMist.scale.z = 0.44;
 
-  group.add(softShadow, mainGround, nearMoss, horizonMist);
+  group.add(leftLake, rightLake, horizonMist);
   return group;
 }
 
@@ -1057,7 +1058,8 @@ function createHotspot(
   materials: Materials,
 ) {
   const group = new THREE.Group();
-  group.position.set(...item.position);
+  const basePosition = new THREE.Vector3(...item.position);
+  group.position.copy(basePosition);
   group.add(createGroundingPad(THREE, item, materials));
   if (item.id === 'dasa') {
     group.add(createDasaGroundAccents(THREE, materials));
@@ -1119,7 +1121,7 @@ function createHotspot(
   hitTarget.userData = { kind: 'career-hotspot', id: item.id };
   group.add(hitTarget);
 
-  return { item, group, content, hitTarget, marker, beacon, pulseRing, hoverHalo };
+  return { item, basePosition, group, content, hitTarget, marker, beacon, pulseRing, hoverHalo };
 }
 
 function createGroundingPad(THREE: typeof Three, item: CareerMapItem, materials: Materials) {
@@ -1265,7 +1267,7 @@ export function createCareerWorld(
   const pulses = hotspots.flatMap((hotspot, index) => [
     createDataPulse(
       THREE,
-      new THREE.Vector3(...hotspot.item.position).add(new THREE.Vector3(0, 0.45, 0)),
+      hotspot.basePosition.clone().add(new THREE.Vector3(0, 0.45, 0)),
       systemCore.position,
       { line: materials.line, dot: materials.dot },
       index * 0.14,

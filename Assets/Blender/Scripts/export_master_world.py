@@ -79,6 +79,14 @@ ASSETS = [
     },
 ]
 
+ENVIRONMENT_ANCHOR_BY_LANDMARK = {
+    "filmstaden": "Anchor_Filmstaden",
+    "visma": "Anchor_Visma",
+    "sodra": "Anchor_Sodra",
+    "dasa": "Anchor_Dasa",
+    "education": "Anchor_Education",
+}
+
 
 def descendants(root: bpy.types.Object) -> set[bpy.types.Object]:
     objects = {root}
@@ -93,6 +101,36 @@ def require_root(name: str) -> bpy.types.Object:
     if obj is None:
         raise RuntimeError(f"Missing root {name} in {MASTER_BLEND}")
     return obj
+
+
+def require_descendant_anchor(root: bpy.types.Object, anchor_name: str) -> bpy.types.Object:
+    for child in root.children_recursive:
+        if canonical_anchor_match(child.name, anchor_name):
+            return child
+    raise RuntimeError(f"Missing {anchor_name} under {root.name}")
+
+
+def set_world_location(obj: bpy.types.Object, location: Vector) -> None:
+    if obj.parent is None:
+        obj.location = location
+        return
+    obj.location = obj.parent.matrix_world.inverted() @ location
+
+
+def sync_environment_anchors_to_master_placement() -> None:
+    """The editable master scene is the visual source of truth for landmark placement."""
+    for asset in ASSETS:
+        anchor_name = ENVIRONMENT_ANCHOR_BY_LANDMARK.get(asset["id"])
+
+        if anchor_name is None:
+            continue
+
+        root = require_root(asset["root"])
+        placement = require_descendant_anchor(root, PLACEMENT_ANCHOR)
+        environment_anchor = require_root(anchor_name)
+        set_world_location(environment_anchor, placement.matrix_world.translation.copy())
+
+    bpy.context.view_layer.update()
 
 
 def canonical_anchor_match(name: str, canonical: str) -> bool:
@@ -280,6 +318,7 @@ def main() -> None:
         raise SystemExit("Missing master scene. Run npm run models:assemble first.")
 
     bpy.ops.wm.open_mainfile(filepath=str(MASTER_BLEND))
+    sync_environment_anchors_to_master_placement()
     reports = {asset["id"]: export_selected_asset(asset) for asset in ASSETS}
     export_combined_review_glb()
     write_manifest(reports)
