@@ -32,10 +32,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Configure GitHub Pages
-        id: pages
-        uses: actions/configure-pages@v5
-
       - name: Build static portfolio
         run: npm run build:client
         env:
