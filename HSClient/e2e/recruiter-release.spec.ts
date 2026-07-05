@@ -10,6 +10,7 @@ test('recruiter release homepage exposes verified content and no unfinished demo
 }) => {
   const consoleErrors: string[] = [];
   const failedGlbRequests: string[] = [];
+  const backendOfficeStateRequests: string[] = [];
 
   page.on('console', (message) => {
     if (message.type() === 'error') {
@@ -21,11 +22,18 @@ test('recruiter release homepage exposes verified content and no unfinished demo
       failedGlbRequests.push(requestEvent.url());
     }
   });
+  page.on('request', (requestEvent) => {
+    if (requestEvent.url().includes('/api/github/office-state')) {
+      backendOfficeStateRequests.push(requestEvent.url());
+    }
+  });
 
   await page.goto('/');
   await expect(page.getByRole('heading', { name: 'Hugo Spångberg' })).toBeVisible();
   await expect(page.locator('#local-ai')).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Lokal AI-station & personlig automation' })).toBeVisible();
+  await expect(page.locator('#hsab')).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'HSAB – AI-agenter i en lokal arbetsmiljö' })).toBeVisible();
 
   await page.locator('#local-ai').scrollIntoViewIfNeeded();
   await expect(page.locator('.local-ai-scene')).toHaveAttribute(
@@ -37,6 +45,18 @@ test('recruiter release homepage exposes verified content and no unfinished demo
     /ready|fallback/,
     { timeout: 20_000 },
   );
+
+  await page.locator('#hsab').scrollIntoViewIfNeeded();
+  await expect(page.locator('.hsab-showcase-canvas')).toHaveAttribute(
+    'data-scene-status',
+    /loading|ready|fallback/,
+  );
+  await expect(page.locator('.hsab-showcase-canvas')).toHaveAttribute(
+    'data-scene-status',
+    /ready|fallback/,
+    { timeout: 20_000 },
+  );
+  await expect(page.locator('#hsab').getByRole('link')).toHaveCount(0);
 
   const cvLink = page.getByRole('link', { name: /ladda ner cv pdf/i }).first();
   await expect(cvLink).toHaveAttribute('download', 'Hugo-Spangberg-CV-2026.pdf');
@@ -54,8 +74,10 @@ test('recruiter release homepage exposes verified content and no unfinished demo
 
   await page.getByRole('button', { name: 'English' }).click();
   await expect(page.getByRole('heading', { name: 'Home AI Station & Personal Automation' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'HSAB – AI Agents in a Local Workspace' })).toBeVisible();
   await expect(page.getByRole('link', { name: /download cv pdf/i }).first()).toBeVisible();
 
   expect(failedGlbRequests).toEqual([]);
+  expect(backendOfficeStateRequests).toEqual([]);
   expect(consoleErrors).toEqual([]);
 });
