@@ -65,6 +65,20 @@ export type LocalAiSection = {
   fallbackLabel: string;
 };
 
+export type HsabSection = {
+  kicker: string;
+  title: string;
+  shortDescription: string;
+  description: string[];
+  technologiesLabel: string;
+  technologies: string[];
+  keyPointsLabel: string;
+  keyPoints: string[];
+  sceneLabel: string;
+  loadingLabel: string;
+  fallbackLabel: string;
+};
+
 export type SystemThinkingCard = {
   title: string;
   description: string;
@@ -89,6 +103,7 @@ export const content = {
       { label: 'Erfarenhet', href: '#erfarenhet' },
       { label: 'Projekt', href: '#projekt' },
       { label: 'Lokalt AI-labb', href: '#local-ai' },
+      { label: 'HSAB', href: '#hsab' },
       { label: 'Kontakt', href: '#contact' },
     ] satisfies NavItem[],
     hero: {
@@ -378,6 +393,38 @@ export const content = {
       loadingLabel: 'Laddar AI-station',
       fallbackLabel: 'Statisk visualisering av lokal AI-station',
     } satisfies LocalAiSection,
+    hsab: {
+      kicker: 'Pågående AI-projekt',
+      title: 'HSAB – AI-agenter i en lokal arbetsmiljö',
+      shortDescription:
+        'Ett personligt AI-projekt där flera agenter visualiseras i en digital kontorsmiljö och kan kopplas till uppgifter, status och arbetsflöden.',
+      description: [
+        'HSAB är ett pågående projekt där jag utforskar hur AI-agenter kan organiseras i en visuell arbetsmiljö. Projektet använder en Phaser-baserad kontorsscen där agenter kan representera olika roller, röra sig i miljön och reagera på uppgifter eller mockad arbetsstatus.',
+        'Syftet är att undersöka hur en lokal AI-agentmiljö kan bli mer begriplig, kontrollerbar och praktiskt användbar. I stället för att bara visa en chattbot fokuserar projektet på hur flera specialiserade agenter kan visualiseras, samordnas och kopplas till tydliga arbetsflöden.',
+      ],
+      technologiesLabel: 'Tekniker i HSAB',
+      technologies: [
+        'React',
+        'Vite',
+        'Phaser',
+        'TypeScript',
+        'ASP.NET Core',
+        'GitHub Issues API',
+        'AI-agenter',
+        'Automation',
+      ],
+      keyPointsLabel: 'HSAB fokusområden',
+      keyPoints: [
+        'Visuell kontorsmiljö byggd med React, Vite och Phaser.',
+        'Agenter med roller, status och rörelse i scenen.',
+        'Mock/offline-läge för säker portfolio-visning.',
+        'Backend-stöd för GitHub Issues finns i projektet men är inte aktiverat publikt.',
+        'Fokus på tydliga arbetsflöden, lokal kontroll och praktisk automation.',
+      ],
+      sceneLabel: 'Sanerad portfolioförhandsvisning av HSAB:s Phaser-baserade agentkontor.',
+      loadingLabel: 'Laddar HSAB',
+      fallbackLabel: 'Statisk förhandsvisning av HSAB:s agentkontor',
+    } satisfies HsabSection,
     sayHi: {
       kicker: 'Nyfiken?',
       title: 'Säg hej till mig',
@@ -478,6 +525,7 @@ export const content = {
       { label: 'Experience', href: '#erfarenhet' },
       { label: 'Projects', href: '#projekt' },
       { label: 'Local AI Lab', href: '#local-ai' },
+      { label: 'HSAB', href: '#hsab' },
       { label: 'Contact', href: '#contact' },
     ] satisfies NavItem[],
     hero: {
@@ -767,6 +815,38 @@ export const content = {
       loadingLabel: 'Loading AI station',
       fallbackLabel: 'Static visualization of the local AI station',
     } satisfies LocalAiSection,
+    hsab: {
+      kicker: 'Ongoing AI project',
+      title: 'HSAB – AI Agents in a Local Workspace',
+      shortDescription:
+        'A personal AI project where multiple agents are visualized inside a digital office environment and can be connected to tasks, status and workflows.',
+      description: [
+        'HSAB is an ongoing project where I explore how AI agents can be organized inside a visual workspace. The project uses a Phaser-based office scene where agents can represent different roles, move through the environment and react to tasks or mocked work status.',
+        'The goal is to explore how a local AI-agent environment can become more understandable, controllable and practically useful. Instead of only showing a chatbot, the project focuses on how multiple specialized agents can be visualized, coordinated and connected to clear workflows.',
+      ],
+      technologiesLabel: 'HSAB technologies',
+      technologies: [
+        'React',
+        'Vite',
+        'Phaser',
+        'TypeScript',
+        'ASP.NET Core',
+        'GitHub Issues API',
+        'AI agents',
+        'Automation',
+      ],
+      keyPointsLabel: 'HSAB focus areas',
+      keyPoints: [
+        'Visual office workspace built with React, Vite and Phaser.',
+        'Agents with roles, status and movement inside the scene.',
+        'Mock/offline mode for safe portfolio display.',
+        'Backend support for GitHub Issues exists in the project but is not enabled publicly.',
+        'Focus on clear workflows, local control and practical automation.',
+      ],
+      sceneLabel: 'Sanitized portfolio preview of the HSAB Phaser-based agent office.',
+      loadingLabel: 'Loading HSAB',
+      fallbackLabel: 'Static preview of the HSAB agent office',
+    } satisfies HsabSection,
     sayHi: {
       kicker: 'Curious?',
       title: 'Say hi to me',

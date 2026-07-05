@@ -34,9 +34,14 @@ function mergeExperienceFallback(
   candidate: PortfolioContent,
 ): PortfolioContent {
   const fallback = content[locale];
+  const candidateWithStaticSections = {
+    ...candidate,
+    hsab: candidate.hsab ?? fallback.hsab,
+    localAi: candidate.localAi ?? fallback.localAi,
+  };
 
-  if (candidate.experience.items.length > 0) {
-    return candidate;
+  if (candidateWithStaticSections.experience.items.length > 0) {
+    return candidateWithStaticSections;
   }
 
   if (import.meta.env.DEV) {
@@ -44,7 +49,7 @@ function mergeExperienceFallback(
   }
 
   return {
-    ...candidate,
+    ...candidateWithStaticSections,
     experience: fallback.experience,
   };
 }

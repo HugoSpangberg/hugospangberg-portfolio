@@ -14,6 +14,7 @@ import WorldIntroSection from './components/world/WorldIntroSection';
 import { PortfolioContentProvider, usePortfolioContent } from './cms';
 import type { Locale } from './data/content';
 import AdminApp from './features/admin/AdminApp';
+import { HsabSection } from './features/hsab';
 import { LocalAiSection } from './features/local-ai';
 
 const defaultLocale: Locale = 'sv';
@@ -112,6 +113,7 @@ function PortfolioPage({ locale, onLocaleChange }: PortfolioPageProps) {
         <Education content={page.education} />
         <Labs content={page.labs} />
         <LocalAiSection content={page.localAi} />
+        <HsabSection content={page.hsab} />
         <BuiltWith content={page.builtWith} />
         <Contact content={page.contact} />
       </main>

@@ -56,7 +56,8 @@ export const portfolioContentSchema = z
         lookingFor: textListSchema,
         highlights: textListSchema,
       })
-      .passthrough(),
+      .passthrough()
+      .optional(),
     skills: z.object({ items: z.array(z.unknown()) }).passthrough(),
     systemThinking: z.object({ cards: z.array(z.unknown()) }).passthrough(),
     experience: z.object({ items: z.array(experienceItemSchema) }).passthrough(),
@@ -74,6 +75,21 @@ export const portfolioContentSchema = z
             description: z.string().min(1),
           }),
         ),
+        sceneLabel: z.string().min(1),
+        loadingLabel: z.string().min(1),
+        fallbackLabel: z.string().min(1),
+      })
+      .passthrough(),
+    hsab: z
+      .object({
+        kicker: z.string().min(1),
+        title: z.string().min(1),
+        shortDescription: z.string().min(1),
+        description: textListSchema,
+        technologiesLabel: z.string().min(1),
+        technologies: textListSchema,
+        keyPointsLabel: z.string().min(1),
+        keyPoints: textListSchema,
         sceneLabel: z.string().min(1),
         loadingLabel: z.string().min(1),
         fallbackLabel: z.string().min(1),

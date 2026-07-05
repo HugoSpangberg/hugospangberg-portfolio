@@ -1,0 +1,178 @@
+.hsab {
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 12% 18%, rgba(114, 242, 163, 0.08), transparent 22rem),
+    radial-gradient(circle at 82% 52%, rgba(119, 216, 247, 0.1), transparent 26rem),
+    linear-gradient(180deg, rgba(6, 18, 16, 0.72), rgba(5, 15, 13, 0.9));
+  border-block: 1px solid rgba(183, 244, 214, 0.08);
+  scroll-margin-top: 6rem;
+}
+
+.hsab__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(20rem, 1.1fr);
+  gap: clamp(2rem, 5vw, 4.5rem);
+  align-items: center;
+}
+
+.hsab__content {
+  max-width: 44rem;
+}
+
+.hsab__content h2 {
+  margin-bottom: 0.95rem;
+}
+
+.hsab__lead {
+  max-width: 38rem;
+  color: var(--color-text);
+  font-size: clamp(1.04rem, 2vw, 1.22rem);
+  font-weight: 750;
+  line-height: 1.55;
+}
+
+.hsab__copy {
+  display: grid;
+  gap: 0.9rem;
+  margin: 1.15rem 0 1.35rem;
+}
+
+.hsab__copy p {
+  margin-bottom: 0;
+}
+
+.hsab__scene-panel {
+  position: relative;
+}
+
+.hsab__scene-panel::before {
+  position: absolute;
+  inset: 8% -6% -8% 6%;
+  z-index: 0;
+  pointer-events: none;
+  content: '';
+  background:
+    radial-gradient(circle at 52% 46%, rgba(119, 216, 247, 0.18), transparent 16rem),
+    radial-gradient(circle at 44% 70%, rgba(114, 242, 163, 0.12), transparent 18rem);
+  filter: blur(24px);
+}
+
+.hsab-showcase-canvas {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  min-height: clamp(22rem, 34vw, 30rem);
+  isolation: isolate;
+  background:
+    radial-gradient(circle at 50% 34%, rgba(52, 240, 213, 0.14), transparent 18rem),
+    linear-gradient(180deg, #071718, #040d0c);
+  border: 1px solid rgba(183, 244, 214, 0.13);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 26px 70px rgba(0, 0, 0, 0.28);
+}
+
+.hsab-showcase-canvas::before,
+.hsab-showcase-canvas::after {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  content: '';
+}
+
+.hsab-showcase-canvas::before {
+  background-image:
+    linear-gradient(rgba(119, 216, 247, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(119, 216, 247, 0.04) 1px, transparent 1px);
+  background-size: 2.8rem 2.8rem;
+  mask-image: radial-gradient(circle at 50% 50%, #000, transparent 76%);
+}
+
+.hsab-showcase-canvas::after {
+  background:
+    radial-gradient(ellipse at 50% 50%, transparent 0 54%, rgba(4, 13, 12, 0.36) 86%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.025), transparent 32%, rgba(0, 0, 0, 0.24));
+}
+
+.hsab-showcase-canvas__mount,
+.hsab-showcase-canvas__fallback {
+  position: absolute;
+  inset: 0;
+}
+
+.hsab-showcase-canvas__mount {
+  z-index: 1;
+}
+
+.hsab-showcase-canvas__mount canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.hsab-showcase-canvas__fallback {
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  color: var(--color-muted);
+  background:
+    radial-gradient(circle at 50% 48%, rgba(119, 216, 247, 0.12), transparent 12rem),
+    linear-gradient(135deg, rgba(8, 28, 27, 0.92), rgba(4, 13, 12, 0.96));
+}
+
+.hsab-showcase-canvas__fallback span {
+  padding: 0.5rem 0.65rem;
+  background: rgba(6, 17, 14, 0.66);
+  border: 1px solid rgba(183, 244, 214, 0.14);
+  border-radius: var(--radius-sm);
+  font-size: 0.72rem;
+  font-weight: 850;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.hsab__points {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.85rem;
+  margin-top: clamp(2rem, 5vw, 3rem);
+}
+
+.hsab-point {
+  min-height: 9.5rem;
+  padding: 0.95rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(183, 244, 214, 0.12);
+  border-radius: var(--radius-sm);
+}
+
+.hsab-point p {
+  margin-bottom: 0;
+  color: var(--color-muted);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+@media (max-width: 980px) {
+  .hsab__layout {
+    grid-template-columns: 1fr;
+  }
+
+  .hsab__points {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .hsab {
+    scroll-margin-top: 8.5rem;
+  }
+
+  .hsab-showcase-canvas {
+    min-height: 21rem;
+  }
+
+  .hsab__points {
+    grid-template-columns: 1fr;
+  }
+}
