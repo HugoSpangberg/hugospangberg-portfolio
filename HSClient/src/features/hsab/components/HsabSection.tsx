@@ -68,13 +68,6 @@ function HsabSection({ content }: HsabSectionProps) {
         </div>
       </div>
 
-      <div className="container hsab__points" aria-label={content.keyPointsLabel}>
-        {content.keyPoints.map((point) => (
-          <article className="hsab-point" key={point}>
-            <p>{point}</p>
-          </article>
-        ))}
-      </div>
     </section>
   );
 }

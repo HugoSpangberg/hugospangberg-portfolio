@@ -21,7 +21,7 @@ function Labs({ content }: LabsProps) {
       <div className="container">
         <SectionHeading kicker={content.kicker} title={content.title} id="labs-title" />
         <p className="section-intro">{content.description}</p>
-        <div className="card-grid card-grid--two">
+        <div className="card-grid">
           {content.items.map((item) => (
             <article className="card lab-card" key={item.title}>
               <span className="card-node" aria-hidden="true" />

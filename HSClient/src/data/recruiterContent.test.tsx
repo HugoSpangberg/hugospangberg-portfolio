@@ -27,6 +27,8 @@ describe('recruiter-ready portfolio content', () => {
     ).toBeInTheDocument();
     expect(screen.getByText('Linux')).toBeInTheDocument();
     expect(screen.getByText('Docker')).toBeInTheDocument();
+    expect(screen.queryByText('Local-first')).not.toBeInTheDocument();
+    expect(screen.queryByText('Agent workflows')).not.toBeInTheDocument();
     expect(screen.getByRole('img', { name: content.en.localAi.fallbackLabel })).toBeInTheDocument();
   });
 
