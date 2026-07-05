@@ -67,7 +67,6 @@ function HsabSection({ content }: HsabSectionProps) {
           />
         </div>
       </div>
-
     </section>
   );
 }

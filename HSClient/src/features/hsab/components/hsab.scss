@@ -10,13 +10,13 @@
 
 .hsab__layout {
   display: grid;
-  grid-template-columns: minmax(18rem, 0.68fr) minmax(36rem, 1.55fr);
-  gap: clamp(1.75rem, 3.5vw, 3.5rem);
+  grid-template-columns: 1fr;
+  gap: clamp(2rem, 5vw, 3.5rem);
   align-items: start;
 }
 
 .hsab__content {
-  max-width: 44rem;
+  max-width: 54rem;
 }
 
 .hsab__content h2 {
@@ -43,7 +43,8 @@
 
 .hsab__scene-panel {
   position: relative;
-  margin-top: clamp(1.25rem, 5vw, 4rem);
+  width: min(100%, 72rem);
+  margin: 0 auto;
 }
 
 .hsab__scene-panel::before {
@@ -62,7 +63,7 @@
   position: relative;
   z-index: 1;
   overflow: hidden;
-  min-height: clamp(25rem, 38vw, 34rem);
+  min-height: clamp(26rem, 46vw, 38rem);
   aspect-ratio: 112 / 76;
   isolation: isolate;
   background:
@@ -131,16 +132,6 @@
   font-weight: 850;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-}
-
-@media (max-width: 980px) {
-  .hsab__layout {
-    grid-template-columns: 1fr;
-  }
-
-  .hsab__scene-panel {
-    margin-top: 0.5rem;
-  }
 }
 
 @media (max-width: 560px) {
