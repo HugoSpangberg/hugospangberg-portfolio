@@ -60,7 +60,7 @@ describe('portfolioContentRepository', () => {
     const result = await loadPortfolioContent('sv');
 
     expect(result.source).toBe('fallback');
-    expect(result.content.sayHi.buttonLabel).toBe('Klicka på lampan och säg hej');
+    expect(result.content.sayHi.buttonLabel).toBe('Klicka på mig');
   });
 
   it('falls back to bundled experience content when API experience items are empty', async () => {

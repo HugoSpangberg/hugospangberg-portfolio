@@ -17,10 +17,6 @@ function isSayHiEnabled() {
   return import.meta.env.VITE_SAY_HI_ENABLED !== 'false';
 }
 
-function getSayHiEndpoint() {
-  return import.meta.env.VITE_SAY_HI_ENDPOINT || undefined;
-}
-
 function getLampVisualState(state: SayHiState): LampVisualState {
   switch (state.status) {
     case 'idle':
@@ -41,17 +37,14 @@ function getLampVisualState(state: SayHiState): LampVisualState {
 
 function SayHiSection({ locale, copy }: SayHiSectionProps) {
   const enabled = isSayHiEnabled();
-  const sayHi = useSayHi({ locale, endpoint: getSayHiEndpoint() });
+  const sayHi = useSayHi({ locale });
   const lampVisualState = getLampVisualState(sayHi.state);
 
   return (
     <section className="say-hi-section section" id="say-hi" data-reveal>
       <Suspense
         fallback={
-          <div
-            className="say-hi-scene say-hi-scene--fallback"
-            aria-hidden="true"
-          >
+          <div className="say-hi-scene say-hi-scene--fallback" aria-hidden="true">
             <span>{copy.fallback}</span>
           </div>
         }
@@ -77,11 +70,7 @@ function SayHiSection({ locale, copy }: SayHiSectionProps) {
           />
         </div>
 
-        <div
-          ref={sayHi.turnstileRef}
-          className="say-hi-section__turnstile"
-          aria-hidden="true"
-        />
+        <div ref={sayHi.turnstileRef} className="say-hi-section__turnstile" aria-hidden="true" />
       </div>
     </section>
   );

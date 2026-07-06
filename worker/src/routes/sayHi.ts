@@ -1,22 +1,9 @@
 import { sayHiRequestSchema } from '../validation/sayHiSchema';
-import {
-  corsHeaders,
-  isAllowedOrigin,
-  securityHeaders,
-} from '../security/cors';
+import { corsHeaders, isAllowedOrigin, securityHeaders } from '../security/cors';
 import { createRequestContext } from '../security/requestContext';
 import { HomeAssistantGateway } from '../services/homeAssistantGateway';
-import {
-  MockHomeAutomationGateway,
-  UnavailableHomeAutomationGateway,
-  type HomeAutomationGateway,
-} from '../services/homeAutomationGateway';
-import { TelegramGateway } from '../services/telegramGateway';
-import {
-  CloudflareTurnstileVerifier,
-  MockTurnstileVerifier,
-  type TurnstileVerifier,
-} from '../services/turnstileVerifier';
+import { MockHomeAutomationGateway, type HomeAutomationGateway } from '../services/homeAutomationGateway';
+import { CloudflareTurnstileVerifier, MockTurnstileVerifier, type TurnstileVerifier } from '../services/turnstileVerifier';
 import type { Env } from '../types';
 
 const maxBodyBytes = 2048;
@@ -73,54 +60,16 @@ async function isRateLimited(env: Env, ipHash: string) {
 }
 
 function createTurnstileVerifier(env: Env): TurnstileVerifier {
-  const secretKey = env.TURNSTILE_SECRET_KEY ?? '';
-
-  if (
-    env.SAY_HI_PROVIDER === 'mock' ||
-    env.SAY_HI_USE_MOCK_GATEWAY === 'true' ||
-    secretKey.startsWith('1x000')
-  ) {
+  if (env.TURNSTILE_SECRET_KEY.startsWith('1x000') || env.SAY_HI_USE_MOCK_GATEWAY === 'true') {
     return new MockTurnstileVerifier();
   }
 
-  return new CloudflareTurnstileVerifier(secretKey);
+  return new CloudflareTurnstileVerifier(env.TURNSTILE_SECRET_KEY);
 }
 
 function createGateway(env: Env): HomeAutomationGateway {
-  const provider = env.SAY_HI_PROVIDER?.toLowerCase();
-
-  if (provider === 'mock' || env.SAY_HI_USE_MOCK_GATEWAY === 'true') {
+  if (env.SAY_HI_USE_MOCK_GATEWAY === 'true') {
     return new MockHomeAutomationGateway();
-  }
-
-  if (provider === 'telegram') {
-    return new TelegramGateway({
-      botToken: env.TELEGRAM_BOT_TOKEN,
-      chatId: env.TELEGRAM_CHAT_ID,
-    });
-  }
-
-  if (provider === 'homeassistant' || env.HOME_AUTOMATION_WEBHOOK_URL) {
-    return new HomeAssistantGateway({
-      webhookUrl: env.HOME_AUTOMATION_WEBHOOK_URL,
-      accessClientId: env.HOME_AUTOMATION_ACCESS_CLIENT_ID,
-      accessClientSecret: env.HOME_AUTOMATION_ACCESS_CLIENT_SECRET,
-    });
-  }
-
-  if (env.TELEGRAM_BOT_TOKEN && env.TELEGRAM_CHAT_ID) {
-    return new TelegramGateway({
-      botToken: env.TELEGRAM_BOT_TOKEN,
-      chatId: env.TELEGRAM_CHAT_ID,
-    });
-  }
-
-  if (!provider) {
-    return new UnavailableHomeAutomationGateway();
-  }
-
-  if (provider !== 'homeassistant') {
-    return new UnavailableHomeAutomationGateway();
   }
 
   return new HomeAssistantGateway({
@@ -144,69 +93,39 @@ async function reserveCooldown(env: Env, requestId: string, seconds: number) {
   >;
 }
 
-export async function handleSayHi(
-  request: Request,
-  env: Env,
-): Promise<Response> {
+export async function handleSayHi(request: Request, env: Env): Promise<Response> {
   const context = await createRequestContext(request);
 
   if (request.method === 'OPTIONS') {
     return isAllowedOrigin(context.origin, env)
-      ? new Response(null, {
-          status: 204,
-          headers: corsHeaders(context.origin ?? ''),
-        })
+      ? new Response(null, { status: 204, headers: corsHeaders(context.origin ?? '') })
       : new Response(null, { status: 403 });
   }
 
   if (!isAllowedOrigin(context.origin, env)) {
-    return new Response(
-      JSON.stringify({ status: 'error', requestId: context.requestId }),
-      {
-        status: 403,
-        headers: { 'content-type': 'application/json; charset=utf-8' },
-      },
-    );
+    return new Response(JSON.stringify({ status: 'error', requestId: context.requestId }), {
+      status: 403,
+      headers: { 'content-type': 'application/json; charset=utf-8' },
+    });
   }
 
   const origin = context.origin ?? env.ALLOWED_ORIGIN;
 
   if (request.method !== 'POST') {
-    return jsonResponse(
-      { status: 'error', requestId: context.requestId },
-      405,
-      origin,
-    );
+    return jsonResponse({ status: 'error', requestId: context.requestId }, 405, origin);
   }
 
-  if (
-    !request.headers
-      .get('content-type')
-      ?.toLowerCase()
-      .includes('application/json')
-  ) {
-    return jsonResponse(
-      { status: 'error', requestId: context.requestId },
-      415,
-      origin,
-    );
+  if (!request.headers.get('content-type')?.toLowerCase().includes('application/json')) {
+    return jsonResponse({ status: 'error', requestId: context.requestId }, 415, origin);
   }
 
   if (!isEnabled(env)) {
-    return jsonResponse(
-      { status: 'unavailable', requestId: context.requestId },
-      503,
-      origin,
-    );
+    return jsonResponse({ status: 'unavailable', requestId: context.requestId }, 503, origin);
   }
 
   if (await isRateLimited(env, context.ipHash)) {
     return jsonResponse(
-      {
-        status: 'cooldown',
-        requestId: context.requestId,
-        retryAfterSeconds: 60,
-      },
+      { status: 'cooldown', requestId: context.requestId, retryAfterSeconds: 60 },
       429,
       origin,
     );
@@ -216,21 +135,13 @@ export async function handleSayHi(
   try {
     body = await parseJsonBody(request);
   } catch {
-    return jsonResponse(
-      { status: 'error', requestId: context.requestId },
-      400,
-      origin,
-    );
+    return jsonResponse({ status: 'error', requestId: context.requestId }, 400, origin);
   }
 
   const parsed = sayHiRequestSchema.safeParse(body);
 
   if (!parsed.success) {
-    return jsonResponse(
-      { status: 'error', requestId: context.requestId },
-      400,
-      origin,
-    );
+    return jsonResponse({ status: 'error', requestId: context.requestId }, 400, origin);
   }
 
   const verifier = createTurnstileVerifier(env);
@@ -240,18 +151,10 @@ export async function handleSayHi(
   );
 
   if (!verified) {
-    return jsonResponse(
-      { status: 'error', requestId: parsed.data.requestId },
-      400,
-      origin,
-    );
+    return jsonResponse({ status: 'error', requestId: parsed.data.requestId }, 400, origin);
   }
 
-  const reserved = await reserveCooldown(
-    env,
-    parsed.data.requestId,
-    cooldownSeconds(env),
-  );
+  const reserved = await reserveCooldown(env, parsed.data.requestId, cooldownSeconds(env));
 
   if (reserved.status === 'cooldown') {
     return jsonResponse(reserved, 429, origin);
@@ -260,7 +163,6 @@ export async function handleSayHi(
   const result = await createGateway(env).sendHello({
     requestId: parsed.data.requestId,
     timestamp: new Date().toISOString(),
-    locale: parsed.data.locale,
   });
 
   if (result.status !== 'sent') {
@@ -272,19 +174,10 @@ export async function handleSayHi(
       }),
     );
 
-    return jsonResponse(
-      { status: 'unavailable', requestId: parsed.data.requestId },
-      503,
-      origin,
-    );
+    return jsonResponse({ status: 'unavailable', requestId: parsed.data.requestId }, 503, origin);
   }
 
-  console.info(
-    JSON.stringify({
-      event: 'say_hi_accepted',
-      requestId: parsed.data.requestId,
-    }),
-  );
+  console.info(JSON.stringify({ event: 'say_hi_accepted', requestId: parsed.data.requestId }));
 
   return jsonResponse(
     {

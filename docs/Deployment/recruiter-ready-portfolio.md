@@ -76,9 +76,7 @@ Static build environment:
 VITE_BASE_PATH=/hugospangberg-portfolio/
 VITE_API_ENABLED=false
 VITE_ADMIN_ENABLED=false
-VITE_SAY_HI_ENABLED=true
-VITE_SAY_HI_ENDPOINT=https://your-worker-domain.example/api/v1/greetings
-VITE_TURNSTILE_SITE_KEY=<public-turnstile-site-key>
+VITE_SAY_HI_ENABLED=false
 ```
 
 Public files must be resolved through `import.meta.env.BASE_URL` or Vite HTML `%BASE_URL%` placeholders. Do not use root-relative paths for models, images, the CV PDF, favicons or posters.
@@ -105,8 +103,7 @@ For Pages-base validation, run the Playwright release spec against a production 
 VITE_BASE_PATH=/hugospangberg-portfolio/ \
 VITE_API_ENABLED=false \
 VITE_ADMIN_ENABLED=false \
-VITE_SAY_HI_ENABLED=true \
-VITE_SAY_HI_ENDPOINT=http://127.0.0.1:8787/api/v1/greetings \
+VITE_SAY_HI_ENABLED=false \
 PLAYWRIGHT_BASE_URL=http://127.0.0.1:4173/hugospangberg-portfolio/ \
 npm --workspace HSClient run e2e -- e2e/recruiter-release.spec.ts
 ```

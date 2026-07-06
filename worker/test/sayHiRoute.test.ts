@@ -19,9 +19,7 @@ class MemoryDurableObjectState {
 }
 
 function createCooldownNamespace() {
-  const durableObject = new SayHiCooldown(
-    new MemoryDurableObjectState() as unknown as DurableObjectState,
-  );
+  const durableObject = new SayHiCooldown(new MemoryDurableObjectState() as unknown as DurableObjectState);
 
   return {
     idFromName: () => ({ toString: () => 'global' }),
@@ -67,23 +65,14 @@ describe('handleSayHi', () => {
     const body = (await response.json()) as Record<string, unknown>;
 
     expect(response.status).toBe(200);
-    expect(body).toEqual({
-      status: 'accepted',
-      requestId,
-      cooldownSeconds: 120,
-    });
+    expect(body).toEqual({ status: 'accepted', requestId, cooldownSeconds: 120 });
     expect(JSON.stringify(body)).not.toContain('SECRET');
     expect(JSON.stringify(body)).not.toContain('webhook');
   });
 
   it('rejects disallowed origins', async () => {
     const response = await handleSayHi(
-      createRequest(validBody, {
-        headers: {
-          origin: 'https://evil.example.com',
-          'content-type': 'application/json',
-        },
-      }),
+      createRequest(validBody, { headers: { origin: 'https://evil.example.com', 'content-type': 'application/json' } }),
       createEnv(),
     );
 
@@ -95,10 +84,7 @@ describe('handleSayHi', () => {
     await handleSayHi(createRequest(validBody), env);
 
     const response = await handleSayHi(
-      createRequest({
-        ...validBody,
-        requestId: 'd8303f81-65a8-42d5-8f8c-732aca6624cc',
-      }),
+      createRequest({ ...validBody, requestId: 'd8303f81-65a8-42d5-8f8c-732aca6624cc' }),
       env,
     );
     const body = (await response.json()) as Record<string, unknown>;
@@ -123,62 +109,10 @@ describe('handleSayHi', () => {
   });
 
   it('returns unavailable when disabled', async () => {
-    const response = await handleSayHi(
-      createRequest(validBody),
-      createEnv({ SAY_HI_ENABLED: 'false' }),
-    );
+    const response = await handleSayHi(createRequest(validBody), createEnv({ SAY_HI_ENABLED: 'false' }));
     const body = (await response.json()) as Record<string, unknown>;
 
     expect(response.status).toBe(503);
     expect(body.status).toBe('unavailable');
-  });
-
-  it('uses Telegram provider when configured', async () => {
-    const fetcher = vi
-      .fn()
-      .mockResolvedValue(
-        new Response(JSON.stringify({ ok: true }), { status: 200 }),
-      );
-    vi.stubGlobal('fetch', fetcher);
-
-    const response = await handleSayHi(
-      createRequest(validBody),
-      createEnv({
-        SAY_HI_PROVIDER: 'telegram',
-        SAY_HI_USE_MOCK_GATEWAY: 'false',
-        TELEGRAM_BOT_TOKEN: 'SECRET_BOT_TOKEN',
-        TELEGRAM_CHAT_ID: '123456',
-      }),
-    );
-    const body = (await response.json()) as Record<string, unknown>;
-
-    expect(response.status).toBe(200);
-    expect(body).toEqual({
-      status: 'accepted',
-      requestId,
-      cooldownSeconds: 120,
-    });
-    expect(fetcher).toHaveBeenCalledWith(
-      'https://api.telegram.org/botSECRET_BOT_TOKEN/sendMessage',
-      expect.objectContaining({ method: 'POST' }),
-    );
-    expect(JSON.stringify(body)).not.toContain('SECRET_BOT_TOKEN');
-
-    vi.unstubAllGlobals();
-  });
-
-  it('returns unavailable when Telegram provider is missing secrets', async () => {
-    const response = await handleSayHi(
-      createRequest(validBody),
-      createEnv({
-        SAY_HI_PROVIDER: 'telegram',
-        SAY_HI_USE_MOCK_GATEWAY: 'false',
-      }),
-    );
-    const body = (await response.json()) as Record<string, unknown>;
-
-    expect(response.status).toBe(503);
-    expect(body).toEqual({ status: 'unavailable', requestId });
-    expect(JSON.stringify(body)).not.toContain('TELEGRAM');
   });
 });

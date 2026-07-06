@@ -12,7 +12,7 @@ The portfolio is a Vite, React and TypeScript application. Existing portfolio se
 
 ## Worker/API
 
-`POST /api/v1/greetings` validates JSON with Zod, verifies the exact allowed origin, verifies Turnstile server-side, checks rate limiting, reserves a global cooldown and calls the configured notification provider. The older `/api/say-hi` route remains as a compatibility alias.
+`POST /api/say-hi` validates JSON with Zod, verifies the exact allowed origin, verifies Turnstile server-side, checks rate limiting, reserves a global cooldown and calls a Home Automation Gateway.
 
 ## Rate limiting
 
@@ -22,10 +22,10 @@ The Worker supports a Cloudflare Rate Limiting binding through `SAY_HI_RATE_LIMI
 
 The browser obtains a single-use Turnstile token before sending. The Worker validates it with Cloudflare Siteverify. Tests and local mock mode use Cloudflare test keys.
 
-## Notification Gateway
+## Home Automation Gateway
 
-The frontend only knows the configured Say Hi endpoint. The Worker chooses a provider through `SAY_HI_PROVIDER`: `telegram` for the first public version, `homeassistant` for the older smart-home path, or `mock` for local and preview testing.
+The frontend only knows `/api/say-hi`. The Worker chooses `MockHomeAutomationGateway` for preview/dev or `HomeAssistantGateway` for production.
 
 ## Deployment
 
-GitHub Pages serves the static portfolio. The public Say Hi flow points at the Cloudflare Worker route `/api/v1/greetings`. Production requires Worker secrets for Turnstile and Telegram. Telegram tokens and chat IDs never belong in the React bundle.
+Cloudflare Pages/Workers serves static assets from `dist` and routes `/api/say-hi` to the Worker. Preview uses the mock gateway. Production requires Worker secrets for Turnstile and Home Assistant.

@@ -16,7 +16,6 @@ import type { Locale } from './data/content';
 import AdminApp from './features/admin/AdminApp';
 import { HsabSection } from './features/hsab';
 import { LocalAiSection } from './features/local-ai';
-import { SayHiSection } from './features/say-hi';
 
 const defaultLocale: Locale = 'sv';
 const storageKey = 'hugo-portfolio-locale';
@@ -128,7 +127,6 @@ function PortfolioPage({ locale, onLocaleChange }: PortfolioPageProps) {
         <LocalAiSection content={page.localAi} />
         <HsabSection content={page.hsab} />
         <BuiltWith content={page.builtWith} />
-        <SayHiSection locale={locale} copy={page.sayHi} />
         <Contact content={page.contact} />
       </main>
       <Footer content={page.footer} />

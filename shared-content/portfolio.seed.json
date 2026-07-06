@@ -141,12 +141,21 @@
         {
           "title": "Databaser",
           "description": "Jag har erfarenhet av relationsdatabaser och datamodellering, med fokus på att skapa lösningar som är begripliga, effektiva och lätta att vidareutveckla.",
-          "tags": ["SQL", "SQL Server", "PostgreSQL", "DocumentDB"]
+          "tags": [
+            "SQL",
+            "SQL Server",
+            "PostgreSQL",
+            "DocumentDB"
+          ]
         },
         {
           "title": "Cloud & Infrastruktur",
           "description": "Jag har arbetat med moln- och infrastrukturrelaterade verktyg som stödjer moderna utvecklingsflöden, deployment och skalbara system.",
-          "tags": ["Microsoft Azure", "AWS", "Docker"]
+          "tags": [
+            "Microsoft Azure",
+            "AWS",
+            "Docker"
+          ]
         },
         {
           "title": "DevOps & Verktyg",
@@ -175,7 +184,11 @@
         {
           "title": "CMS & Arbetssätt",
           "description": "Jag har erfarenhet av CMS, agila arbetssätt och AI-assisterad utveckling som stöd i moderna utvecklingsprocesser.",
-          "tags": ["Umbraco", "Scrum", "AI-assisterad utveckling"]
+          "tags": [
+            "Umbraco",
+            "Scrum",
+            "AI-assisterad utveckling"
+          ]
         },
         {
           "title": "AI & Linux",
@@ -377,7 +390,13 @@
         {
           "title": "Interaktiv karriärvärld",
           "description": "En 3D-visualisering av erfarenhet, utbildning och teknisk riktning. Byggd med Three.js, React och Blender-exporterade modeller för att göra portfolion mer minnesvärd.",
-          "technologies": ["React", "TypeScript", "Three.js", "Blender", "GLB"]
+          "technologies": [
+            "React",
+            "TypeScript",
+            "Three.js",
+            "Blender",
+            "GLB"
+          ]
         }
       ]
     },
@@ -404,38 +423,38 @@
     },
     "sayHi": {
       "kicker": "Nyfiken?",
-      "title": "Tänd lampan och säg hej",
+      "title": "Säg hej till mig",
       "description": "",
-      "curiosity": "Ett litet portfolio-hej som faktiskt når fram till mig.",
-      "buttonLabel": "Klicka på lampan och säg hej",
+      "curiosity": "Nyfiken?",
+      "buttonLabel": "Klicka på mig",
       "loadingLabel": "Skickar...",
-      "cooldownLabel": "Lampan vilar lite",
-      "cooldownHint": "Lampan behöver vila lite innan nästa hej.",
+      "cooldownLabel": "Någon har precis sagt hej",
+      "cooldownHint": "Försök igen om en liten stund.",
       "resetLabel": "Försök igen",
-      "panelTitle": "Kontroller för att säga hej",
-      "comingSoon": "Lampan är avstängd i den här miljön, men den går att aktivera med VITE_SAY_HI_ENABLED.",
+      "panelTitle": "Kontroller för Say hi",
+      "comingSoon": "Funktionen är avstängd i den här miljön och kan aktiveras med VITE_SAY_HI_ENABLED.",
       "canvasLabel": "Interaktiv 3D-lampa.",
       "fallback": "3D-lampan laddas.",
       "successDialog": {
         "title": "Du har sagt hej till mig 👋",
-        "body": "Tack! Nu plingade det till hos mig.",
-        "localBody": "Lokalt testläge: hälsningen simulerades eftersom Cloudflare Worker inte körs i den här Vite-sessionen.",
-        "privacy": "Jag vet inte vem du är. Jag får inte ditt namn, din e-postadress eller någon profilinformation. Jag ser bara att någon klickade på lampan.",
+        "body": "En av mina lampor hemma har precis ändrat färg till rött.",
+        "localBody": "Lokalt testläge: signalen simulerades eftersom Cloudflare Worker inte körs i den här Vite-sessionen.",
+        "privacy": "Jag vet inte vem du är. Jag får inte ditt namn, din e-postadress eller någon profilinformation. Jag ser bara att någon har skickat ett hej.",
         "technicalPrivacy": "Teknisk information kan behandlas tillfälligt för att skydda funktionen mot spam och missbruk, men den används inte för att identifiera dig.",
         "closeLabel": "Stäng"
       },
       "errorDialog": {
         "title": "Det gick inte den här gången",
-        "body": "Det gick inte att skicka just nu. Lampan är lite blyg.",
+        "body": "Signalen kunde inte skickas till mitt smarta hem just nu. Försök gärna igen senare.",
         "closeLabel": "Stäng"
       },
       "statuses": {
         "idle": "",
-        "sending": "Skickar ett hej...",
-        "success": "Tack! Nu plingade det till hos mig.",
-        "cooldown": "Lampan behöver vila lite innan nästa hej.",
-        "unavailable": "Det gick inte att skicka just nu. Lampan är lite blyg.",
-        "error": "Det gick inte att skicka just nu. Lampan är lite blyg."
+        "sending": "Skickar signal till Hugos smarta hem...",
+        "success": "Signalen skickades till mitt smarta hem.",
+        "cooldown": "Försök igen om en liten stund.",
+        "unavailable": "Signalen kunde inte skickas just nu.",
+        "error": "Signalen kunde inte skickas just nu."
       }
     },
     "builtWith": {
@@ -447,23 +466,43 @@
       "sections": [
         {
           "title": "Frontend",
-          "items": ["React", "TypeScript", "SCSS"]
+          "items": [
+            "React",
+            "TypeScript",
+            "SCSS"
+          ]
         },
         {
           "title": "Interactive layer",
-          "items": ["Three.js", "sensor nodes", "data pulses"]
+          "items": [
+            "Three.js",
+            "sensor nodes",
+            "data pulses"
+          ]
         },
         {
           "title": "Backend mindset",
-          "items": [".NET", "API-tänk", "systemstruktur"]
+          "items": [
+            ".NET",
+            "API-tänk",
+            "systemstruktur"
+          ]
         },
         {
           "title": "Design",
-          "items": ["Nordic Forest Tech", "motion design", "tillgänglighet"]
+          "items": [
+            "Nordic Forest Tech",
+            "motion design",
+            "tillgänglighet"
+          ]
         },
         {
           "title": "Performance",
-          "items": ["Responsive design", "reduced motion", "optimized scene"]
+          "items": [
+            "Responsive design",
+            "reduced motion",
+            "optimized scene"
+          ]
         }
       ]
     },
@@ -642,12 +681,21 @@
         {
           "title": "Databases",
           "description": "I have experience with relational databases and data modeling, with a focus on creating solutions that are understandable, efficient and easy to continue developing.",
-          "tags": ["SQL", "SQL Server", "PostgreSQL", "DocumentDB"]
+          "tags": [
+            "SQL",
+            "SQL Server",
+            "PostgreSQL",
+            "DocumentDB"
+          ]
         },
         {
           "title": "Cloud & Infrastructure",
           "description": "I have worked with cloud and infrastructure-related tools that support modern development workflows, deployment and scalable systems.",
-          "tags": ["Microsoft Azure", "AWS", "Docker"]
+          "tags": [
+            "Microsoft Azure",
+            "AWS",
+            "Docker"
+          ]
         },
         {
           "title": "DevOps & Tools",
@@ -676,7 +724,11 @@
         {
           "title": "CMS & Ways of Working",
           "description": "I have experience with CMS platforms, agile workflows and AI-assisted development as support in modern development processes.",
-          "tags": ["Umbraco", "Scrum", "AI-assisted development"]
+          "tags": [
+            "Umbraco",
+            "Scrum",
+            "AI-assisted development"
+          ]
         },
         {
           "title": "AI & Linux",
@@ -856,7 +908,13 @@
         {
           "title": "HSAB",
           "description": "A private AI-agent office where agents have roles, status and movement inside a Phaser-based workspace. The focus is making AI workflows easier to understand.",
-          "technologies": ["React", "Vite", "Phaser", "TypeScript", "AI agents"]
+          "technologies": [
+            "React",
+            "Vite",
+            "Phaser",
+            "TypeScript",
+            "AI agents"
+          ]
         },
         {
           "title": "Home AI Station",
@@ -872,7 +930,13 @@
         {
           "title": "Interactive career world",
           "description": "A 3D visualization of experience, education and technical direction. Built with Three.js, React and Blender-exported models to make the portfolio more memorable.",
-          "technologies": ["React", "TypeScript", "Three.js", "Blender", "GLB"]
+          "technologies": [
+            "React",
+            "TypeScript",
+            "Three.js",
+            "Blender",
+            "GLB"
+          ]
         }
       ]
     },
@@ -899,38 +963,38 @@
     },
     "sayHi": {
       "kicker": "Curious?",
-      "title": "Click the lamp and say hi",
+      "title": "Say hi to me",
       "description": "",
-      "curiosity": "A small portfolio hello that actually reaches me.",
-      "buttonLabel": "Click the lamp and say hi",
+      "curiosity": "Curious?",
+      "buttonLabel": "Click me",
       "loadingLabel": "Sending...",
-      "cooldownLabel": "The lamp is resting",
-      "cooldownHint": "The lamp needs a short break before the next hello.",
+      "cooldownLabel": "Someone just said hi",
+      "cooldownHint": "Try again in a moment.",
       "resetLabel": "Try again",
       "panelTitle": "Say hi controls",
-      "comingSoon": "The lamp is disabled in this environment, but it can be enabled with VITE_SAY_HI_ENABLED.",
+      "comingSoon": "This feature is disabled in this environment and can be enabled with VITE_SAY_HI_ENABLED.",
       "canvasLabel": "Interactive 3D lamp.",
       "fallback": "The 3D lamp is loading.",
       "successDialog": {
         "title": "You just said hi to me 👋",
-        "body": "Thanks! I just got your hello.",
-        "localBody": "Local test mode: the hello was simulated because the Cloudflare Worker is not running in this Vite session.",
-        "privacy": "I do not know who you are. I do not receive your name, email address or profile information. I only know that someone clicked the lamp.",
+        "body": "One of my lights at home just changed color to red.",
+        "localBody": "Local test mode: the signal was simulated because the Cloudflare Worker is not running in this Vite session.",
+        "privacy": "I do not know who you are. I do not receive your name, email address, or profile information. I only know that someone sent a hello.",
         "technicalPrivacy": "Technical request data may be processed temporarily to protect the feature from spam and abuse, but it is not used to identify you.",
         "closeLabel": "Close"
       },
       "errorDialog": {
         "title": "It did not work this time",
-        "body": "Could not send it right now. The lamp is being a bit shy.",
+        "body": "The signal could not reach my smart home right now. Please try again later.",
         "closeLabel": "Close"
       },
       "statuses": {
         "idle": "",
-        "sending": "Sending a hello...",
-        "success": "Thanks! I just got your hello.",
-        "cooldown": "The lamp needs a short break before the next hello.",
-        "unavailable": "Could not send it right now. The lamp is being a bit shy.",
-        "error": "Could not send it right now. The lamp is being a bit shy."
+        "sending": "Sending a signal to Hugo's smart home...",
+        "success": "The signal was sent to my smart home.",
+        "cooldown": "Try again in a moment.",
+        "unavailable": "The signal could not be sent right now.",
+        "error": "The signal could not be sent right now."
       }
     },
     "builtWith": {
@@ -942,23 +1006,43 @@
       "sections": [
         {
           "title": "Frontend",
-          "items": ["React", "TypeScript", "SCSS"]
+          "items": [
+            "React",
+            "TypeScript",
+            "SCSS"
+          ]
         },
         {
           "title": "Interactive layer",
-          "items": ["Three.js", "sensor nodes", "data pulses"]
+          "items": [
+            "Three.js",
+            "sensor nodes",
+            "data pulses"
+          ]
         },
         {
           "title": "Backend mindset",
-          "items": [".NET", "API thinking", "system structure"]
+          "items": [
+            ".NET",
+            "API thinking",
+            "system structure"
+          ]
         },
         {
           "title": "Design",
-          "items": ["Nordic Forest Tech", "motion design", "accessibility"]
+          "items": [
+            "Nordic Forest Tech",
+            "motion design",
+            "accessibility"
+          ]
         },
         {
           "title": "Performance",
-          "items": ["Responsive design", "reduced motion", "optimized scene"]
+          "items": [
+            "Responsive design",
+            "reduced motion",
+            "optimized scene"
+          ]
         }
       ]
     },
