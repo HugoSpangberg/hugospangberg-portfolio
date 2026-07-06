@@ -17,7 +17,7 @@ The public site remains the React/Vite application in the repository root.
 2. Set `UMBRACO_ADMIN_EMAIL`, `UMBRACO_ADMIN_PASSWORD`, and `UMBRACO_ADMIN_NAME`.
 3. Run `./scripts/setup-cms.sh` or `./scripts/setup-cms.ps1`.
 4. Run `npm run dev:cms`.
-5. Open the local CMS URL shown by ASP.NET and complete any remaining install prompts.
+5. Open the local CMS URL shown by ASP.NET and complete any remaining install steps.
 
 The setup scripts write admin credentials to .NET user secrets, not to git.
 

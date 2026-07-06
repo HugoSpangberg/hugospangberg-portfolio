@@ -8,7 +8,7 @@ The images are visual references only. They should guide silhouette, facade rhyt
 color, and signature details. The Three.js result should remain a stylized,
 procedural miniature matching the existing Nordic Forest Tech career world.
 
-Recommended Codex workflow:
+Recommended review workflow:
 
 1. Inspect the current working tree.
 2. Read `career-world-scene-spec.json`.
