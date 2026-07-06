@@ -24,14 +24,8 @@ blob-report/
 .env.local
 .env.*.local
 
-# Local AI and agent tooling
+# Local tooling
 .local/
-.codex/
-codex-local/
-codex-prompts/
-codex-sessions/
-codex-output/
-*.codex.local.*
 
 # Logs and temporary files
 *.log
