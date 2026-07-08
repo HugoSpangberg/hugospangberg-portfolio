@@ -34,6 +34,13 @@ function ProfileHeroSection({ content }: ProfileHeroSectionProps) {
         <div className="profile-hero__status" aria-label={content.availability}>
           <span>{content.availability}</span>
           <strong>{content.stack}</strong>
+          {content.proofPoints ? (
+            <ul className="profile-hero__proof-list">
+              {content.proofPoints.map((proofPoint) => (
+                <li key={proofPoint}>{proofPoint}</li>
+              ))}
+            </ul>
+          ) : null}
         </div>
       </div>
     </section>

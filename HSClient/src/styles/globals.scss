@@ -957,6 +957,33 @@ p {
   line-height: 1.45;
 }
 
+.profile-hero__proof-list {
+  display: grid;
+  gap: 0.42rem;
+  padding: 0.35rem 0 0;
+  margin: 0.35rem 0 0;
+  list-style: none;
+  border-top: 1px solid rgba(183, 244, 214, 0.12);
+}
+
+.profile-hero__proof-list li {
+  color: var(--color-muted);
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+
+.profile-hero__proof-list li::before {
+  display: inline-block;
+  width: 0.45rem;
+  height: 0.45rem;
+  margin-right: 0.5rem;
+  background: var(--color-aurora);
+  border-radius: 999px;
+  box-shadow: 0 0 12px rgba(114, 242, 163, 0.28);
+  content: '';
+  vertical-align: 0.05rem;
+}
+
 .hero {
   position: relative;
   overflow: hidden;

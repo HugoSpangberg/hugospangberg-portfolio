@@ -73,6 +73,25 @@ function PortfolioPage({ locale, onLocaleChange }: PortfolioPageProps) {
 
   useEffect(() => {
     const revealItems = document.querySelectorAll<HTMLElement>('[data-reveal]');
+    const revealTarget = (hash: string) => {
+      if (!hash.startsWith('#')) {
+        return;
+      }
+
+      const target = document.querySelector<HTMLElement>(hash);
+
+      if (!target) {
+        return;
+      }
+
+      if (target.matches('[data-reveal]')) {
+        target.classList.add('is-visible');
+      }
+
+      target
+        .querySelectorAll<HTMLElement>('[data-reveal]')
+        .forEach((item) => item.classList.add('is-visible'));
+    };
 
     if (!('IntersectionObserver' in window)) {
       revealItems.forEach((item) => item.classList.add('is-visible'));
@@ -105,7 +124,24 @@ function PortfolioPage({ locale, onLocaleChange }: PortfolioPageProps) {
       observer.observe(item);
     });
 
-    return () => observer.disconnect();
+    const handleHashChange = () => revealTarget(window.location.hash);
+    const handleAnchorClick = (event: MouseEvent) => {
+      const link = (event.target as Element | null)?.closest<HTMLAnchorElement>('a[href^="#"]');
+
+      if (link) {
+        revealTarget(link.hash);
+      }
+    };
+
+    handleHashChange();
+    window.addEventListener('hashchange', handleHashChange);
+    document.addEventListener('click', handleAnchorClick);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('hashchange', handleHashChange);
+      document.removeEventListener('click', handleAnchorClick);
+    };
   }, [locale, page]);
 
   return (

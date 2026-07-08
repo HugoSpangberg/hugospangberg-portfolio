@@ -29,6 +29,7 @@ export type HeroContentData = {
   actions: HeroAction[];
   availability: string;
   stack: string;
+  proofPoints?: string[];
   sceneLabel: string;
   fallbackLabel: string;
 };

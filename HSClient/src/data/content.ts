@@ -134,6 +134,11 @@ export const content = {
       ] satisfies HeroAction[],
       availability: 'Öppen för roller inom webbutveckling, systemutveckling och backend.',
       stack: '.NET / C# / React / Automation',
+      proofPoints: [
+        'Byggt .NET-backend för IoT- och verksamhetsnära system.',
+        'Automatiserat manuella flöden med RPA, PowerShell och C#.',
+        'Skapat testautomation, CI-flöden och egna utvecklarverktyg.',
+      ],
       sceneLabel: 'Interaktiv karriärkarta med nordisk skog, IoT och systemutveckling',
       fallbackLabel: 'Statisk karriärkarta med skog, IoT och erfarenhetspunkter',
     },
@@ -341,19 +346,19 @@ export const content = {
         {
           title: 'HSAB',
           description:
-            'Ett privat AI-agentkontor där agenter får roller, status och rörelse i en Phaser-baserad arbetsmiljö. Fokus ligger på att göra AI-flöden lättare att förstå.',
+            'Ett privat AI-agentkontor där agenter får roller, status och rörelse i en Phaser-baserad arbetsmiljö. Portfolio-versionen kör offline/mockat så idén kan visas utan privat GitHub-data.',
           technologies: ['React', 'Vite', 'Phaser', 'TypeScript', 'AI-agenter'],
         },
         {
           title: 'Lokal AI-station',
           description:
-            'Mitt hemmalabb för lokala modeller, agenter och små automationer. Det är ett praktiskt sätt att testa Linux, Docker och AI med kontroll över miljön.',
+            'Mitt hemmalabb för lokala modeller, agenter och små automationer. Fokus är praktisk nytta, lokal kontroll och mänskligt godkännande i flödet.',
           technologies: ['Linux', 'Docker', 'Ollama', 'Lokala modeller', 'Automation'],
         },
         {
           title: 'Interaktiv karriärvärld',
           description:
-            'En 3D-visualisering av erfarenhet, utbildning och teknisk riktning. Byggd med Three.js, React och Blender-exporterade modeller för att göra portfolion mer minnesvärd.',
+            'En 3D-visualisering av erfarenhet, utbildning och teknisk riktning. Byggd med Three.js, React och Blender-exporterade GLB-modeller med fallback för robust laddning.',
           technologies: ['React', 'TypeScript', 'Three.js', 'Blender', 'GLB'],
         },
       ] satisfies Lab[],
@@ -530,6 +535,11 @@ export const content = {
       ] satisfies HeroAction[],
       availability: 'Open to roles in web development, software development and backend.',
       stack: '.NET / C# / React / Automation',
+      proofPoints: [
+        'Built .NET backend for IoT and business-focused systems.',
+        'Automated manual workflows with RPA, PowerShell and C#.',
+        'Created test automation, CI workflows and developer tools.',
+      ],
       sceneLabel: 'Interactive career map with Nordic forest, IoT and software development',
       fallbackLabel: 'Static career map with forest, IoT and experience points',
     },
@@ -737,19 +747,19 @@ export const content = {
         {
           title: 'HSAB',
           description:
-            'A private AI-agent office where agents have roles, status and movement inside a Phaser-based workspace. The focus is making AI workflows easier to understand.',
+            'A private AI-agent office where agents have roles, status and movement inside a Phaser-based workspace. The portfolio version runs offline with mock data so the idea can be shown without private GitHub data.',
           technologies: ['React', 'Vite', 'Phaser', 'TypeScript', 'AI agents'],
         },
         {
           title: 'Home AI Station',
           description:
-            'My home lab for local models, agents and small automations. It is a practical way to explore Linux, Docker and AI while keeping control over the environment.',
+            'My home lab for local models, agents and small automations. The focus is practical value, local control and human approval in the workflow.',
           technologies: ['Linux', 'Docker', 'Ollama', 'Local models', 'Automation'],
         },
         {
           title: 'Interactive career world',
           description:
-            'A 3D visualization of experience, education and technical direction. Built with Three.js, React and Blender-exported models to make the portfolio more memorable.',
+            'A 3D visualization of experience, education and technical direction. Built with Three.js, React and Blender-exported GLB models with fallback loading for resilience.',
           technologies: ['React', 'TypeScript', 'Three.js', 'Blender', 'GLB'],
         },
       ] satisfies Lab[],

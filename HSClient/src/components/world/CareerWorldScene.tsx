@@ -31,6 +31,10 @@ type PointerState = {
   y: number;
 };
 
+type WorldSpotlightRig = {
+  update: () => void;
+};
+
 function getCameraConfig(width: number, isExpanded = false) {
   if (isExpanded && width < 720) {
     return {
@@ -69,6 +73,68 @@ function getCameraConfig(width: number, isExpanded = false) {
     worldScale: 0.67,
     pixelRatio: 1.5,
   };
+}
+
+function createWorldSpotlights(
+  THREE: typeof Three,
+  world: ReturnType<typeof createCareerWorld>,
+  compact: boolean,
+): WorldSpotlightRig {
+  const frontOffset = compact ? 0.58 : 0.74;
+  const sideOffset = compact ? 0.16 : 0.28;
+  const height = compact ? 1.15 : 1.42;
+  const targetHeight = compact ? 0.02 : 0.08;
+  const buildingIntensity = compact ? 0.38 : 0.48;
+  const hubIntensity = compact ? 0.42 : 0.52;
+
+  const lights = world.hotspots.map((hotspot) => {
+    const sideDirection = hotspot.basePosition.x >= 0 ? -1 : 1;
+    const light = new THREE.SpotLight(
+      hotspot.item.accent,
+      buildingIntensity,
+      compact ? 4.1 : 4.8,
+      Math.PI * 0.095,
+      0.82,
+      1.45,
+    );
+
+    light.name = `CareerWorldSpotlight_${hotspot.item.id}`;
+    light.target.name = `CareerWorldSpotlightTarget_${hotspot.item.id}`;
+    world.group.add(light, light.target);
+
+    return { hotspot, light, sideDirection };
+  });
+
+  const hubLight = new THREE.SpotLight(
+    0x77d8f7,
+    hubIntensity,
+    compact ? 3.5 : 4.2,
+    Math.PI * 0.11,
+    0.86,
+    1.55,
+  );
+  hubLight.name = 'CareerWorldSpotlight_hub';
+  hubLight.target.name = 'CareerWorldSpotlightTarget_hub';
+  world.group.add(hubLight, hubLight.target);
+
+  const update = () => {
+    lights.forEach(({ hotspot, light, sideDirection }) => {
+      const base = hotspot.basePosition;
+      light.position.set(
+        base.x + sideOffset * sideDirection,
+        base.y + height,
+        base.z + frontOffset,
+      );
+      light.target.position.set(base.x, base.y + targetHeight, base.z);
+    });
+
+    hubLight.position.set(-0.26, compact ? 0.86 : 1.08, compact ? 0.45 : 0.58);
+    hubLight.target.position.copy(world.systemCore.position);
+  };
+
+  update();
+
+  return { update };
 }
 
 function supportsWebGL() {
@@ -297,6 +363,7 @@ function CareerWorldScene({
         renderer.domElement.style.touchAction = 'pan-y';
 
         const world = createCareerWorld(THREE, compact, worldLabelsRef.current);
+        const worldSpotlights = createWorldSpotlights(THREE, world, compact);
         const abortController = new AbortController();
         let loadedAssets: Awaited<ReturnType<typeof loadCareerWorldAssets>> | undefined;
         world.group.scale.setScalar(initialCamera.worldScale);
@@ -316,6 +383,7 @@ function CareerWorldScene({
         };
 
         const showLoadedWorld = () => {
+          worldSpotlights.update();
           world.group.visible = true;
           world.proceduralBase.visible = false;
           setInteractiveLayerVisible(true);
@@ -326,6 +394,7 @@ function CareerWorldScene({
         };
 
         const showProceduralFallbackWorld = () => {
+          worldSpotlights.update();
           world.group.visible = true;
           world.proceduralBase.visible = true;
           world.hotspots.forEach((hotspot) => {
