@@ -7,6 +7,7 @@ import {
   getCareerWorldLocations,
   type CareerWorldLocation,
 } from './careerLocations';
+import { publicAssetUrl } from '../../utils/publicAssetUrl';
 
 const CareerWorldScene = lazy(() => import('./CareerWorldScene'));
 
@@ -28,6 +29,8 @@ function WorldIntroSection({ content, locale }: WorldIntroSectionProps) {
   const [selectedLocation, setSelectedLocation] =
     useState<CareerWorldLocation | null>(null);
   const [isWorldExpanded, setIsWorldExpanded] = useState(false);
+  const cvAction = content.actions.find((action) => action.download);
+  const contactAction = content.actions.find((action) => action.href === '#contact');
 
   useEffect(() => {
     setSelectedLocation(null);
@@ -119,6 +122,27 @@ function WorldIntroSection({ content, locale }: WorldIntroSectionProps) {
             : 'Rotate the world and click places to explore my experience.'}
         </span>
       </div>
+
+      <aside className="world-intro__recruiter" aria-label={isSwedish ? 'Snabb sammanfattning' : 'Quick summary'}>
+        <span>{content.title}</span>
+        <strong>{content.role}</strong>
+        <p>{content.proofPoints?.[0] ?? content.stack}</p>
+        <div className="world-intro__recruiter-actions">
+          <button type="button" onClick={scrollToProfile}>
+            {isSwedish ? 'Se profil' : 'View profile'}
+          </button>
+          {cvAction ? (
+            <a
+              href={publicAssetUrl(cvAction.href)}
+              download={cvAction.download}
+              aria-label={isSwedish ? 'Ladda ner CV PDF' : 'Download CV PDF'}
+            >
+              {cvAction.label}
+            </a>
+          ) : null}
+          {contactAction ? <a href={contactAction.href}>{contactAction.label}</a> : null}
+        </div>
+      </aside>
 
       <button
         className="world-intro__continue"

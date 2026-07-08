@@ -29,11 +29,15 @@ function Labs({ content }: LabsProps) {
                 <h3>{item.title}</h3>
               </div>
               <p>{item.description}</p>
+              <p className="lab-card__proof">{item.proof}</p>
               <div className="tag-list" aria-label={`${item.title} tekniker`}>
                 {item.technologies.map((technology) => (
                   <span key={technology}>{technology}</span>
                 ))}
               </div>
+              <a className="lab-card__link" href={item.linkHref}>
+                {item.linkLabel}
+              </a>
             </article>
           ))}
         </div>

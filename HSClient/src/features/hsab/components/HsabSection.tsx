@@ -26,7 +26,7 @@ function HsabSection({ content }: HsabSectionProps) {
           observer.disconnect();
         }
       },
-      { rootMargin: '520px 0px', threshold: 0.01 },
+      { rootMargin: '180px 0px', threshold: 0.08 },
     );
 
     observer.observe(section);

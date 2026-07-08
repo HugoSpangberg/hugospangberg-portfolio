@@ -38,7 +38,10 @@ export type Education = {
 export type Lab = {
   title: string;
   description: string;
+  proof: string;
   technologies: string[];
+  linkLabel: string;
+  linkHref: string;
 };
 
 export type ContactLink = {
@@ -347,19 +350,28 @@ export const content = {
           title: 'HSAB',
           description:
             'Ett privat AI-agentkontor där agenter får roller, status och rörelse i en Phaser-baserad arbetsmiljö. Portfolio-versionen kör offline/mockat så idén kan visas utan privat GitHub-data.',
+          proof: 'Visar AI-flöden med roller, status och rörelse utan att exponera privat data.',
           technologies: ['React', 'Vite', 'Phaser', 'TypeScript', 'AI-agenter'],
+          linkLabel: 'Se HSAB',
+          linkHref: '#hsab',
         },
         {
           title: 'Lokal AI-station',
           description:
             'Mitt hemmalabb för lokala modeller, agenter och små automationer. Fokus är praktisk nytta, lokal kontroll och mänskligt godkännande i flödet.',
+          proof: 'Utforskar lokala modeller och automationer med kontroll över data och körmiljö.',
           technologies: ['Linux', 'Docker', 'Ollama', 'Lokala modeller', 'Automation'],
+          linkLabel: 'Se AI-labbet',
+          linkHref: '#local-ai',
         },
         {
           title: 'Interaktiv karriärvärld',
           description:
             'En 3D-visualisering av erfarenhet, utbildning och teknisk riktning. Byggd med Three.js, React och Blender-exporterade GLB-modeller med fallback för robust laddning.',
+          proof: 'Kombinerar 3D, innehåll och fallback-laddning för en mer minnesvärd portfolio.',
           technologies: ['React', 'TypeScript', 'Three.js', 'Blender', 'GLB'],
+          linkLabel: 'Utforska världen',
+          linkHref: '#start',
         },
       ] satisfies Lab[],
     },
@@ -748,19 +760,28 @@ export const content = {
           title: 'HSAB',
           description:
             'A private AI-agent office where agents have roles, status and movement inside a Phaser-based workspace. The portfolio version runs offline with mock data so the idea can be shown without private GitHub data.',
+          proof: 'Shows AI workflows with roles, status and movement without exposing private data.',
           technologies: ['React', 'Vite', 'Phaser', 'TypeScript', 'AI agents'],
+          linkLabel: 'View HSAB',
+          linkHref: '#hsab',
         },
         {
           title: 'Home AI Station',
           description:
             'My home lab for local models, agents and small automations. The focus is practical value, local control and human approval in the workflow.',
+          proof: 'Explores local models and automations while keeping control over data and runtime.',
           technologies: ['Linux', 'Docker', 'Ollama', 'Local models', 'Automation'],
+          linkLabel: 'View AI lab',
+          linkHref: '#local-ai',
         },
         {
           title: 'Interactive career world',
           description:
             'A 3D visualization of experience, education and technical direction. Built with Three.js, React and Blender-exported GLB models with fallback loading for resilience.',
+          proof: 'Combines 3D, content and fallback loading into a more memorable portfolio.',
           technologies: ['React', 'TypeScript', 'Three.js', 'Blender', 'GLB'],
+          linkLabel: 'Explore world',
+          linkHref: '#start',
         },
       ] satisfies Lab[],
     },
